@@ -1,5 +1,5 @@
 import { ToolOpts } from "./types/toolOpts";
-import { defaultToolOpts } from "./utils";
+import { getPluginNames, defaultToolOpts } from "./utils";
 
 process.on("uncaughtException", err => {
     console.error(err.stack);
@@ -13,7 +13,9 @@ process.on("unhandledRejection", (reason, p) => {
 export type CreateOptsCallback = (defaultOpts: Partial<ToolOpts>) => ToolOpts;
 
 const run = async (createOpts: CreateOptsCallback): Promise<void> => {
-    createOpts(defaultToolOpts);
+    const opts = createOpts(defaultToolOpts);
+    const pluginsToInstall = await getPluginNames(opts);
+    console.log('Plugins to install: ', pluginsToInstall);
 };
 
 export default { run };
