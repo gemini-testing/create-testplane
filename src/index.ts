@@ -1,6 +1,13 @@
-import { ToolOpts } from "./types/toolOpts";
 import defaultToolOpts from "./constants/defaultToolOpts";
-import { getPluginNames, initApp } from "./utils";
+import { initApp, installPackages } from "./package";
+import { getPluginNames } from "./plugins";
+import { baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
+import baseGeneralPrompts from "./constants/baseGeneralPrompts";
+import { ConfigBuilder } from "./configBuilder";
+import type { HandleGeneralPromptsCallback } from "./utils";
+import type { GeneralPrompt, ToolOpts } from "./types/toolOpts";
+import type { PluginsConfig } from "./types/pluginsConfig";
+import type { HermioneConfig } from "./types/hermioneConfig";
 
 process.on("uncaughtException", err => {
     console.error(err.stack);
@@ -12,13 +19,47 @@ process.on("unhandledRejection", (reason, p) => {
 });
 
 export type CreateOptsCallback = (defaultOpts: Partial<ToolOpts>) => ToolOpts;
+export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig) => HermioneConfig;
+export type CreatePluginsConfigCallback = (pluginsConfig: PluginsConfig) => PluginsConfig;
 
-const run = async (createOpts: CreateOptsCallback): Promise<void> => {
+export interface CreateHermioneAppOpts {
+    createBaseConfig?: CreateBaseConfigCallback;
+    createOpts: CreateOptsCallback;
+    generalPrompts?: {
+        prompts: GeneralPrompt[];
+        handler: HandleGeneralPromptsCallback;
+    };
+    createPluginsConfig?: CreatePluginsConfigCallback;
+}
+
+export const run = async ({
+    createBaseConfig,
+    createOpts,
+    generalPrompts,
+    createPluginsConfig,
+}: CreateHermioneAppOpts): Promise<void> => {
+    const configBuilder = ConfigBuilder.create(createBaseConfig);
     const opts = createOpts(defaultToolOpts);
+
     const packageManager = await initApp(opts.path, opts.noQuestions);
-    const pluginsToInstall = await getPluginNames(opts);
-    console.log("Package manager: ", packageManager);
-    console.log("Plugins to install: ", pluginsToInstall);
+
+    await configBuilder.handleGeneralQuestions(
+        [baseGeneralPrompts, generalPrompts?.prompts],
+        [baseGeneralPromptsHandler, generalPrompts?.handler],
+        opts.noQuestions,
+    );
+
+    const { pluginNames, configNotes } = await getPluginNames(opts);
+
+    await configBuilder.configurePlugins(pluginNames, createPluginsConfig);
+
+    await Promise.all([
+        installPackages(opts.path, packageManager, pluginNames),
+        configBuilder.write(opts.path),
+        writeTestExample(opts.path),
+    ]);
+
+    printSuccessMessage(configNotes);
 };
 
 export default { run };

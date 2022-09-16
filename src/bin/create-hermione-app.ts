@@ -11,14 +11,15 @@ import { ToolOpts } from "../types/toolOpts";
 
 const argv = yargs(hideBin(process.argv))
     .usage("Usage: $0 <path>")
-    .option("default", {
-        alias: "d",
+    .option("yes", {
+        alias: "y",
         type: "boolean",
         default: false,
         description: "Auto configuration with 0 questions",
     })
-    .demandCommand(1, "Please provide project path")
+    .demandCommand(1, "Please, provide project path")
     .parse();
 
 const argvOpts = optsFromArgv(argv as ToolArgv);
-launcher.run(defaultOpts => _.defaults(argvOpts, defaultOpts) as ToolOpts);
+const createOpts = (defaultOpts: Partial<ToolOpts>): ToolOpts => _.defaults(argvOpts, defaultOpts) as ToolOpts;
+launcher.run({ createOpts });

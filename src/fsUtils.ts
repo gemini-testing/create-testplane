@@ -1,7 +1,11 @@
 import fs from "fs";
-import { HermioneConfig } from "./types/hermioneConfig";
+import { resolve as pathResolve } from "path";
+import { HERMIONE_CONFIG_NAME } from "./constants/packageManagement";
+import type { HermioneConfig } from "./types/hermioneConfig";
 
-export const isExist = (path: string): Promise<boolean> =>
+const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
+
+export const exists = (path: string): Promise<boolean> =>
     new Promise<boolean>(resolve => {
         fs.promises
             .access(path, fs.constants.F_OK)
@@ -9,23 +13,24 @@ export const isExist = (path: string): Promise<boolean> =>
             .catch(() => resolve(false));
     });
 
-/**
- * @returns null, if doesn't exist. Boolean otherwise
- */
-export const isDirectory = async (path: string): Promise<boolean | null> => {
+export const ensureDirectory = async (path: string): Promise<string | void> => {
     const stat = await new Promise<fs.Stats | null>(resolve => {
         fs.promises
-            .lstat(path)
+            .stat(path)
             .then(resolve)
             .catch(() => resolve(null));
     });
-    return stat && stat.isDirectory();
+
+    if (stat === null) {
+        return createDirectory(path);
+    }
+
+    if (!stat.isDirectory()) {
+        throw Error(`${path} is not a directory!`);
+    }
 };
 
-export const createDirectory = (path: string): Promise<string | undefined> =>
-    fs.promises.mkdir(path, { recursive: true });
-
-export const writeHermioneConfig = (path: string, hermioneConfig: HermioneConfig): Promise<void> => {
+export const writeHermioneConfig = async (dirPath: string, hermioneConfig: HermioneConfig): Promise<void> => {
     const getObjectRepr = (obj: Record<string, unknown>): string => {
         // 1a. obj's records like "__comment": "Comment text", "__comment123": "Also comment text" are turned into "// Comment text"
         // 1b. array's strings like "__comment: Comment text" are turned into "// Comment text"
@@ -34,14 +39,33 @@ export const writeHermioneConfig = (path: string, hermioneConfig: HermioneConfig
         // 4. unescapes and restores double quotes in comments
         return JSON.stringify(obj, null, 4)
             .replace(/([\t ]*)"__comment\d*(?:(?:: )|(?:": "))(.*)",?/g, "$1// $2")
-            .replace(/^[\t ]*"[^:\n\r/-]+(?<!\\)":/gm, (match) => match.replace(/"/g, ""))
+            .replace(/^[\t ]*"[^:\n\r/-]+(?<!\\)":/gm, match => match.replace(/"/g, ""))
             .replace(/"/g, "'")
-            .replace(/[\t ]*\/\/ (.*)/g, (match) => match.replace(/\\'/g, '"'));
+            .replace(/[\t ]*\/\/ (.*)/g, match => match.replace(/\\'/g, '"'));
     };
 
     const configData = `module.exports = ${getObjectRepr(hermioneConfig)}\n`;
 
-    return fs.promises.writeFile(path, configData);
+    await ensureDirectory(dirPath);
+
+    return fs.promises.writeFile(pathResolve(dirPath, HERMIONE_CONFIG_NAME), configData);
 };
 
-export default { isExist, isDirectory, createDirectory };
+export const writeTest = async (dirPath: string, testName: string, testContent: string): Promise<void> => {
+    const testDirPath = pathResolve(dirPath, "tests");
+    const testPath = pathResolve(testDirPath, testName);
+
+    try {
+        await ensureDirectory(testDirPath);
+
+        const isTestfileExist = await exists(testPath);
+
+        if (!isTestfileExist) {
+            await fs.promises.writeFile(testPath, testContent);
+        }
+    } catch {
+        return;
+    }
+};
+
+export default { exists, ensureDirectory, writeHermioneConfig, writeTest };

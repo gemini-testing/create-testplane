@@ -5,8 +5,22 @@ export const DEFAULT_PM = "npm";
 
 export type PackageManager = "npm" | "yarn" | "pnpm";
 
-export const LOCK_FILES: Record<PackageManager, string> = {
-    npm: "package-lock.json",
-    yarn: "yarn.lock",
-    pnpm: "pnp-lock.yml",
+export const PMS: Record<PackageManager, { lock: string; init: string; install: string }> = {
+    npm: {
+        lock: "package-lock.json",
+        init: "init -y",
+        install: "install --save-dev",
+    },
+    yarn: {
+        lock: "yarn.lock",
+        init: "init -y",
+        install: "add -D",
+    },
+    pnpm: {
+        lock: "pnp-lock.yml",
+        init: "init",
+        install: "add --save-dev",
+    },
 };
+
+export const pluginSuffixes = ["/plugin", "/hermione"];
