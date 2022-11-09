@@ -11,6 +11,11 @@ import type { ToolArgv } from "../types/toolArgv";
 import type { GeneralPrompt, ToolOpts } from "../types/toolOpts";
 
 export const optsFromArgv = (argv: ToolArgv): Partial<ToolOpts> => {
+    if (!argv["_"].length) {
+        console.info(Colors.fillYellow(`Initializing project in ${process.cwd()}`));
+        argv["_"] = ["."];
+    }
+
     const opts: Partial<ToolOpts> = {
         path: path.resolve(process.cwd(), argv["_"][0]),
         noQuestions: argv.yes,

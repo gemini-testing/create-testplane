@@ -17,7 +17,6 @@ const argv = yargs(hideBin(process.argv))
         default: false,
         description: "Auto configuration with 0 questions",
     })
-    .demandCommand(1, "Please, provide project path")
     .parse();
 
 const argvOpts = optsFromArgv(argv as ToolArgv);
