@@ -8,17 +8,17 @@ import fsUtils from "../fsUtils";
 import type { ConfigNote } from "../plugins";
 import type { HermioneConfig } from "../types/hermioneConfig";
 import type { ToolArgv } from "../types/toolArgv";
-import type { GeneralPrompt, ToolOpts } from "../types/toolOpts";
+import type { ArgvOpts, GeneralPrompt, HandleGeneralPromptsCallback } from "../types/toolOpts";
 
-export const optsFromArgv = (argv: ToolArgv): Partial<ToolOpts> => {
+export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
         console.info(Colors.fillYellow(`Initializing project in ${process.cwd()}`));
         argv["_"] = ["."];
     }
 
-    const opts: Partial<ToolOpts> = {
+    const opts = {
         path: path.resolve(process.cwd(), argv["_"][0]),
-        noQuestions: argv.yes,
+        noQuestions: !!argv.yes,
     };
     return opts;
 };
@@ -39,11 +39,6 @@ export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T
 
     return answers[question.name];
 };
-
-export type HandleGeneralPromptsCallback = (
-    hermioneConfig: HermioneConfig,
-    answers: Record<string, any>,
-) => Promise<HermioneConfig>;
 
 export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (hermioneConfig, answers) => {
     hermioneConfig.baseUrl = answers.baseUrl;

@@ -3,6 +3,21 @@
     "version": "0.1.4",
     "description": "A tool for fast and simple hermione configuration",
     "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "exports": {
+        "./types/hermioneConfig": "./build/types/hermioneConfig.js",
+        "./types/pluginsConfig": "./build/types/pluginsConfig.js",
+        "./types/toolArgv": "./build/types/toolArgv.js",
+        "./types/toolOpts": "./build/types/toolOpts.js"
+    },
+    "typesVersions": {
+        "*": {
+            "types/hermioneConfig": ["./build/types/hermioneConfig.d.ts"],
+            "types/pluginsConfig": ["./build/types/pluginsConfig.d.ts"],
+            "types/toolArgv": ["./build/types/toolArgv.d.ts"],
+            "types/toolOpts": ["./build/types/toolOpts.d.ts"]
+        }
+    },
     "files": [
         "build"
     ],

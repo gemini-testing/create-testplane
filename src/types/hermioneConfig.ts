@@ -2,6 +2,7 @@ interface HermioneSets {
     [set: string]: {
         files?: string[];
         browsers?: string[];
+        ignoreFiles?: string[];
     };
 }
 
@@ -10,7 +11,10 @@ interface HermioneBrowsers {
         automationProtocol?: string;
         desiredCapabilities: {
             browserName: string;
+            version?: string;
+            [key: string]: unknown;
         };
+        [key: string]: unknown;
     };
 }
 

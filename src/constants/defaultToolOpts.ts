@@ -1,7 +1,7 @@
-import type { ToolOpts } from "../types/toolOpts";
+import type { DefaultOpts } from "../types/toolOpts";
 import pluginGroups from "./pluginGroups";
 
-const defaultToolOpts: Partial<ToolOpts> = {
+const defaultToolOpts: DefaultOpts = {
     pluginGroups,
 };
 

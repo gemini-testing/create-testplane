@@ -7,7 +7,7 @@ import { hideBin } from "yargs/helpers";
 import launcher from "../index";
 import { optsFromArgv } from "../utils";
 import { ToolArgv } from "../types/toolArgv";
-import { ToolOpts } from "../types/toolOpts";
+import { DefaultOpts, ToolOpts } from "../types/toolOpts";
 
 const argv = yargs(hideBin(process.argv))
     .usage("Usage: $0 <path>")
@@ -20,5 +20,5 @@ const argv = yargs(hideBin(process.argv))
     .parse();
 
 const argvOpts = optsFromArgv(argv as ToolArgv);
-const createOpts = (defaultOpts: Partial<ToolOpts>): ToolOpts => _.defaults(argvOpts, defaultOpts) as ToolOpts;
+const createOpts = (defaultOpts: DefaultOpts): ToolOpts => Object.assign(argvOpts, defaultOpts);
 launcher.run({ createOpts });

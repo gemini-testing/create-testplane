@@ -4,7 +4,7 @@ import defaultPluginsConfig from "./pluginsConfig";
 import defaultHermioneConfig from "./constants/defaultHermioneConfig";
 import { handleGeneralQuestions } from "./utils";
 import type { HermioneConfig } from "./types/hermioneConfig";
-import type { HandleGeneralPromptsCallback } from "./utils";
+import type { HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
 
