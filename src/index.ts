@@ -4,9 +4,9 @@ import { getPluginNames } from "./plugins";
 import { baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
 import baseGeneralPrompts from "./constants/baseGeneralPrompts";
 import { ConfigBuilder } from "./configBuilder";
-import { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
-import { HermioneConfig } from "./types/hermioneConfig";
-import { PluginsConfig } from "./types/pluginsConfig";
+import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
+import type { HermioneConfig } from "./types/hermioneConfig";
+import type { PluginsConfig } from "./types/pluginsConfig";
 
 export type CreateOptsCallback = (defaultOpts: DefaultOpts) => ToolOpts;
 export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig) => HermioneConfig;
@@ -62,3 +62,4 @@ export const run = async ({
 };
 
 export default { run };
+export * from "./types";
