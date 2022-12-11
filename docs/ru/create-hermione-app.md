@@ -1,9 +1,8 @@
 # create-hermione-app
 
-Инструмент для быстрого создания и конфигурации проекта, использующего [hermione](https://github.com/gemini-testing/hermione).
-Также может быть использован чтобы добавить [hermione](https://github.com/gemini-testing/hermione) в уже существующий проект.
+Используйте `create-hermione-app`, чтобы быстро и удобно настроить [hermione](https://github.com/gemini-testing/hermione) как в новом, так и в уже существующем проекте.
 
-## Краткий обзор
+## Использование
 
 ```bash
 npx create-hermione-app my-app
@@ -15,42 +14,48 @@ npx create-hermione-app my-app
 npm init hermione-app my-app
 ```
 
+<img src="../assets/usage.gif"/>
+
 Если не указать путь, проект будет развернут в текущей директории.
+
 Если по указанному пути уже имеется проект, инструмент попробует определить используемый пакетный менеджер, и будет использовать его для установки пакетов.
 
-## Режим "по умолчанию"
+### Режим «без вопросов»
 
-Вы можете добавить аргумент `-y` или `--yes` чтобы запустить инструмент в режиме "без вопросов".
-В этом режиме у вас не будут спрашивать о желаемых плагинах и пакетном менеджере.
+Вы можете добавить аргумент `-y` или `--yes` чтобы запустить инструмент в режиме «без вопросов».
+
+В этом режиме у вас не будут спрашивать о желаемых плагинах и пакетном менеджере, будут использоваться настройки по умолчанию.
 
 Пакетный менеджер по умолчанию, используемый с аргументом `--yes`: `npm`
 
 Плагины по умолчанию, устанавливаемые с аргументом `--yes`: 
 - [html-reporter](https://github.com/gemini-testing/html-reporter)
 
-## Список всех предлагаемых плагинов
+## Список предлагаемых плагинов
 
-- [hermione-global-hook](https://github.com/gemini-testing/hermione-global-hook)
-- [hermione-plugins-profiler](https://github.com/gemini-testing/hermione-plugins-profiler)
-- [hermione-retry-progressive](https://github.com/gemini-testing/hermione-retry-progressive)
-- [hermione-test-filter](https://github.com/gemini-testing/hermione-test-filter)
-- [retry-limiter](https://github.com/gemini-testing/retry-limiter)
-- [hermione-headless-chrome](https://github.com/gemini-testing/hermione-headless-chrome)
-- [hermione-profiler](https://github.com/gemini-testing/hermione-profiler)
-- [hermione-safari-commands](https://github.com/gemini-testing/hermione-safari-commands)
-- [hermione-test-repeater](https://github.com/gemini-testing/hermione-test-repeater)
-- [url-decorator](https://github.com/gemini-testing/url-decorator)
-- [hermione-image-minifier](https://github.com/gemini-testing/hermione-image-minifier)
-- [hermione-reassert-view](https://github.com/gemini-testing/hermione-reassert-view)
-- [hermione-storybook](https://github.com/gemini-testing/hermione-storybook)
-- [html-reporter](https://github.com/gemini-testing/html-reporter)
-- [hermione-oauth](https://github.com/gemini-testing/hermione-oauth)
-- [hermione-retry-command](https://github.com/gemini-testing/hermione-retry-command)
-- [hermione-tabs-closer](https://github.com/gemini-testing/hermione-tabs-closer)
+- [Global Hook](https://github.com/gemini-testing/hermione-global-hook) - Чтобы вынести общую логику из своих тестов в специальные обработчики для `beforeEach` и `afterEach` хуков
+- [Plugins Profiler](https://github.com/gemini-testing/hermione-plugins-profiler) - Для профилирования плагинов
+- [Retry Progressive](https://github.com/gemini-testing/hermione-retry-progressive) - Чтобы дополнительно прогонять тесты, если ошибки, с которыми они упали, соответствуют заданному набору шаблонов
+- [Test Filter](https://github.com/gemini-testing/hermione-test-filter) - Чтобы запускать только указанные в `.json` файле тесты в указанных браузерах
+- [Retry Limiter](https://github.com/gemini-testing/retry-limiter) - Чтобы ограничить количество попыток перезапуска и время выполнения тестов
+- [Headless Chrome](https://github.com/gemini-testing/hermione-headless-chrome) - Чтобы добавить и установить браузер chrome в режиме `headless`
+- [Profiler](https://github.com/gemini-testing/hermione-profiler) - Чтобы генерировать отчет о выполненных командах и их производительности
+- [Safari Commands](https://github.com/gemini-testing/hermione-safari-commands) - Чтобы поддержать работу для браузера `safari` на мобильных устройствах
+- [Test Repeater](https://github.com/gemini-testing/hermione-test-repeater) - Чтобы повторять тесты указанное количество раз вне зависимости от результата
+- [Url Decorator](https://github.com/gemini-testing/url-decorator) - Чтобы добавить/заменить параметры запроса в `url` команде
+- [Image Minifier](https://github.com/gemini-testing/hermione-image-minifier) - Чтобы сжимать эталонные изображения в скриншотном тестировании
+- [Reassert View](https://github.com/gemini-testing/hermione-reassert-view) - Чтобы сделать скриншотное тестирование менее строгим
+- [Storybook](https://github.com/gemini-testing/hermione-storybook) - Чтобы писать тесты на `storybook` компонентах и ускорить время их выполнения
+- [Html Reporter](https://github.com/gemini-testing/html-reporter) - Чтобы генерировать отчеты для отображения прошедших/упавших тестах, разницы между скриншотами, ошибкок, мета информации
+- [Oauth](https://github.com/gemini-testing/hermione-oauth) - Чтобы установить заголовок авторизации с OAuth токеном
+- [Retry Command](https://github.com/gemini-testing/hermione-retry-command) - Чтобы повторить снятие скриншота, если сравнение изображений завершилось с ошибкой
+- [Tabs Closer](https://github.com/gemini-testing/hermione-tabs-closer) - Чтобы закрывать открытые вкладки из прошлых тестов, чтобы браузер не деградировал
 
 ## Кастомизация инструмента
 
-`create-hermione-app` может быть настроен под ваши персональные нужды:
+Вы можете создать свой node-js скрипт на основе `create-hermione-app` для разворачивания конфигурации.
+
+Это может понадобиться, к примеру, если у вас есть внутренние плагины для hermione, распространяемые для проектов внутри компании.
 
 ```ts
 import createHermioneApp from "create-hermione-app";
@@ -63,20 +68,23 @@ createHermioneApp.run({
 });
 ```
 
-*Примечание: в `hermioneConfig` можно класть только сериализуемые данные*
+*Примечание: в `hermioneConfig` можно класть только сериализуемые данные*.
 
 ### Параметры
 
 #### createOpts (обязателен)
 
-Консольный интерфейс по умолчанию обрабатывает данный путь и аргумент `--yes`. В этом коллбэке вам необходимо указать как минимум значения `path` и `noQuestions`:
+**Обязательный параметр.**
+
+Консольный интерфейс по умолчанию обрабатывает данный путь и аргумент `--yes`.
+В этом коллбэке вам необходимо указать как минимум значения `path` и `noQuestions`:
 
 ```ts
-import type { DefaultOpts } from "create-hermione-app/types/toolOpts";
+import type { DefaultOpts } from "create-hermione-app";
 
 const argvOpts = {
     path: ".",
-    noQuestions: false
+    noQuestions: true
 };
 
 const createOpts = (defaultOpts: DefaultOpts) => {
@@ -85,14 +93,14 @@ const createOpts = (defaultOpts: DefaultOpts) => {
     return opts;
 };
 ```
-Вы также можете изменить `defaultOpts` Сейчас этот объект имеет ключ `pluginGroups`, по которому определяет, как плагины разбиваются на группы.
+Вы также можете изменить `defaultOpts` Сейчас этот объект имеет ключ `pluginGroups`, по которому `create-hermione-app` определяет, как плагины разбиваются на группы.
 
 #### createBaseConfig
 
 Инструмент создает базовый конфиг гермионы, который затем мутирует. Вы можете изменить этот базовый конфиг:
 
 ```ts
-import type { HermioneConfig } from "create-hermione-app/types/hermioneConfig";
+import type { HermioneConfig } from "create-hermione-app";
 
 const createBaseConfig = (baseConfig: HermioneConfig) => {
     baseConfig.takeScreenshotOnFails = {
@@ -109,7 +117,7 @@ const createBaseConfig = (baseConfig: HermioneConfig) => {
 Вы также можете добавить общих задаваемых вопросов и обработать пользовательские ответы для изменения `hermioneConfig`
 
 ```ts
-import type { GeneralPrompt, HandleGeneralPromptsCallback } from "create-hermione-app/types/toolOpts";
+import type { GeneralPrompt, HandleGeneralPromptsCallback } from "create-hermione-app";
 
 const promptRetries: GeneralPrompt = {
     type: "number",
@@ -145,7 +153,7 @@ const generalPrompts = {
 }
 ```
 
-Если у GeneralPrompt не указать значение по умолчанию, вопрос будет задан даже при `noQuestions: true`
+Если у `GeneralPrompt` не указать значение по умолчанию, вопрос будет задан даже при `noQuestions: true`
 
 #### createPluginsConfig
 
@@ -182,16 +190,16 @@ import type {
     DefaultOpts,
     GeneralPrompt,
     PluginPrompt
-} from "create-hermione-app/types/toolOpts";
+} from "create-hermione-app";
 
 const createOpts = (defaultOpts: DefaultOpts) => {
     const customPluginPrompt: PluginPrompt = {
-        // Имя плагина. Инструмент попытается загрузить его выбранным пакетнм менеджером
+        // Имя плагина. Инструмент попытается загрузить его выбранным пакетным менеджером
         // Суффиксы "/plugin" и "/hermione" будут удалены при загрузке
         plugin: "my-custom-plugin-name",
         // Описание плагина
         description: "Adds some custom feature",
-        // Должен ли плагин быть установлен в режиме "по умолчанию"
+        // Должен ли плагин быть установлен в режиме «по умолчанию»
         default: false,
         // Если плагин требует дополнительной настройки. Опционально
         configNote: "Specify something in hermione config"
@@ -217,11 +225,11 @@ import type { CreatePluginsConfigCallback } from "create-hermione-app";
 
 const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
     pluginsConfig["my-custom-plugin-name"] = (hermioneConfig) => {
-        // Usualy you would want to describe your plugin's default config
+        // В большинстве случаев вам понадобится описать настройки по умолчанию вашего плагина
         hermioneConfig.plugins!["my-custom-plugin-name"] = {
             enabled: true,
         };
-        // But you can also do anything else with hermioneConfig
+        // Но вы также можете сделать с конфигом гермионы что-нибудь еще
         hermioneConfig.browsers["my-custom-browser"] = {
             desiredCapabilities: {
                 browserName: "browserName"

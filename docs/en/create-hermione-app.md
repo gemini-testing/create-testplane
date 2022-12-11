@@ -1,9 +1,8 @@
 # create-hermione-app
 
-A tool for fast creation and configuration [hermione](https://github.com/gemini-testing/hermione) app.
-Can also be used to add [hermione](https://github.com/gemini-testing/hermione) in your existing project.
+Use `create-hermione-app` to set up [hermione](https://github.com/gemini-testing/hermione) quickly and conveniently both in a new and in an existing project.
 
-## Quick Overview
+## Usage
 
 ```bash
 npx create-hermione-app my-app
@@ -15,12 +14,16 @@ or via `npm init`:
 npm init hermione-app my-app
 ```
 
+<img src="../assets/usage.gif"/>
+
 Without specifying the path, project will be created in the current directory.
+
 If you already have a project at given path, the tool will try to guess used package manager.
 
-## Zero questions mode
+### No questions mode
 
 You can add `-y` or `--yes` argument to launch a tool in *no-questions* mode.
+
 In this mode you won't be asked questions about desired plugins and packet manager.
 
 Default packet manager, used with `--yes` argument: `npm`
@@ -28,29 +31,31 @@ Default packet manager, used with `--yes` argument: `npm`
 Default plugins, installed with `--yes` argument: 
 - [html-reporter](https://github.com/gemini-testing/html-reporter)
 
-## List of all proposed plugins
+## List of proposed plugins
 
-- [hermione-global-hook](https://github.com/gemini-testing/hermione-global-hook)
-- [hermione-plugins-profiler](https://github.com/gemini-testing/hermione-plugins-profiler)
-- [hermione-retry-progressive](https://github.com/gemini-testing/hermione-retry-progressive)
-- [hermione-test-filter](https://github.com/gemini-testing/hermione-test-filter)
-- [retry-limiter](https://github.com/gemini-testing/retry-limiter)
-- [hermione-headless-chrome](https://github.com/gemini-testing/hermione-headless-chrome)
-- [hermione-profiler](https://github.com/gemini-testing/hermione-profiler)
-- [hermione-safari-commands](https://github.com/gemini-testing/hermione-safari-commands)
-- [hermione-test-repeater](https://github.com/gemini-testing/hermione-test-repeater)
-- [url-decorator](https://github.com/gemini-testing/url-decorator)
-- [hermione-image-minifier](https://github.com/gemini-testing/hermione-image-minifier)
-- [hermione-reassert-view](https://github.com/gemini-testing/hermione-reassert-view)
-- [hermione-storybook](https://github.com/gemini-testing/hermione-storybook)
-- [html-reporter](https://github.com/gemini-testing/html-reporter)
-- [hermione-oauth](https://github.com/gemini-testing/hermione-oauth)
-- [hermione-retry-command](https://github.com/gemini-testing/hermione-retry-command)
-- [hermione-tabs-closer](https://github.com/gemini-testing/hermione-tabs-closer)
+- [Global Hook](https://github.com/gemini-testing/hermione-global-hook) - To add global 'beforeEach' and 'afterEach' functions
+- [Plugins Profiler](https://github.com/gemini-testing/hermione-plugins-profiler) - To profile plugins performance
+- [Retry Progressive](https://github.com/gemini-testing/hermione-retry-progressive) - To add extra retry if test fails due to infrastructure reasons
+- [Test Filter](https://github.com/gemini-testing/hermione-test-filter) - To run only specified tests in provided browsers
+- [Retry Limiter](https://github.com/gemini-testing/retry-limiter) - To limit retries and duration threshold
+- [Headless Chrome](https://github.com/gemini-testing/hermione-headless-chrome) - To add and install headless chrome browser
+- [Profiler](https://github.com/gemini-testing/hermione-profiler) - To generate report about executed commands and their performance
+- [Safari Commands](https://github.com/gemini-testing/hermione-safari-commands) - To add compatibility for safari mobile
+- [Test Repeater](https://github.com/gemini-testing/hermione-test-repeater) - To repeat tests the specified number of times regardless of the result
+- [Url Decorator](https://github.com/gemini-testing/url-decorator) - To add/replace url query params
+- [Image Minifier](https://github.com/gemini-testing/hermione-image-minifier) - To enable compression for reference images
+- [Reassert View](https://github.com/gemini-testing/hermione-reassert-view) - To make screenshot comparison by assertView less strict
+- [Storybook](https://github.com/gemini-testing/hermione-storybook) - To add ability to write hermione tests on storybook component and speed up their execution
+- [Html Reporter](https://github.com/gemini-testing/html-reporter) - To generate html-reports for showing passed/failed tests, screenshot diffs, error messages, stacktraces, meta-info and so on
+- [Oauth](https://github.com/gemini-testing/hermione-oauth) - To set authorization header with OAuth token
+- [Retry Command](https://github.com/gemini-testing/hermione-retry-command) - To retry assertView on comparison fail
+- [Tabs Closer](https://github.com/gemini-testing/hermione-tabs-closer) - To close opened tabs from previous tests so the browser coudn't degrade
 
 ## Customizing the tool
 
-`create-hermione-app` can be configured to your personal needs:
+You can create your own node-js script based on `create-hermione-app` to deploy the configuration.
+
+This may be necessary, for example, if you have internal hermione plugins distributed for projects within the company.
 
 ```ts
 import createHermioneApp from "create-hermione-app";
@@ -63,20 +68,22 @@ createHermioneApp.run({
 });
 ```
 
-*Note: you are only allowed to put serializable data to hermioneConfig*
+*Note: you are only allowed to put serializable data to hermioneConfig*.
 
 ### Parameters
 
-#### createOpts (required)
+#### createOpts
+
+**Required parameter**
 
 Default tool's CLI handles given path and `--yes` argument. In this callback you need to at least specify `path` and `noQuestions` values:
 
 ```ts
-import type { DefaultOpts } from "create-hermione-app/types/toolOpts";
+import type { DefaultOpts } from "create-hermione-app";
 
 const argvOpts = {
     path: ".",
-    noQuestions: false
+    noQuestions: true
 };
 
 const createOpts = (defaultOpts: DefaultOpts) => {
@@ -93,7 +100,7 @@ You can also change `defaultOpts`. Currently it has `pluginGroups` key to define
 The tool creates a base hermione config, and then mutates it. You can change this base config:
 
 ```ts
-import type { HermioneConfig } from "create-hermione-app/types/hermioneConfig";
+import type { HermioneConfig } from "create-hermione-app";
 
 const createBaseConfig = (baseConfig: HermioneConfig) => {
     baseConfig.takeScreenshotOnFails = {
@@ -110,7 +117,7 @@ const createBaseConfig = (baseConfig: HermioneConfig) => {
 You can add custom questions and handle user answers to mutate `hermioneConfig`
 
 ```ts
-import type { GeneralPrompt, HandleGeneralPromptsCallback } from "create-hermione-app/types/toolOpts";
+import type { GeneralPrompt, HandleGeneralPromptsCallback } from "create-hermione-app";
 
 const promptRetries: GeneralPrompt = {
     type: "number",
@@ -176,14 +183,14 @@ const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
 
 ### Adding custom plugin
 
-Firstly, you need to include your plugin into existing pluginGroup, or create your own:
+Firstly, you need to include your plugin into existing `pluginGroup`, or create your own:
 
 ```ts
 import type {
     DefaultOpts,
     GeneralPrompt,
     PluginPrompt
-} from "create-hermione-app/types/toolOpts";
+} from "create-hermione-app";
 
 const createOpts = (defaultOpts: DefaultOpts) => {
     const customPluginPrompt: PluginPrompt = {
@@ -192,7 +199,7 @@ const createOpts = (defaultOpts: DefaultOpts) => {
         plugin: "my-custom-plugin-name",
         // Plugin description
         description: "Adds some custom feature",
-        // Should it be installed in "zero question" mode
+        // Should it be installed in "no question" mode
         default: false,
         // If the plugin requires additional configuration. Optional
         configNote: "Specify something in hermione config"
