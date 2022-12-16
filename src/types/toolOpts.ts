@@ -1,3 +1,5 @@
+import type { HermioneConfig } from "./hermioneConfig";
+
 export interface PluginPrompt {
     plugin: string;
     description: string;
@@ -18,9 +20,18 @@ export interface GeneralPrompt {
     choices?: any[];
 }
 
-export interface ToolOpts {
+export type HandleGeneralPromptsCallback = (
+    hermioneConfig: HermioneConfig,
+    answers: Record<string, any>,
+) => Promise<HermioneConfig> | HermioneConfig;
+
+export interface ArgvOpts {
     path: string;
     noQuestions: boolean;
-    pluginGroups: PluginGroup[];
-    generalPromts: GeneralPrompt[];
 }
+
+export interface DefaultOpts {
+    pluginGroups: PluginGroup[];
+}
+
+export type ToolOpts = ArgvOpts & DefaultOpts;

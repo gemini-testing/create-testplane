@@ -4,21 +4,11 @@ import { getPluginNames } from "./plugins";
 import { baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
 import baseGeneralPrompts from "./constants/baseGeneralPrompts";
 import { ConfigBuilder } from "./configBuilder";
-import type { HandleGeneralPromptsCallback } from "./utils";
-import type { GeneralPrompt, ToolOpts } from "./types/toolOpts";
-import type { PluginsConfig } from "./types/pluginsConfig";
+import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
 import type { HermioneConfig } from "./types/hermioneConfig";
+import type { PluginsConfig } from "./types/pluginsConfig";
 
-process.on("uncaughtException", err => {
-    console.error(err.stack);
-    process.exit(1);
-});
-
-process.on("unhandledRejection", (reason, p) => {
-    console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
-});
-
-export type CreateOptsCallback = (defaultOpts: Partial<ToolOpts>) => ToolOpts;
+export type CreateOptsCallback = (defaultOpts: DefaultOpts) => ToolOpts;
 export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig) => HermioneConfig;
 export type CreatePluginsConfigCallback = (pluginsConfig: PluginsConfig) => PluginsConfig;
 
@@ -31,6 +21,15 @@ export interface CreateHermioneAppOpts {
     };
     createPluginsConfig?: CreatePluginsConfigCallback;
 }
+
+process.on("uncaughtException", err => {
+    console.error(err.stack);
+    process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, p) => {
+    console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
+});
 
 export const run = async ({
     createBaseConfig,
@@ -63,3 +62,4 @@ export const run = async ({
 };
 
 export default { run };
+export * from "./types";
