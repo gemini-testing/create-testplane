@@ -61,10 +61,12 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (he
                 },
                 browsers: {
                     [browserId]: {
-                        platformName: "Android",
-                        deviceName: "android",
-                        version,
-                        browserName: "chrome",
+                        desiredCapabilities: {
+                            platformName: "Android",
+                            deviceName: "android",
+                            version,
+                            browserName: "chrome",
+                        },
                     },
                 },
             },
