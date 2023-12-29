@@ -16,10 +16,8 @@ export type GetExtraPackagesToInstallCallback = () => { names: string[]; notes: 
 export interface CreateHermioneAppOpts {
     createBaseConfig?: CreateBaseConfigCallback;
     createOpts: CreateOptsCallback;
-    generalPrompts?: {
-        prompts: GeneralPrompt[];
-        handler: HandleGeneralPromptsCallback;
-    };
+    generalPrompts?: GeneralPrompt[];
+    generalPromptsHandler?: HandleGeneralPromptsCallback;
     createPluginsConfig?: CreatePluginsConfigCallback;
     getExtaPackagesToInstall?: GetExtraPackagesToInstallCallback;
     registry?: string;
@@ -35,11 +33,13 @@ process.on("unhandledRejection", (reason, p) => {
 });
 
 export { askQuestion } from "./utils";
+export { baseGeneralPrompts };
 
 export const run = async ({
     createBaseConfig,
     createOpts,
-    generalPrompts,
+    generalPrompts = baseGeneralPrompts,
+    generalPromptsHandler,
     createPluginsConfig,
     getExtaPackagesToInstall,
     registry = "https://registry.npmjs.org",
@@ -49,11 +49,11 @@ export const run = async ({
 
     const packageManager = await initApp(opts.path, opts.noQuestions);
 
-    await configBuilder.handleGeneralQuestions(
-        [baseGeneralPrompts, generalPrompts?.prompts],
-        [baseGeneralPromptsHandler, generalPrompts?.handler],
-        opts.noQuestions,
-    );
+    const generalPromptsHandlers = generalPromptsHandler
+        ? [baseGeneralPromptsHandler, generalPromptsHandler]
+        : [baseGeneralPromptsHandler];
+
+    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts.noQuestions);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
     const extraPackages = getExtaPackagesToInstall ? getExtaPackagesToInstall() : { names: [], notes: [] };
@@ -69,5 +69,5 @@ export const run = async ({
     printSuccessMessage(configNotes.concat(extraPackages.notes));
 };
 
-export default { run, askQuestion };
+export default { run, askQuestion, baseGeneralPrompts };
 export * from "./types";

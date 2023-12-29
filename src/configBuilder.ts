@@ -1,8 +1,9 @@
+import _ from "lodash";
+import inquirer from "inquirer";
 import { configurePlugins } from "./plugins";
 import { writeHermioneConfig } from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
 import defaultHermioneConfig from "./constants/defaultHermioneConfig";
-import { handleGeneralQuestions } from "./utils";
 import type { HermioneConfig } from "./types/hermioneConfig";
 import type { HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
@@ -20,15 +21,28 @@ export class ConfigBuilder {
     }
 
     async handleGeneralQuestions(
-        promts: (GeneralPrompt[] | undefined)[],
-        handler: (HandleGeneralPromptsCallback | undefined)[],
+        promts: GeneralPrompt[],
+        handlers: HandleGeneralPromptsCallback[],
         noQuestions: boolean,
     ): Promise<void> {
-        for (let i = 0; i < handler.length; i++) {
-            if (!promts[i] || !handler[i]) {
-                continue;
+        if (_.isEmpty(promts) || _.isEmpty(handlers)) {
+            return;
+        }
+
+        const defaults = promts.reduce((acc, prompt) => {
+            if (!_.isUndefined(prompt.default)) {
+                _.set(acc, [prompt.name], prompt.default);
             }
-            this._config = await handleGeneralQuestions(promts[i]!, this._config, handler[i]!, noQuestions);
+
+            return acc;
+        }, {});
+
+        const promptsToAsk = noQuestions ? promts.filter(prompt => _.isUndefined(prompt.default)) : promts;
+        const inquirerAnswers = await inquirer.prompt(promptsToAsk);
+        const answers = noQuestions ? { ...defaults, ...inquirerAnswers } : inquirerAnswers;
+
+        for (const handler of handlers) {
+            this._config = await handler(this._config, answers);
         }
     }
 

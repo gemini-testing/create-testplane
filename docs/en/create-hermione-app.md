@@ -64,9 +64,10 @@ createHermioneApp.run({
     createOpts,
     createBaseConfig,
     generalPrompts,
+    generalPromptsHandler,
     createPluginsConfig,
-    registry,
     getExtaPackagesToInstall
+    registry
 });
 ```
 
@@ -116,10 +117,10 @@ const createBaseConfig = (baseConfig: HermioneConfig) => {
 
 #### generalPrompts
 
-You can add custom questions and handle user answers to mutate `hermioneConfig`
+You can remove, add custom questions, handle user answers to mutate `hermioneConfig`
 
 ```ts
-import type { GeneralPrompt, HandleGeneralPromptsCallback } from "create-hermione-app";
+import type { GeneralPrompt, HandleGeneralPromptsCallback, baseGeneralPrompts } from "create-hermione-app";
 
 const promptRetries: GeneralPrompt = {
     type: "number",
@@ -135,7 +136,9 @@ const promptIgnoreFiles: GeneralPrompt = {
     default: null,
 };
 
-const promptHandler: HandleGeneralPromptsCallback = (hermioneConfig, answers) => {
+const generalPrompts = [...baseGeneralPrompts, promptRetries, promptIgnoreFiles];
+
+const generalPromptsHandler: HandleGeneralPromptsCallback = (hermioneConfig, answers) => {
     answers.retry = answers.retryCount;
 
     if (answers.ignoreFiles) {
@@ -147,12 +150,7 @@ const promptHandler: HandleGeneralPromptsCallback = (hermioneConfig, answers) =>
     }
 
     return hermioneConfig;
-}
-
-const generalPrompts = {
-    prompts: [promptRetries, promptIgnoreFiles],
-    handler: promptHandler
-}
+};
 ```
 
 If `GeneralPrompt` does not have `default` value, the question will be asked even with `noQuestions: true`
