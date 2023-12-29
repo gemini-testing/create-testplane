@@ -73,6 +73,7 @@ export const installPackages = async (
     dirPath: string,
     packageManager: PackageManager,
     pluginsToInstall: string[],
+    registry: string
 ): Promise<string> => {
     const spinner = ora("Installing packages").start();
 
@@ -80,7 +81,7 @@ export const installPackages = async (
 
     return new Promise<string>((resolve, reject) => {
         exec(
-            `${packageManager} ${PMS[packageManager].install} hermione ${pluginsPackages}`,
+            `${packageManager} ${PMS[packageManager].install} hermione ${pluginsPackages} --registry "${registry}"`,
             {
                 cwd: dirPath,
                 env: process.env,

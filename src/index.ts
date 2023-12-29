@@ -20,6 +20,7 @@ export interface CreateHermioneAppOpts {
         handler: HandleGeneralPromptsCallback;
     };
     createPluginsConfig?: CreatePluginsConfigCallback;
+    registry?: string;
 }
 
 process.on("uncaughtException", err => {
@@ -36,6 +37,7 @@ export const run = async ({
     createOpts,
     generalPrompts,
     createPluginsConfig,
+    registry = "https://registry.npmjs.org",
 }: CreateHermioneAppOpts): Promise<void> => {
     const configBuilder = ConfigBuilder.create(createBaseConfig);
     const opts = createOpts(defaultToolOpts);
@@ -53,7 +55,7 @@ export const run = async ({
     await configBuilder.configurePlugins(pluginNames, createPluginsConfig);
 
     await Promise.all([
-        installPackages(opts.path, packageManager, pluginNames),
+        installPackages(opts.path, packageManager, pluginNames, registry),
         configBuilder.write(opts.path),
         writeTestExample(opts.path),
     ]);

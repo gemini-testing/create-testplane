@@ -181,6 +181,18 @@ const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
 }
 ```
 
+#### registry
+
+You can also define registry, which will be used to install packages
+
+```ts
+import createHermioneApp from "create-hermione-app";
+
+createHermioneApp.run({
+    registry: "https://registry.npmjs.org", // default value
+});
+```
+
 ### Adding custom plugin
 
 Firstly, you need to include your plugin into existing `pluginGroup`, or create your own:

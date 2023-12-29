@@ -181,6 +181,18 @@ const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
 }
 ```
 
+#### registry
+
+Вы также можете изменить реестр, который будет использован для установки пакетов
+
+```ts
+import createHermioneApp from "create-hermione-app";
+
+createHermioneApp.run({
+    registry: "https://registry.npmjs.org", // Значение по умолчанию
+});
+```
+
 ### Добавление кастомного плагина
 
 Для начала вам необходимо включить свой плагин в существующую группу плагинов, или создать свою:
