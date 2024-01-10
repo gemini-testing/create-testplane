@@ -51,7 +51,7 @@
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-n": "^15.2.5",
         "eslint-plugin-promise": "^6.0.1",
-        "hermione": "^5.6.0",
+        "hermione": "^7.4.1",
         "jest": "^27.5.1",
         "npm-run-all": "^4.1.5",
         "prettier": "^2.7.1",
