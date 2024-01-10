@@ -1,5 +1,6 @@
 export const PACKAGE_JSON = "package.json";
-export const HERMIONE_CONFIG_NAME = ".hermione.conf.js";
+export const HERMIONE_JS_CONFIG_NAME = ".hermione.conf.js";
+export const HERMIONE_TS_CONFIG_NAME = ".hermione.conf.ts";
 
 export const DEFAULT_PM = "npm";
 
@@ -17,7 +18,7 @@ export const PMS: Record<PackageManager, { lock: string; init: string; install: 
         install: "add -D",
     },
     pnpm: {
-        lock: "pnp-lock.yml",
+        lock: "pnpm-lock.yml",
         init: "init",
         install: "add --save-dev",
     },

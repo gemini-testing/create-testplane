@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import yargs from "yargs";
-import _ from "lodash";
 import { hideBin } from "yargs/helpers";
 
 import launcher from "../index";
