@@ -1,7 +1,7 @@
 import defaultToolOpts from "./constants/defaultToolOpts";
 import { initApp, installPackages } from "./package";
 import { getPluginNames } from "./plugins";
-import { baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
+import { askQuestion, baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
 import baseGeneralPrompts from "./constants/baseGeneralPrompts";
 import { ConfigBuilder } from "./configBuilder";
 import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
@@ -31,6 +31,8 @@ process.on("uncaughtException", err => {
 process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
 });
+
+export { askQuestion } from "./utils";
 
 export const run = async ({
     createBaseConfig,
@@ -63,5 +65,5 @@ export const run = async ({
     printSuccessMessage(configNotes);
 };
 
-export default { run };
+export default { run, askQuestion };
 export * from "./types";
