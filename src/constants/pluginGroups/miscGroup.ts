@@ -6,7 +6,6 @@ import {
     HERMIONE_TEST_FILTER,
     URL_DECORATOR,
 } from "../plugins";
-import { HERMIONE_CONFIG_NAME } from "../packageManagement";
 
 const miscGroup: PluginGroup = {
     description: "Misc (storybook addon, OAuth, url query params, test filter, tabs closer, global hooks)",
@@ -27,7 +26,7 @@ const miscGroup: PluginGroup = {
             description: "Only run specified tests in provided browsers",
             plugin: HERMIONE_TEST_FILTER,
             default: false,
-            configNote: `Create hermione-filter.json on the example from "${HERMIONE_TEST_FILTER}" section in "${HERMIONE_CONFIG_NAME}"`,
+            configNote: `Create hermione-filter.json on the example from "${HERMIONE_TEST_FILTER}" section in hermione config`,
         },
         {
             description: "Add global 'beforeEach' and 'afterEach' functions",
