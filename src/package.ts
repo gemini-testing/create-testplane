@@ -87,7 +87,7 @@ export const installPackages = async (
     dirPath: string,
     packageManager: PackageManager,
     pluginsToInstall: string[],
-    registry: string
+    registry: string,
 ): Promise<string> => {
     const spinner = ora("Installing packages").start();
 

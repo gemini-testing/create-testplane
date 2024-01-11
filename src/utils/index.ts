@@ -6,9 +6,8 @@ import { Colors } from "./colors";
 import { pluginSuffixes } from "../constants/packageManagement";
 import fsUtils from "../fsUtils";
 import type { ConfigNote } from "../plugins";
-import type { HermioneConfig } from "../types/hermioneConfig";
 import type { ToolArgv } from "../types/toolArgv";
-import type { ArgvOpts, GeneralPrompt, HandleGeneralPromptsCallback } from "../types/toolOpts";
+import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -41,8 +40,13 @@ export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T
 };
 
 export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (hermioneConfig, answers) => {
-    hermioneConfig.baseUrl = answers.baseUrl;
-    hermioneConfig.gridUrl = answers.gridUrl;
+    if (answers.baseUrl) {
+        hermioneConfig.baseUrl = answers.baseUrl;
+    }
+
+    if (answers.gridUrl) {
+        hermioneConfig.gridUrl = answers.gridUrl;
+    }
 
     if (answers.addChromePhone) {
         const browserId = "chrome-phone";
@@ -75,35 +79,6 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (he
     }
 
     return hermioneConfig;
-};
-
-export const handleGeneralQuestions = async (
-    generalPromts: GeneralPrompt[],
-    hermioneConfig: HermioneConfig,
-    handlePrompts: HandleGeneralPromptsCallback,
-    noQuestions: boolean,
-): Promise<HermioneConfig> => {
-    if (!generalPromts) {
-        return hermioneConfig;
-    }
-
-    const defaults = {};
-
-    if (noQuestions) {
-        generalPromts = generalPromts.filter(prompt => {
-            if (prompt.default !== undefined) {
-                _.set(defaults, prompt.name, prompt.default);
-                return false;
-            }
-            return true;
-        });
-    }
-
-    const answers = await inquirer.prompt(generalPromts);
-
-    Object.assign(answers, defaults);
-
-    return handlePrompts(hermioneConfig, answers);
 };
 
 export const printSuccessMessage = (configNotes: ConfigNote[]): void => {
