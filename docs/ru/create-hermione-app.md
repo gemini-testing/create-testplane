@@ -64,7 +64,9 @@ createHermioneApp.run({
     createOpts,
     createBaseConfig,
     generalPrompts,
-    createPluginsConfig
+    createPluginsConfig,
+    registry,
+    getExtaPackagesToInstall
 });
 ```
 
@@ -190,6 +192,17 @@ import createHermioneApp from "create-hermione-app";
 
 createHermioneApp.run({
     registry: "https://registry.npmjs.org", // Значение по умолчанию
+});
+```
+
+#### getExtaPackagesToInstall
+
+Вы также можете указать дополнительные пакеты, которые будут установлены с `hermione` без всяких условий
+
+```ts
+const getExtaPackagesToInstall: GetExtraPackagesToInstallCallback = () => ({
+    names: ["chai"],
+    notes: []
 });
 ```
 
