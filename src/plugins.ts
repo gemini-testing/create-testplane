@@ -1,5 +1,3 @@
-import type { HermioneConfig } from "./types/hermioneConfig";
-import type { PluginsConfig } from "./types/pluginsConfig";
 import type { ToolOpts } from "./types/toolOpts";
 import { askQuestion, packageNameFromPlugin } from "./utils";
 
@@ -66,16 +64,4 @@ const askPluginNames = async (opts: ToolOpts): Promise<{ pluginNames: string[]; 
 
 export const getPluginNames = async (opts: ToolOpts): Promise<{ pluginNames: string[]; configNotes: ConfigNote[] }> => {
     return opts.noQuestions ? getDefaultPluginNames(opts) : await askPluginNames(opts);
-};
-
-export const configurePlugins = async (
-    hermioneConfig: HermioneConfig,
-    plugins: string[],
-    pluginsConfig: PluginsConfig,
-): Promise<void> => {
-    hermioneConfig.plugins ||= {};
-
-    for (const plugin of plugins) {
-        await pluginsConfig[plugin](hermioneConfig);
-    }
 };

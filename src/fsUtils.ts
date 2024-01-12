@@ -103,7 +103,6 @@ export const writeTest = async (dirPath: string, testName: string, testContent: 
         if (!isTestfileExist) {
             await fs.promises.writeFile(testPath, testContent);
         }
-        ("");
     } catch {
         return;
     }
