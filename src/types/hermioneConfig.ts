@@ -1,7 +1,7 @@
 import type { BrowserConfig, Config } from "hermione";
 
 interface BrowserUserConfig extends Partial<BrowserConfig> {
-    automationProtocol: "webdriver" | "devtools";
+    automationProtocol?: "webdriver" | "devtools";
     desiredCapabilities: {
         browserName: string;
     };
