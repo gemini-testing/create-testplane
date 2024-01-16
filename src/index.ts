@@ -19,7 +19,7 @@ export interface CreateHermioneAppOpts {
     generalPrompts?: GeneralPrompt[];
     generalPromptsHandler?: HandleGeneralPromptsCallback;
     createPluginsConfig?: CreatePluginsConfigCallback;
-    getExtaPackagesToInstall?: GetExtraPackagesToInstallCallback;
+    getExtraPackagesToInstall?: GetExtraPackagesToInstallCallback;
     registry?: string;
 }
 
@@ -41,7 +41,7 @@ export const run = async ({
     generalPrompts = baseGeneralPrompts,
     generalPromptsHandler,
     createPluginsConfig,
-    getExtaPackagesToInstall,
+    getExtraPackagesToInstall,
     registry = "https://registry.npmjs.org",
 }: CreateHermioneAppOpts): Promise<void> => {
     const configBuilder = ConfigBuilder.create(createBaseConfig);
@@ -56,7 +56,7 @@ export const run = async ({
     await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts.noQuestions);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
-    const extraPackages = getExtaPackagesToInstall ? getExtaPackagesToInstall() : { names: [], notes: [] };
+    const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };
 
     await configBuilder.configurePlugins(pluginNames, createPluginsConfig);
 

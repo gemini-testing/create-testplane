@@ -66,7 +66,7 @@ createHermioneApp.run({
     generalPrompts,
     generalPromptsHandler,
     createPluginsConfig,
-    getExtaPackagesToInstall
+    getExtraPackagesToInstall
     registry
 });
 ```
@@ -193,12 +193,12 @@ createHermioneApp.run({
 });
 ```
 
-#### getExtaPackagesToInstall
+#### getExtraPackagesToInstall
 
 Вы также можете указать дополнительные пакеты, которые будут установлены с `hermione` без всяких условий
 
 ```ts
-const getExtaPackagesToInstall: GetExtraPackagesToInstallCallback = () => ({
+const getExtraPackagesToInstall: GetExtraPackagesToInstallCallback = () => ({
     names: ["chai"],
     notes: []
 });
