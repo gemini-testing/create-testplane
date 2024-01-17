@@ -71,7 +71,7 @@ export const writeHermioneConfig = async (
         .map(importName =>
             ts
                 ? `import ${importName} from "${modules[importName]}";`
-                : `const ${importName} = require("${modules[importName]}");`,
+                : `const ${importName} = require('${modules[importName]}');`,
         )
         .join("\n");
 
