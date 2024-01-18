@@ -8,7 +8,7 @@ import {
     HERMIONE_JS_CONFIG_NAME,
     HERMIONE_TS_CONFIG_NAME,
     PMS,
-    PACKAGE_JSON
+    PACKAGE_JSON,
 } from "./constants/packageManagement";
 import { Colors } from "./utils/colors";
 import { askQuestion, packageNameFromPlugin } from "./utils";
@@ -60,7 +60,7 @@ export const initApp = async (dirPath: string, noQuestions: boolean): Promise<Pa
     const isHermioneJsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_JS_CONFIG_NAME));
     const isHermioneTsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_TS_CONFIG_NAME));
     let hermioneExistingConfigName = null;
-    
+
     if (isHermioneJsConfigExist) {
         hermioneExistingConfigName = HERMIONE_JS_CONFIG_NAME;
     } else if (isHermioneTsConfigExist) {

@@ -1,6 +1,5 @@
 import _ from "lodash";
 import inquirer from "inquirer";
-import { configurePlugins } from "./plugins";
 import { writeHermioneConfig } from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
 import defaultHermioneConfig from "./constants/defaultHermioneConfig";
@@ -46,12 +45,14 @@ export class ConfigBuilder {
         }
     }
 
-    async configurePlugins(
-        pluginNames: string[],
-        createPluginsConfig: CreatePluginsConfigCallback | undefined,
-    ): Promise<void> {
+    async configurePlugins(pluginNames: string[], createPluginsConfig?: CreatePluginsConfigCallback): Promise<void> {
         const pluginsConfig = createPluginsConfig ? createPluginsConfig(defaultPluginsConfig) : defaultPluginsConfig;
-        await configurePlugins(this._config, pluginNames, pluginsConfig);
+
+        this._config.plugins ||= {};
+
+        for (const plugin of pluginNames) {
+            await pluginsConfig[plugin](this._config);
+        }
     }
 
     async write(dirPath: string): Promise<void> {
