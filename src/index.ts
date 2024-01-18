@@ -32,7 +32,7 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
 });
 
-export { askQuestion } from "./utils";
+export { askQuestion, defineVariable, addModule, asExpression } from "./utils";
 export { baseGeneralPrompts };
 
 export const run = async ({
