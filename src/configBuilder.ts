@@ -22,7 +22,7 @@ export class ConfigBuilder {
     async handleGeneralQuestions(
         promts: GeneralPrompt[],
         handlers: HandleGeneralPromptsCallback[],
-        noQuestions: boolean,
+        { path, noQuestions }: { path: string; noQuestions: boolean },
     ): Promise<void> {
         if (_.isEmpty(promts) || _.isEmpty(handlers)) {
             return;
@@ -39,6 +39,8 @@ export class ConfigBuilder {
         const promptsToAsk = noQuestions ? promts.filter(prompt => _.isUndefined(prompt.default)) : promts;
         const inquirerAnswers = await inquirer.prompt(promptsToAsk);
         const answers = noQuestions ? { ...defaults, ...inquirerAnswers } : inquirerAnswers;
+
+        answers._path = path;
 
         for (const handler of handlers) {
             this._config = await handler(this._config, answers);

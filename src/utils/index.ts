@@ -8,6 +8,7 @@ import fsUtils from "../fsUtils";
 import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
+import type { HermioneConfig } from "../types";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -121,3 +122,21 @@ describe('test', () => {
 
     await fsUtils.writeTest(dirPath, "example.hermione.js", testExample);
 };
+
+const asString = (str: string): string => `'${str.replace(/'/gi, "\\'")}'`;
+
+type VariableOpts = {
+    name: string;
+    value: string;
+    isExpr?: boolean;
+};
+
+export const defineVariable = (config: HermioneConfig, { name, value, isExpr }: VariableOpts): HermioneConfig => {
+    return _.set(config, ["__variables", name], isExpr ? value : asString(value));
+};
+
+export const addModule = (config: HermioneConfig, variableName: string, moduleName = variableName): HermioneConfig => {
+    return _.set(config, ["__modules", variableName], moduleName);
+};
+
+export const asExpression = (value: string): string => `__expression: ${value}`;

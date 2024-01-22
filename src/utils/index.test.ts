@@ -138,4 +138,34 @@ describe("utils", () => {
 
         expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.js", expect.anything());
     });
+
+    describe("defineVariable", () => {
+        it("should set string variable", () => {
+            const config = {} as HermioneConfig;
+
+            utils.defineVariable(config, { name: "foo", value: "ba'r" });
+
+            expect(config).toStrictEqual({ __variables: { foo: "'ba\\'r'" } });
+        });
+
+        it("should set expr variable", () => {
+            const config = {} as HermioneConfig;
+
+            utils.defineVariable(config, { name: "foo", value: "bar", isExpr: true });
+
+            expect(config).toStrictEqual({ __variables: { foo: "bar" } });
+        });
+    });
+
+    it("addModule", () => {
+        const config = {} as HermioneConfig;
+
+        utils.addModule(config, "foo", "bar");
+
+        expect(config).toStrictEqual({ __modules: { foo: "bar" } });
+    });
+
+    it("asExpression", () => {
+        expect(utils.asExpression("foo")).toBe("__expression: foo");
+    });
 });

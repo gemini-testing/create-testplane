@@ -32,7 +32,7 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
 });
 
-export { askQuestion } from "./utils";
+export { askQuestion, defineVariable, addModule, asExpression } from "./utils";
 export { baseGeneralPrompts };
 
 export const run = async ({
@@ -53,7 +53,7 @@ export const run = async ({
         ? [baseGeneralPromptsHandler, generalPromptsHandler]
         : [baseGeneralPromptsHandler];
 
-    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts.noQuestions);
+    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
     const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };
