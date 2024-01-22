@@ -20,9 +20,13 @@ export interface GeneralPrompt {
     choices?: any[];
 }
 
+export interface Answers extends Record<string, unknown> {
+    _path: string;
+}
+
 export type HandleGeneralPromptsCallback = (
     hermioneConfig: HermioneConfig,
-    answers: Record<string, any>,
+    answers: Answers,
 ) => Promise<HermioneConfig> | HermioneConfig;
 
 export interface ArgvOpts {

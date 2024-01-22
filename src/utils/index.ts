@@ -41,11 +41,11 @@ export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T
 };
 
 export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (hermioneConfig, answers) => {
-    if (answers.baseUrl) {
+    if (_.isString(answers.baseUrl)) {
         hermioneConfig.baseUrl = answers.baseUrl;
     }
 
-    if (answers.gridUrl) {
+    if (_.isString(answers.gridUrl)) {
         hermioneConfig.gridUrl = answers.gridUrl;
     }
 

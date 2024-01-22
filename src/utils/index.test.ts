@@ -90,13 +90,13 @@ describe("utils", () => {
 
     describe("baseGeneralPromptsHandler", () => {
         it("should set baseUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { baseUrl: "foo" });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/", baseUrl: "foo" });
 
             expect(result).toStrictEqual({ baseUrl: "foo" });
         });
 
         it("should set gridUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { gridUrl: "foo" });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/", gridUrl: "foo" });
 
             expect(result).toStrictEqual({ gridUrl: "foo" });
         });
@@ -104,7 +104,10 @@ describe("utils", () => {
         it("should add addChromePhone", async () => {
             inquirer.prompt = jest.fn().mockResolvedValue({ key: "phone-67.1" }) as unknown as PromptModule;
 
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { addChromePhone: true });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+                _path: "/",
+                addChromePhone: true,
+            });
 
             expect(result).toStrictEqual({
                 browsers: {
@@ -127,7 +130,7 @@ describe("utils", () => {
         });
 
         it("should do nothing if no answers given", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {});
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/" });
 
             expect(result).toStrictEqual({});
         });
