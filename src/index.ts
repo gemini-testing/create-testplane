@@ -53,7 +53,7 @@ export const run = async ({
         ? [baseGeneralPromptsHandler, generalPromptsHandler]
         : [baseGeneralPromptsHandler];
 
-    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts.noQuestions);
+    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
     const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };

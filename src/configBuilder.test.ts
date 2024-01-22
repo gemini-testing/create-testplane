@@ -44,13 +44,16 @@ describe("configBuilder", () => {
 
         describe("should do nothing if", () => {
             it("prompts are empty", () => {
-                configBuilder.handleGeneralQuestions([], [jest.fn()], false);
+                configBuilder.handleGeneralQuestions([], [jest.fn()], { path: "/", noQuestions: false });
 
                 expectConfig(defaultHermioneConfig);
             });
 
             it("handlers are empty", () => {
-                configBuilder.handleGeneralQuestions([{ message: "foo", type: "input", name: "bar" }], [], false);
+                configBuilder.handleGeneralQuestions([{ message: "foo", type: "input", name: "bar" }], [], {
+                    path: "/",
+                    noQuestions: false,
+                });
 
                 expectConfig(defaultHermioneConfig);
             });
@@ -64,7 +67,7 @@ describe("configBuilder", () => {
                     { message: "second silent question", type: "input", name: "3", default: "42" },
                 ],
                 [jest.fn()],
-                true,
+                { path: "/", noQuestions: true },
             );
 
             expect(inquirer.prompt).toBeCalledWith([{ message: "loud question", type: "input", name: "2" }]);
@@ -85,7 +88,10 @@ describe("configBuilder", () => {
 
             when(inquirer.prompt).calledWith(questions).mockResolvedValue(answers);
 
-            configBuilder.handleGeneralQuestions(questions, [firstHandler, secondHandler], false);
+            configBuilder.handleGeneralQuestions(questions, [firstHandler, secondHandler], {
+                path: "/",
+                noQuestions: false,
+            });
         });
     });
 
