@@ -8,7 +8,8 @@ import fsUtils from "../fsUtils";
 import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
-import type { HermioneConfig } from "../types";
+import type { HermioneConfig, Language } from "../types";
+import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -16,11 +17,11 @@ export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
         argv["_"] = ["."];
     }
 
-    const opts = {
+    return {
         path: path.resolve(process.cwd(), argv["_"][0]),
-        noQuestions: !!argv.yes,
+        language: argv.lang === "js" ? "js" : "ts",
+        noQuestions: Boolean(argv.yes),
     };
-    return opts;
 };
 
 export const packageNameFromPlugin = (plugin: string): string => {
@@ -107,23 +108,25 @@ Inside that directory, you can run:
     }
 };
 
-export const writeTestExample = async (dirPath: string): Promise<void> => {
+export const writeTestExample = async (dirPath: string, ext: Language): Promise<void> => {
     const testExample = `
-describe('test', () => {
-    it('example', async ({browser}) => {
-        await browser.url('https://github.com/gemini-testing/hermione');
+describe("test", () => {
+    it("example", async ({browser}) => {
+        await browser.url("https://github.com/gemini-testing/hermione");
 
-        const aboutElem = browser.$('.f4.my-3');
-        const aboutText = await aboutElem.getText();
-        console.log(aboutText); // Browser test runner based on mocha and wdio
+        await expect(browser.$(".f4.my-3")).toHaveText("Browser test runner based on mocha and wdio");
     });
 });
 `;
 
-    await fsUtils.writeTest(dirPath, "example.hermione.js", testExample);
+    await fsUtils.writeTest(dirPath, `example.hermione.${ext}`, testExample);
 };
 
-const asString = (str: string): string => `'${str.replace(/'/gi, "\\'")}'`;
+const asString = (str: string, quote: string): string => {
+    const escapedString = str.replace(new RegExp(quote, "gi"), `\\${quote}`);
+
+    return quote + escapedString + quote;
+};
 
 type VariableOpts = {
     name: string;
@@ -132,7 +135,9 @@ type VariableOpts = {
 };
 
 export const defineVariable = (config: HermioneConfig, { name, value, isExpr }: VariableOpts): HermioneConfig => {
-    return _.set(config, ["__variables", name], isExpr ? value : asString(value));
+    const quote = config.__language === "ts" ? '"' : "'";
+
+    return _.set(config, ["__variables", name], isExpr ? value : asString(value, quote));
 };
 
 export const addModule = (config: HermioneConfig, variableName: string, moduleName = variableName): HermioneConfig => {
@@ -140,3 +145,12 @@ export const addModule = (config: HermioneConfig, variableName: string, moduleNa
 };
 
 export const asExpression = (value: string): string => `__expression: ${value}`;
+
+export const extendWithTypescript = async (packageNamesToInstall: string[], appPath: string): Promise<void> => {
+    packageNamesToInstall.push("ts-node");
+
+    const hermioneTsConfigPath = path.join(appPath, defaultHermioneTestsDir, "tsconfig.json");
+    const defaultHermioneTsConfig = _.set({}, ["compilerOptions", "types"], ["hermione"]);
+
+    await fsUtils.writeJson(hermioneTsConfigPath, defaultHermioneTsConfig);
+};

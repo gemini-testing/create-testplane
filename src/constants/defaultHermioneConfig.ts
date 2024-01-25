@@ -1,5 +1,7 @@
 import type { HermioneConfig } from "../types/hermioneConfig";
 
+export const defaultHermioneTestsDir = "hermione-tests";
+
 const defaultHermioneConfig: HermioneConfig = {
     gridUrl: "http://localhost:4444/wd/hub",
     baseUrl: "http://localhost",
@@ -11,7 +13,7 @@ const defaultHermioneConfig: HermioneConfig = {
 
     sets: {
         desktop: {
-            files: ["tests/**/*.hermione.js"],
+            files: [`${defaultHermioneTestsDir}/**/*.hermione.(t|j)s`],
             browsers: ["chrome"],
         },
     },

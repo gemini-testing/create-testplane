@@ -2,21 +2,28 @@ import _ from "lodash";
 import inquirer from "inquirer";
 import { writeHermioneConfig } from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
+import defaultToolOpts from "./constants/defaultToolOpts";
 import defaultHermioneConfig from "./constants/defaultHermioneConfig";
-import type { HermioneConfig } from "./types/hermioneConfig";
+import type { HermioneConfig, Language } from "./types/hermioneConfig";
 import type { HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
 
 export class ConfigBuilder {
-    static create(createBaseConfig?: CreateBaseConfigCallback): ConfigBuilder {
-        return new this(createBaseConfig);
+    static create(createBaseConfig?: CreateBaseConfigCallback, opts?: { language: Language }): ConfigBuilder {
+        return new this(createBaseConfig, opts);
     }
 
     private _config: HermioneConfig;
+    private _language: Language;
 
-    constructor(createBaseConfig?: CreateBaseConfigCallback) {
-        this._config = createBaseConfig ? createBaseConfig(defaultHermioneConfig) : defaultHermioneConfig;
+    constructor(createBaseConfig?: CreateBaseConfigCallback, opts?: { language: Language }) {
+        this._language = opts?.language || defaultToolOpts.language;
+        this._config = createBaseConfig
+            ? createBaseConfig(defaultHermioneConfig, this._language)
+            : defaultHermioneConfig;
+
+        this._config.__language = this._language;
     }
 
     async handleGeneralQuestions(
@@ -41,6 +48,7 @@ export class ConfigBuilder {
         const answers = noQuestions ? { ...defaults, ...inquirerAnswers } : inquirerAnswers;
 
         answers._path = path;
+        answers._language = this._language;
 
         for (const handler of handlers) {
             this._config = await handler(this._config, answers);

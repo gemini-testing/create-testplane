@@ -29,11 +29,11 @@ describe("configBuilder", () => {
 
         it("should use returned callback value, if specified", () => {
             const cb = jest.fn();
-            when(cb).calledWith(defaultHermioneConfig).mockReturnValue({ foo: "bar" });
+            when(cb).calledWith(defaultHermioneConfig, "ts").mockReturnValue({ foo: "bar" });
 
-            configBuilder = new ConfigBuilder(cb);
+            configBuilder = new ConfigBuilder(cb, { language: "ts" });
 
-            expectConfig({ foo: "bar" });
+            expectConfig({ __language: "ts", foo: "bar" });
         });
     });
 

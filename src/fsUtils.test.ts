@@ -8,7 +8,7 @@ const readFixtureConfigSync = (configName: string): string =>
     readFileSync(`./__fixtures/config/${configName}.js`, { encoding: "utf-8" });
 
 const configs = {
-    defaultConfig: readFixtureConfigSync("defaultConfig"),
+    jsConfig: readFixtureConfigSync("jsConfig"),
     withComments: readFixtureConfigSync("withComments"),
     withExpressions: readFixtureConfigSync("withExpressions"),
     withModules: readFixtureConfigSync("withModules"),
@@ -28,18 +28,16 @@ jest.mock("fs", () => ({
 
 describe("fsUtils", () => {
     describe("writeHermioneConfig", () => {
-        const expectConfig = async (
-            config: HermioneConfig,
-            expectedConfigWritten: string,
-            ext = "js",
-        ): Promise<void> => {
-            await fsUtils.writeHermioneConfig("/", config, { ts: ext === "ts" });
+        const expectConfig = async (config: HermioneConfig, expectedConfigWritten: string): Promise<void> => {
+            const ext = _.get(config, "__language", "js");
+
+            await fsUtils.writeHermioneConfig("/", config);
 
             expect(fsPromises.writeFile).toBeCalledWith(`/.hermione.conf.${ext}`, expectedConfigWritten);
         };
 
-        it("default config", async () => {
-            await expectConfig(defaultHermioneConfig, configs["defaultConfig"]);
+        it("js config", async () => {
+            await expectConfig(defaultHermioneConfig, configs["jsConfig"]);
         });
 
         it("with comments", async () => {
@@ -89,6 +87,7 @@ describe("fsUtils", () => {
 
         it("with typescript", async () => {
             const withTypescriptConfig = {
+                __language: "ts",
                 __modules: {
                     os: "os",
                     path: "path",
@@ -96,12 +95,13 @@ describe("fsUtils", () => {
                 },
             } as unknown as HermioneConfig;
 
-            await expectConfig(withTypescriptConfig, configs["withTypescript"], "ts");
+            await expectConfig(withTypescriptConfig, configs["withTypescript"]);
         });
 
         it("with everything", async () => {
             const withEverythingConfig = {
                 ...defaultHermioneConfig,
+                __language: "ts",
                 __modules: {
                     os: "os",
                     path: "path",
@@ -114,12 +114,12 @@ describe("fsUtils", () => {
             _.set(withEverythingConfig, ["plugins", "hermione-oauth"], {
                 __comment: "some info",
                 enabled: "__expression: isCi",
-                token: "__expression: path.join(os.homedir(), '.config', 'tokens', 'token')",
+                token: '__expression: path.join(os.homedir(), ".config", "tokens", "token")',
             });
             withEverythingConfig;
             withEverythingConfig.plugins ||= {};
 
-            await expectConfig(withEverythingConfig, configs["withEverything"], "ts");
+            await expectConfig(withEverythingConfig, configs["withEverything"]);
         });
     });
 });

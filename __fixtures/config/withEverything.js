@@ -5,8 +5,8 @@ const isCi = Boolean(process.env.CI);
 
 // @ts-ignore
 export = {
-    gridUrl: 'http://localhost:4444/wd/hub',
-    baseUrl: 'http://localhost',
+    gridUrl: "http://localhost:4444/wd/hub",
+    baseUrl: "http://localhost",
     pageLoadTimeout: 0,
     httpTimeout: 60000,
     testTimeout: 90000,
@@ -14,27 +14,27 @@ export = {
     sets: {
         desktop: {
             files: [
-                'tests/**/*.hermione.js'
+                "hermione-tests/**/*.hermione.(t|j)s"
             ],
             browsers: [
-                'chrome'
+                "chrome"
             ]
         }
     },
     browsers: {
         chrome: {
-            automationProtocol: 'devtools',
+            automationProtocol: "devtools",
             headless: true,
             desiredCapabilities: {
-                browserName: 'chrome'
+                browserName: "chrome"
             }
         }
     },
     plugins: {
-        'hermione-oauth': {
+        "hermione-oauth": {
             // some info
             enabled: isCi,
-            token: path.join(os.homedir(), '.config', 'tokens', 'token')
+            token: path.join(os.homedir(), ".config", "tokens", "token")
         }
     }
 }

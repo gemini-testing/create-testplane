@@ -1,6 +1,6 @@
 import _ from "lodash";
 import fs from "fs";
-import { resolve as pathResolve } from "path";
+import path from "path";
 import { HERMIONE_JS_CONFIG_NAME, HERMIONE_TS_CONFIG_NAME } from "./constants/packageManagement";
 import type { HermioneConfig } from "./types/hermioneConfig";
 
@@ -31,15 +31,12 @@ export const ensureDirectory = async (path: string): Promise<string | void> => {
     }
 };
 
-export const writeHermioneConfig = async (
-    dirPath: string,
-    hermioneConfig: HermioneConfig,
-    { ts }: { ts?: boolean } = {},
-): Promise<void> => {
+export const writeHermioneConfig = async (dirPath: string, hermioneConfig: HermioneConfig): Promise<void> => {
+    const language = hermioneConfig.__language!;
     const modules = hermioneConfig.__modules || {};
     const variables = hermioneConfig.__variables || {};
 
-    const omittedConfig = _.omit(hermioneConfig, ["__modules", "__variables"]);
+    const omittedConfig = _.omit(hermioneConfig, ["__modules", "__variables", "__language"]);
 
     const toIndentedJson = (config: HermioneConfig): string => JSON.stringify(config, null, 4);
 
@@ -52,24 +49,37 @@ export const writeHermioneConfig = async (
 
     const withReplacedQuotes = (configStr: string): string => {
         // removes double quotes from obj's keys where they are not needed
+        const withoutExtraQuotesConfigStr = configStr.replace(/^[\t ]*"[^:\n\r/-]+(?<!\\)":/gm, match =>
+            match.replace(/"/g, ""),
+        );
+
+        if (language === "ts") {
+            return withoutExtraQuotesConfigStr;
+        }
+
         // replaces double quotes with single quotes
         // unescapes and restores double quotes in comments
-        return configStr
-            .replace(/^[\t ]*"[^:\n\r/-]+(?<!\\)":/gm, match => match.replace(/"/g, ""))
+        return withoutExtraQuotesConfigStr
             .replace(/"/g, "'")
             .replace(/[\t ]*\/\/ (.*)/g, match => match.replace(/\\'/g, '"'));
     };
 
     const withExpressions = (configStr: string): string => {
+        const quote = language === "ts" ? '"' : "'";
+        const expressionRegExp = new RegExp(`${quote}__expression: (.*)${quote}(,?)$`, "gm");
+
+        // unescapes and restores double quotes in expressions
+        const withRestoredQuotesConfigStr = configStr.replace(expressionRegExp, match => match.replace(/\\"/g, '"'));
+
         // strings like '__expression: <expression>' are turned into <expression>
-        return configStr.replace(/'__expression: (.*)'(,?)$/gm, "$1$2");
+        return withRestoredQuotesConfigStr.replace(expressionRegExp, "$1$2");
     };
 
     const getObjectRepr = _.flow([toIndentedJson, withComments, withReplacedQuotes, withExpressions]);
 
     const configImports = Object.keys(modules)
         .map(importName =>
-            ts
+            language === "ts"
                 ? `import ${importName} from "${modules[importName]}";`
                 : `const ${importName} = require('${modules[importName]}');`,
         )
@@ -79,12 +89,14 @@ export const writeHermioneConfig = async (
         .map(variable => `const ${variable} = ${variables[variable]};`)
         .join("\n");
 
-    const configBody = ts
-        ? `// @ts-ignore\nexport = ${getObjectRepr(omittedConfig)}\n`
-        : `module.exports = ${getObjectRepr(omittedConfig)}\n`;
+    const configBody =
+        language === "ts"
+            ? `// @ts-ignore\nexport = ${getObjectRepr(omittedConfig)}\n`
+            : `module.exports = ${getObjectRepr(omittedConfig)}\n`;
 
     const configContents = [configImports, configVariables, configBody].filter(Boolean).join("\n\n");
-    const configPath = pathResolve(dirPath, ts ? HERMIONE_TS_CONFIG_NAME : HERMIONE_JS_CONFIG_NAME);
+    const configFileName = language === "ts" ? HERMIONE_TS_CONFIG_NAME : HERMIONE_JS_CONFIG_NAME;
+    const configPath = path.resolve(dirPath, configFileName);
 
     await ensureDirectory(dirPath);
 
@@ -92,8 +104,8 @@ export const writeHermioneConfig = async (
 };
 
 export const writeTest = async (dirPath: string, testName: string, testContent: string): Promise<void> => {
-    const testDirPath = pathResolve(dirPath, "tests");
-    const testPath = pathResolve(testDirPath, testName);
+    const testDirPath = path.resolve(dirPath, "hermione-tests");
+    const testPath = path.resolve(testDirPath, testName);
 
     try {
         await ensureDirectory(testDirPath);
@@ -108,4 +120,10 @@ export const writeTest = async (dirPath: string, testName: string, testContent: 
     }
 };
 
-export default { exists, ensureDirectory, writeHermioneConfig, writeTest };
+export const writeJson = async (filePath: string, obj: Record<string, unknown>): Promise<void> => {
+    await ensureDirectory(path.dirname(filePath));
+
+    return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4));
+};
+
+export default { exists, ensureDirectory, writeHermioneConfig, writeTest, writeJson };

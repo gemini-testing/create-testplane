@@ -1,15 +1,21 @@
 import defaultToolOpts from "./constants/defaultToolOpts";
 import { initApp, installPackages } from "./package";
-import { askQuestion, baseGeneralPromptsHandler, printSuccessMessage, writeTestExample } from "./utils";
+import {
+    askQuestion,
+    baseGeneralPromptsHandler,
+    extendWithTypescript,
+    printSuccessMessage,
+    writeTestExample,
+} from "./utils";
 import { ConfigNote, getPluginNames } from "./plugins";
 import baseGeneralPrompts from "./constants/baseGeneralPrompts";
 import { ConfigBuilder } from "./configBuilder";
 import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
-import type { HermioneConfig } from "./types/hermioneConfig";
+import type { HermioneConfig, Language } from "./types/hermioneConfig";
 import type { PluginsConfig } from "./types/pluginsConfig";
 
 export type CreateOptsCallback = (defaultOpts: DefaultOpts) => ToolOpts;
-export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig) => HermioneConfig;
+export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig, language: Language) => HermioneConfig;
 export type CreatePluginsConfigCallback = (pluginsConfig: PluginsConfig) => PluginsConfig;
 export type GetExtraPackagesToInstallCallback = () => { names: string[]; notes: ConfigNote[] };
 
@@ -34,6 +40,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 export { askQuestion, defineVariable, addModule, asExpression } from "./utils";
 export { baseGeneralPrompts };
+export { defaultHermioneTestsDir } from "./constants/defaultHermioneConfig";
 
 export const run = async ({
     createBaseConfig,
@@ -44,8 +51,8 @@ export const run = async ({
     getExtraPackagesToInstall,
     registry = "https://registry.npmjs.org",
 }: CreateHermioneAppOpts): Promise<void> => {
-    const configBuilder = ConfigBuilder.create(createBaseConfig);
     const opts = createOpts(defaultToolOpts);
+    const configBuilder = ConfigBuilder.create(createBaseConfig, { language: opts.language });
 
     const packageManager = await initApp(opts.path, opts.noQuestions);
 
@@ -60,10 +67,16 @@ export const run = async ({
 
     await configBuilder.configurePlugins(pluginNames, createPluginsConfig);
 
+    const packageNamesToInstall = pluginNames.concat(extraPackages.names);
+
+    if (opts.language === "ts") {
+        extendWithTypescript(packageNamesToInstall, opts.path);
+    }
+
     await Promise.all([
-        installPackages(opts.path, packageManager, pluginNames.concat(extraPackages.names), registry),
+        installPackages(opts.path, packageManager, packageNamesToInstall, registry),
         configBuilder.write(opts.path),
-        writeTestExample(opts.path),
+        writeTestExample(opts.path, opts.language),
     ]);
 
     printSuccessMessage(configNotes.concat(extraPackages.notes));
