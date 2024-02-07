@@ -5,4 +5,4 @@ module.exports = {
     array: [
         Boolean(100 + 500 * 1)
     ]
-}
+};

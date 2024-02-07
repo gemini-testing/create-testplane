@@ -1,4 +1,4 @@
-import type { HermioneConfig } from "./hermioneConfig";
+import type { HermioneConfig, Language } from "./hermioneConfig";
 
 export interface PluginPrompt {
     plugin: string;
@@ -31,10 +31,12 @@ export type HandleGeneralPromptsCallback = (
 
 export interface ArgvOpts {
     path: string;
+    language: Language;
     noQuestions: boolean;
 }
 
 export interface DefaultOpts {
+    language: Language;
     pluginGroups: PluginGroup[];
 }
 

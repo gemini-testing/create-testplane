@@ -10,6 +10,13 @@ import { DefaultOpts, ToolOpts } from "../types/toolOpts";
 
 const argv = yargs(hideBin(process.argv))
     .usage("Usage: $0 <path>")
+    .option("lang", {
+        alias: "l",
+        type: "string",
+        default: "ts",
+        description: "Language, which will be used to write hermione tests",
+        choices: ["ts", "js"],
+    })
     .option("yes", {
         alias: "y",
         type: "boolean",

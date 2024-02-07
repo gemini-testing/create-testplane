@@ -1,7 +1,7 @@
 import inquirer, { type PromptModule } from "inquirer";
 import * as utils from "./index";
 import fsUtils from "../fsUtils";
-import type { HermioneConfig } from "../types/hermioneConfig";
+import type { HermioneConfig, Language } from "../types/hermioneConfig";
 
 jest.mock("inquirer");
 
@@ -23,6 +23,7 @@ describe("utils", () => {
             utils.optsFromArgv({
                 _: [],
                 $0: "",
+                lang: "ts",
             });
 
             expect(console.info).toBeCalledWith("Initializing project in /cwd");
@@ -32,6 +33,7 @@ describe("utils", () => {
             const result = utils.optsFromArgv({
                 _: [""],
                 $0: "",
+                lang: "ts",
             });
 
             expect(result.path).toBe("/cwd");
@@ -41,6 +43,7 @@ describe("utils", () => {
             const result = utils.optsFromArgv({
                 _: ["some folder"],
                 $0: "",
+                lang: "ts",
             });
 
             expect(result.path).toBe("/cwd/some folder");
@@ -52,10 +55,29 @@ describe("utils", () => {
                     const result = utils.optsFromArgv({
                         _: ["some folder"],
                         $0: "",
+                        lang: "ts",
                         yes: state,
                     });
 
                     expect(result.noQuestions).toBe(Boolean(state));
+                });
+            });
+        });
+
+        describe("language", () => {
+            [
+                { caseName: "ts, by default", passedValue: undefined, expectedValue: "ts" },
+                { caseName: "ts, if specified", passedValue: "ts", expectedValue: "ts" },
+                { caseName: "js, if specified", passedValue: "js", expectedValue: "js" },
+            ].forEach(({ caseName, passedValue, expectedValue }) => {
+                it(`should be ${caseName}`, () => {
+                    const result = utils.optsFromArgv({
+                        _: ["some folder"],
+                        $0: "",
+                        lang: passedValue as Language,
+                    });
+
+                    expect(result.language).toBe(expectedValue);
                 });
             });
         });
@@ -136,10 +158,18 @@ describe("utils", () => {
         });
     });
 
-    it("writeTestExample", async () => {
-        await utils.writeTestExample("/foo");
+    describe("writeTestExample", () => {
+        it("with js", async () => {
+            await utils.writeTestExample("/foo", "js");
 
-        expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.js", expect.anything());
+            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.js", expect.anything());
+        });
+
+        it("with ts", async () => {
+            await utils.writeTestExample("/foo", "ts");
+
+            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.ts", expect.anything());
+        });
     });
 
     describe("defineVariable", () => {

@@ -6,4 +6,4 @@ module.exports = {
         'some stirng',
         // another comment
     ]
-}
+};

@@ -103,9 +103,9 @@ You can also change `defaultOpts`. Currently it has `pluginGroups` key to define
 The tool creates a base hermione config, and then mutates it. You can change this base config:
 
 ```ts
-import type { HermioneConfig } from "create-hermione-app";
+import type { HermioneConfig, CreateBaseConfigOpts } from "create-hermione-app";
 
-const createBaseConfig = (baseConfig: HermioneConfig) => {
+const createBaseConfig = (baseConfig: HermioneConfig, opts: CreateBaseConfigOpts) => {
     baseConfig.takeScreenshotOnFails = {
         testFail: true,
         assertViewFail: false

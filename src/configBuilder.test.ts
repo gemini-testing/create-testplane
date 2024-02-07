@@ -17,7 +17,10 @@ describe("configBuilder", () => {
     const expectConfig = (expectedConfig: Record<string, any>): void => {
         configBuilder.write("");
 
-        expect(fsUtils.writeHermioneConfig).toBeCalledWith("", expectedConfig);
+        expect(fsUtils.writeHermioneConfig).toBeCalledWith("", {
+            __template: expect.anything(),
+            ...expectedConfig,
+        });
     };
 
     describe("constructor", () => {
@@ -29,9 +32,9 @@ describe("configBuilder", () => {
 
         it("should use returned callback value, if specified", () => {
             const cb = jest.fn();
-            when(cb).calledWith(defaultHermioneConfig).mockReturnValue({ foo: "bar" });
+            when(cb).calledWith(defaultHermioneConfig, { language: "ts" }).mockReturnValue({ foo: "bar" });
 
-            configBuilder = new ConfigBuilder(cb);
+            configBuilder = new ConfigBuilder(cb, { language: "ts" });
 
             expectConfig({ foo: "bar" });
         });

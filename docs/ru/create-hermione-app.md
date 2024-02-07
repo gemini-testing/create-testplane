@@ -103,9 +103,9 @@ const createOpts = (defaultOpts: DefaultOpts) => {
 Инструмент создает базовый конфиг гермионы, который затем мутирует. Вы можете изменить этот базовый конфиг:
 
 ```ts
-import type { HermioneConfig } from "create-hermione-app";
+import type { HermioneConfig, CreateBaseConfigOpts } from "create-hermione-app";
 
-const createBaseConfig = (baseConfig: HermioneConfig) => {
+const createBaseConfig = (baseConfig: HermioneConfig, opts: CreateBaseConfigOpts) => {
     baseConfig.takeScreenshotOnFails = {
         testFail: true,
         assertViewFail: false
