@@ -8,6 +8,7 @@ import type { HermioneConfig, Language } from "./types/hermioneConfig";
 import type { HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
+import { getTemplate } from "./utils/configTemplates";
 
 export class ConfigBuilder {
     static create(createBaseConfig?: CreateBaseConfigCallback, opts?: { language: Language }): ConfigBuilder {
@@ -15,15 +16,14 @@ export class ConfigBuilder {
     }
 
     private _config: HermioneConfig;
-    private _language: Language;
 
-    constructor(createBaseConfig?: CreateBaseConfigCallback, opts?: { language: Language }) {
-        this._language = opts?.language || defaultToolOpts.language;
-        this._config = createBaseConfig
-            ? createBaseConfig(defaultHermioneConfig, this._language)
-            : defaultHermioneConfig;
+    constructor(
+        createBaseConfig?: CreateBaseConfigCallback,
+        opts: { language: Language } = { language: defaultToolOpts.language },
+    ) {
+        this._config = createBaseConfig ? createBaseConfig(defaultHermioneConfig, opts) : defaultHermioneConfig;
 
-        this._config.__language = this._language;
+        this._config.__template = getTemplate(opts.language);
     }
 
     async handleGeneralQuestions(
@@ -48,7 +48,7 @@ export class ConfigBuilder {
         const answers = noQuestions ? { ...defaults, ...inquirerAnswers } : inquirerAnswers;
 
         answers._path = path;
-        answers._language = this._language;
+        answers._language = this._config.__template!.language;
 
         for (const handler of handlers) {
             this._config = await handler(this._config, answers);

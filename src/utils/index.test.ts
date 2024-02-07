@@ -66,10 +66,10 @@ describe("utils", () => {
 
         describe("language", () => {
             [
-                { caseName: "ts, by default", passedValue: undefined, processedValue: "ts" },
-                { caseName: "ts, if specified", passedValue: "ts", processedValue: "ts" },
-                { caseName: "js, if specified", passedValue: "js", processedValue: "js" },
-            ].forEach(({ caseName, passedValue, processedValue }) => {
+                { caseName: "ts, by default", passedValue: undefined, expectedValue: "ts" },
+                { caseName: "ts, if specified", passedValue: "ts", expectedValue: "ts" },
+                { caseName: "js, if specified", passedValue: "js", expectedValue: "js" },
+            ].forEach(({ caseName, passedValue, expectedValue }) => {
                 it(`should be ${caseName}`, () => {
                     const result = utils.optsFromArgv({
                         _: ["some folder"],
@@ -77,7 +77,7 @@ describe("utils", () => {
                         lang: passedValue as Language,
                     });
 
-                    expect(result.language).toBe(processedValue);
+                    expect(result.language).toBe(expectedValue);
                 });
             });
         });

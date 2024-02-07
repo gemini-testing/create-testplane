@@ -14,8 +14,13 @@ import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts
 import type { HermioneConfig, Language } from "./types/hermioneConfig";
 import type { PluginsConfig } from "./types/pluginsConfig";
 
+export type CreateBaseConfigOpts = { language: Language };
+
 export type CreateOptsCallback = (defaultOpts: DefaultOpts) => ToolOpts;
-export type CreateBaseConfigCallback = (defaultHermioneConfig: HermioneConfig, language: Language) => HermioneConfig;
+export type CreateBaseConfigCallback = (
+    defaultHermioneConfig: HermioneConfig,
+    opts: CreateBaseConfigOpts,
+) => HermioneConfig;
 export type CreatePluginsConfigCallback = (pluginsConfig: PluginsConfig) => PluginsConfig;
 export type GetExtraPackagesToInstallCallback = () => { names: string[]; notes: ConfigNote[] };
 

@@ -1,7 +1,6 @@
 import _ from "lodash";
 import fs from "fs";
 import path from "path";
-import { HERMIONE_JS_CONFIG_NAME, HERMIONE_TS_CONFIG_NAME } from "./constants/packageManagement";
 import type { HermioneConfig } from "./types/hermioneConfig";
 
 const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
@@ -32,11 +31,11 @@ export const ensureDirectory = async (path: string): Promise<string | void> => {
 };
 
 export const writeHermioneConfig = async (dirPath: string, hermioneConfig: HermioneConfig): Promise<void> => {
-    const language = hermioneConfig.__language!;
     const modules = hermioneConfig.__modules || {};
     const variables = hermioneConfig.__variables || {};
+    const template = hermioneConfig.__template!;
 
-    const omittedConfig = _.omit(hermioneConfig, ["__modules", "__variables", "__language"]);
+    const omittedConfig = _.omit(hermioneConfig, ["__modules", "__variables", "__language", "__template"]);
 
     const toIndentedJson = (config: HermioneConfig): string => JSON.stringify(config, null, 4);
 
@@ -53,7 +52,7 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
             match.replace(/"/g, ""),
         );
 
-        if (language === "ts") {
+        if (template.language === "ts") {
             return withoutExtraQuotesConfigStr;
         }
 
@@ -65,7 +64,7 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
     };
 
     const withExpressions = (configStr: string): string => {
-        const quote = language === "ts" ? '"' : "'";
+        const quote = template.quote;
         const expressionRegExp = new RegExp(`${quote}__expression: (.*)${quote}(,?)$`, "gm");
 
         // unescapes and restores double quotes in expressions
@@ -78,24 +77,17 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
     const getObjectRepr = _.flow([toIndentedJson, withComments, withReplacedQuotes, withExpressions]);
 
     const configImports = Object.keys(modules)
-        .map(importName =>
-            language === "ts"
-                ? `import ${importName} from "${modules[importName]}";`
-                : `const ${importName} = require('${modules[importName]}');`,
-        )
+        .map(importName => template.getImportModule(importName, modules[importName]))
         .join("\n");
 
     const configVariables = Object.keys(variables)
         .map(variable => `const ${variable} = ${variables[variable]};`)
         .join("\n");
 
-    const configBody =
-        language === "ts"
-            ? `// @ts-ignore\nexport = ${getObjectRepr(omittedConfig)}\n`
-            : `module.exports = ${getObjectRepr(omittedConfig)}\n`;
+    const configBody = template.getExportConfig(getObjectRepr(omittedConfig));
 
     const configContents = [configImports, configVariables, configBody].filter(Boolean).join("\n\n");
-    const configFileName = language === "ts" ? HERMIONE_TS_CONFIG_NAME : HERMIONE_JS_CONFIG_NAME;
+    const configFileName = template.fileName;
     const configPath = path.resolve(dirPath, configFileName);
 
     await ensureDirectory(dirPath);

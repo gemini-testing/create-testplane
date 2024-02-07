@@ -37,4 +37,4 @@ export = {
             token: path.join(os.homedir(), ".config", "tokens", "token")
         }
     }
-}
+};

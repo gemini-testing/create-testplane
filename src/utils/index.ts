@@ -135,7 +135,7 @@ type VariableOpts = {
 };
 
 export const defineVariable = (config: HermioneConfig, { name, value, isExpr }: VariableOpts): HermioneConfig => {
-    const quote = config.__language === "ts" ? '"' : "'";
+    const quote = _.get(config, ["__template", "quote"], "'");
 
     return _.set(config, ["__variables", name], isExpr ? value : asString(value, quote));
 };
