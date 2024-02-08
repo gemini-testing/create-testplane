@@ -112,13 +112,21 @@ describe("utils", () => {
 
     describe("baseGeneralPromptsHandler", () => {
         it("should set baseUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/", baseUrl: "foo" });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+                _path: "/",
+                _language: "ts",
+                baseUrl: "foo",
+            });
 
             expect(result).toStrictEqual({ baseUrl: "foo" });
         });
 
         it("should set gridUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/", gridUrl: "foo" });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+                _path: "/",
+                _language: "ts",
+                gridUrl: "foo",
+            });
 
             expect(result).toStrictEqual({ gridUrl: "foo" });
         });
@@ -128,6 +136,7 @@ describe("utils", () => {
 
             const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
                 _path: "/",
+                _language: "ts",
                 addChromePhone: true,
             });
 
@@ -152,7 +161,10 @@ describe("utils", () => {
         });
 
         it("should do nothing if no answers given", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, { _path: "/" });
+            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+                _path: "/",
+                _language: "ts",
+            });
 
             expect(result).toStrictEqual({});
         });
