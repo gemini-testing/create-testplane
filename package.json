@@ -1,6 +1,6 @@
 {
     "name": "create-hermione-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A tool for fast and simple hermione configuration",
     "main": "build/index.js",
     "types": "build/index.d.ts",
