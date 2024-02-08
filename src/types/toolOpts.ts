@@ -22,6 +22,7 @@ export interface GeneralPrompt {
 
 export interface Answers extends Record<string, unknown> {
     _path: string;
+    _language: Language;
 }
 
 export type HandleGeneralPromptsCallback = (
