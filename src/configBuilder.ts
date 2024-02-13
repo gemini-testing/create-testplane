@@ -5,10 +5,16 @@ import defaultPluginsConfig from "./pluginsConfig";
 import defaultToolOpts from "./constants/defaultToolOpts";
 import defaultHermioneConfig from "./constants/defaultHermioneConfig";
 import type { HermioneConfig, Language } from "./types/hermioneConfig";
-import type { HandleGeneralPromptsCallback } from "./types/toolOpts";
+import type { Answers, HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
 import { getTemplate } from "./utils/configTemplates";
+
+type ConfigurePluginsOpts = {
+    pluginNames: string[];
+    createPluginsConfig?: CreatePluginsConfigCallback;
+    generalAnswers: Answers;
+};
 
 export class ConfigBuilder {
     static create(createBaseConfig?: CreateBaseConfigCallback, opts?: { language: Language }): ConfigBuilder {
@@ -30,9 +36,14 @@ export class ConfigBuilder {
         promts: GeneralPrompt[],
         handlers: HandleGeneralPromptsCallback[],
         { path, noQuestions }: { path: string; noQuestions: boolean },
-    ): Promise<void> {
+    ): Promise<Answers> {
+        const answers: Answers = {
+            _path: path,
+            _language: this._config.__template!.language,
+        };
+
         if (_.isEmpty(promts) || _.isEmpty(handlers)) {
-            return;
+            return answers;
         }
 
         const defaults = promts.reduce((acc, prompt) => {
@@ -45,23 +56,23 @@ export class ConfigBuilder {
 
         const promptsToAsk = noQuestions ? promts.filter(prompt => _.isUndefined(prompt.default)) : promts;
         const inquirerAnswers = await inquirer.prompt(promptsToAsk);
-        const answers = noQuestions ? { ...defaults, ...inquirerAnswers } : inquirerAnswers;
 
-        answers._path = path;
-        answers._language = this._config.__template!.language;
+        Object.assign(answers, defaults, inquirerAnswers, answers);
 
         for (const handler of handlers) {
             this._config = await handler(this._config, answers);
         }
+
+        return answers;
     }
 
-    async configurePlugins(pluginNames: string[], createPluginsConfig?: CreatePluginsConfigCallback): Promise<void> {
+    async configurePlugins({ pluginNames, createPluginsConfig, generalAnswers }: ConfigurePluginsOpts): Promise<void> {
         const pluginsConfig = createPluginsConfig ? createPluginsConfig(defaultPluginsConfig) : defaultPluginsConfig;
 
         this._config.plugins ||= {};
 
         for (const plugin of pluginNames) {
-            await pluginsConfig[plugin](this._config);
+            await pluginsConfig[plugin](this._config, generalAnswers);
         }
     }
 

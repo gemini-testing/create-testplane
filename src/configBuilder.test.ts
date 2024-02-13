@@ -5,7 +5,7 @@ import defaultHermioneConfig from "./constants/defaultHermioneConfig";
 import { ConfigBuilder } from "./configBuilder";
 import fsUtils from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
-import type { GeneralPrompt, HermioneConfig } from "./types";
+import type { Answers, GeneralPrompt, HermioneConfig } from "./types";
 
 jest.mock("inquirer");
 
@@ -104,14 +104,21 @@ describe("configBuilder", () => {
         });
 
         it("should use default pluginsConfig, if not specified", async () => {
+            const generalAnswers: Answers = { _path: "/", _language: "ts" };
             defaultPluginsConfig["html-reporter/hermione"] = jest.fn().mockImplementation((config: HermioneConfig) => {
                 _.set(config, "htmlReporterIsSet", true);
             });
 
-            await configBuilder.configurePlugins(["html-reporter/hermione"]);
+            await configBuilder.configurePlugins({
+                pluginNames: ["html-reporter/hermione"],
+                generalAnswers,
+            });
 
             expectConfig({ ...defaultHermioneConfig, htmlReporterIsSet: true });
-            expect(defaultPluginsConfig["html-reporter/hermione"]).toBeCalledWith(defaultHermioneConfig);
+            expect(defaultPluginsConfig["html-reporter/hermione"]).toBeCalledWith(
+                defaultHermioneConfig,
+                generalAnswers,
+            );
         });
 
         it("should use overwrited pluginsConfig, if specified", async () => {
@@ -125,7 +132,11 @@ describe("configBuilder", () => {
                     },
                 });
 
-            await configBuilder.configurePlugins(["html-reporter/hermione"], cb);
+            await configBuilder.configurePlugins({
+                pluginNames: ["html-reporter/hermione"],
+                createPluginsConfig: cb,
+                generalAnswers: { _path: "/", _language: "ts" },
+            });
 
             expectConfig({ ...defaultHermioneConfig, foo: "bar" });
         });
