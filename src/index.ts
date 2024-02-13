@@ -68,10 +68,10 @@ export const run = async ({
     const generalAnswers = await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
-    const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };
 
     await configBuilder.configurePlugins({ pluginNames, createPluginsConfig, generalAnswers });
 
+    const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };
     const packageNamesToInstall = pluginNames.concat(extraPackages.names);
 
     if (opts.language === "ts") {
