@@ -68,6 +68,8 @@ describe("fsUtils", () => {
                 bar: 4,
                 baz: "4",
                 array: ["__expression: Boolean(100 + 500 * 1)"],
+                specials: "__expression: /\n\t\r/g",
+                extraSlash: "__expression: /\\, \\, \\\\/g",
             } as unknown as HermioneConfig;
 
             await expectConfig(withExpressionsConfig, configs["withExpressions"]);
