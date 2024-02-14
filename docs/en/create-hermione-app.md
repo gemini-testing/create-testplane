@@ -66,7 +66,8 @@ createHermioneApp.run({
     generalPrompts,
     generalPromptsHandler,
     createPluginsConfig,
-    getExtraPackagesToInstall
+    getExtraPackagesToInstall,
+    getTestExample,
     registry
 });
 ```
@@ -198,6 +199,8 @@ createHermioneApp.run({
 You can also pass extra packages, which will be installed with `hermione` unconditionally
 
 ```ts
+import type { GetExtraPackagesToInstallCallback } from "create-hermione-app";
+
 const getExtraPackagesToInstall: GetExtraPackagesToInstallCallback = () => ({
     names: ["chai"],
     notes: []
