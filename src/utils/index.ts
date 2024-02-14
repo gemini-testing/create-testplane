@@ -5,11 +5,11 @@ import path from "path";
 import { Colors } from "./colors";
 import { pluginSuffixes } from "../constants/packageManagement";
 import fsUtils from "../fsUtils";
+import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
 import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
 import type { HermioneConfig, Language } from "../types";
-import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -62,7 +62,7 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (he
                 sets: {
                     "touch-phone": {
                         browsers: [browserId],
-                        files: ["tests/**/*.hermione.js"],
+                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
                     },
                 },
                 browsers: {

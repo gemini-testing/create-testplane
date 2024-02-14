@@ -1,6 +1,7 @@
 import inquirer, { DistinctQuestion } from "inquirer";
 import _ from "lodash";
 import { HERMIONE_SAFARI_COMMANDS } from "../constants/plugins";
+import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
 import type { HermioneConfig } from "../types/hermioneConfig";
 
 type SafariCommand =
@@ -44,7 +45,7 @@ export default {
                 sets: {
                     "touch-phone": {
                         browsers: [browserId],
-                        files: ["tests/**/*.hermione.js"],
+                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
                     },
                 },
                 browsers: {

@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { HERMIONE_HEADLESS_CHROME } from "../constants/plugins";
+import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
 import type { HermioneConfig } from "../types/hermioneConfig";
 
 export default {
@@ -21,7 +22,7 @@ export default {
                 sets: {
                     desktop: {
                         browsers: [browserId],
-                        files: ["tests/**/*.hermione.js"],
+                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
                     },
                 },
             },

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import fs from "fs";
 import path from "path";
+import { defaultHermioneTestsDir } from "./constants/defaultHermioneConfig";
 import type { HermioneConfig } from "./types/hermioneConfig";
 
 const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
@@ -100,7 +101,7 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
 };
 
 export const writeTest = async (dirPath: string, testName: string, testContent: string): Promise<void> => {
-    const testDirPath = path.resolve(dirPath, "hermione-tests");
+    const testDirPath = path.resolve(dirPath, defaultHermioneTestsDir);
     const testPath = path.resolve(testDirPath, testName);
 
     try {

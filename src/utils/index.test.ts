@@ -154,7 +154,7 @@ describe("utils", () => {
                 sets: {
                     "touch-phone": {
                         browsers: ["chrome-phone"],
-                        files: ["tests/**/*.hermione.js"],
+                        files: ["hermione-tests/**/*.hermione.js"],
                     },
                 },
             });
