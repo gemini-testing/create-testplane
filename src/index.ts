@@ -65,13 +65,13 @@ export const run = async ({
         ? [baseGeneralPromptsHandler, generalPromptsHandler]
         : [baseGeneralPromptsHandler];
 
-    await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
+    const generalAnswers = await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
+
+    await configBuilder.configurePlugins({ pluginNames, createPluginsConfig, generalAnswers });
+
     const extraPackages = getExtraPackagesToInstall ? getExtraPackagesToInstall() : { names: [], notes: [] };
-
-    await configBuilder.configurePlugins(pluginNames, createPluginsConfig);
-
     const packageNamesToInstall = pluginNames.concat(extraPackages.names);
 
     if (opts.language === "ts") {

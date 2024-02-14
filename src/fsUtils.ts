@@ -67,11 +67,15 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
         const quote = template.quote;
         const expressionRegExp = new RegExp(`${quote}__expression: (.*)${quote}(,?)$`, "gm");
 
-        // unescapes and restores double quotes in expressions
-        const withRestoredQuotesConfigStr = configStr.replace(expressionRegExp, match => match.replace(/\\"/g, '"'));
+        const repairQuotes = (match: string): string => match.replace(/\\"/g, '"');
+        const repairSlash = (match: string): string => match.replace(/\\\\/g, "\\");
+
+        const repairedConfig = configStr
+            .replace(expressionRegExp, repairQuotes) // unescapes and restores double quotes in expressions
+            .replace(expressionRegExp, repairSlash); // restores '\\' in expressions
 
         // strings like '__expression: <expression>' are turned into <expression>
-        return withRestoredQuotesConfigStr.replace(expressionRegExp, "$1$2");
+        return repairedConfig.replace(expressionRegExp, "$1$2");
     };
 
     const getObjectRepr = _.flow([toIndentedJson, withComments, withReplacedQuotes, withExpressions]);

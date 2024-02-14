@@ -4,5 +4,7 @@ module.exports = {
     baz: '4',
     array: [
         Boolean(100 + 500 * 1)
-    ]
+    ],
+    specials: /\n\t\r/g,
+    extraSlash: /\, \, \\/g
 };

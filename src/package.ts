@@ -89,7 +89,7 @@ export const installPackages = async (
     pluginsToInstall: string[],
     registry: string,
 ): Promise<string> => {
-    const spinner = ora("Installing packages").start();
+    const spinner = ora("Installing packages (this may take a while)").start();
 
     const pluginsPackages = pluginsToInstall.map(packageNameFromPlugin).join(" ");
 
