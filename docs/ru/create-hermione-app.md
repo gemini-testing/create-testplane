@@ -5,12 +5,6 @@
 ## Использование
 
 ```bash
-npx create-hermione-app my-app
-```
-
-Или через `npm init`:
-
-```bash
 npm init hermione-app my-app
 ```
 
@@ -30,6 +24,16 @@ npm init hermione-app my-app
 
 Плагины по умолчанию, устанавливаемые с аргументом `--yes`: 
 - [html-reporter](https://github.com/gemini-testing/html-reporter)
+
+### Язык
+
+По умолчанию create-hermione-app настраивает проект с поддержкой typescript тестов.
+
+Вы можете отказаться от использования typescript, добавив аргумент `--lang js`:
+
+```bash
+npm init hermione-app my-app -- --lang js
+```
 
 ## Список предлагаемых плагинов
 
