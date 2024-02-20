@@ -1,11 +1,5 @@
 import type { PluginGroup } from "../../types/toolOpts";
-import {
-    HERMIONE_IMAGE_MINIFIER,
-    HERMIONE_PLUGINS_PROFILER,
-    HERMIONE_PROFILER,
-    HERMIONE_STORYBOOK,
-    HTML_REPORTER,
-} from "../plugins";
+import { HERMIONE_PLUGINS_PROFILER, HERMIONE_PROFILER, HERMIONE_STORYBOOK, HTML_REPORTER } from "../plugins";
 
 const reportsGroup: PluginGroup = {
     description: "Generate reports about tests' results, plugins, their performance",
@@ -15,11 +9,6 @@ const reportsGroup: PluginGroup = {
                 "Generate html-reports for showing passed/failed tests, screenshot diffs, error messages, stacktraces, meta-info and so on",
             plugin: HTML_REPORTER,
             default: true,
-        },
-        {
-            description: "Enable compression for reference images",
-            plugin: HERMIONE_IMAGE_MINIFIER,
-            default: false,
         },
         {
             description: "Generate report about executed commands and their performance",

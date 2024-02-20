@@ -13,7 +13,6 @@ import hermioneGlobalHook from "./hermione-global-hook";
 import hermioneTestRepeater from "./hermione-test-repeater";
 import hermioneRetryCommand from "./hermione-retry-command";
 import hermioneReassertView from "./hermione-reassert-view";
-import hermioneImageMinifier from "./hermione-image-minifier";
 import hermioneSafariCommands from "./hermione-safari-commands";
 import hermioneHeadlessChrome from "./hermione-headless-chrome";
 import hermionePluginsProfiler from "./hermione-plugins-profiler";
@@ -24,7 +23,6 @@ const pluginsConfig = [
     hermioneTestRepeater,
     hermioneRetryCommand,
     hermioneReassertView,
-    hermioneImageMinifier,
     hermionePluginsProfiler,
     hermioneTabsCloser,
     retryLimiter,

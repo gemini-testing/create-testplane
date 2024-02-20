@@ -47,7 +47,6 @@ npm init hermione-app my-app -- --lang js
 - [Safari Commands](https://github.com/gemini-testing/hermione-safari-commands) - Чтобы поддержать работу для браузера `safari` на мобильных устройствах
 - [Test Repeater](https://github.com/gemini-testing/hermione-test-repeater) - Чтобы повторять тесты указанное количество раз вне зависимости от результата
 - [Url Decorator](https://github.com/gemini-testing/url-decorator) - Чтобы добавить/заменить параметры запроса в `url` команде
-- [Image Minifier](https://github.com/gemini-testing/hermione-image-minifier) - Чтобы сжимать эталонные изображения в скриншотном тестировании
 - [Reassert View](https://github.com/gemini-testing/hermione-reassert-view) - Чтобы сделать скриншотное тестирование менее строгим
 - [Storybook](https://github.com/gemini-testing/hermione-storybook) - Чтобы писать тесты на `storybook` компонентах и ускорить время их выполнения
 - [Html Reporter](https://github.com/gemini-testing/html-reporter) - Чтобы генерировать отчеты для отображения прошедших/упавших тестах, разницы между скриншотами, ошибкок, мета информации
