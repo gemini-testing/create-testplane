@@ -26,5 +26,5 @@ const argv = yargs(hideBin(process.argv))
     .parse();
 
 const argvOpts = optsFromArgv(argv as ToolArgv);
-const createOpts = (defaultOpts: DefaultOpts): ToolOpts => Object.assign(argvOpts, defaultOpts);
+const createOpts = (defaultOpts: DefaultOpts): ToolOpts => ({ ...defaultOpts, ...argvOpts });
 launcher.run({ createOpts });

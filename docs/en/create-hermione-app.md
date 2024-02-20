@@ -5,12 +5,6 @@ Use `create-hermione-app` to set up [hermione](https://github.com/gemini-testing
 ## Usage
 
 ```bash
-npx create-hermione-app my-app
-```
-
-or via `npm init`:
-
-```bash
 npm init hermione-app my-app
 ```
 
@@ -22,7 +16,11 @@ If you already have a project at given path, the tool will try to guess used pac
 
 ### No questions mode
 
-You can add `-y` or `--yes` argument to launch a tool in *no-questions* mode.
+You can add `-y` or `--yes` argument to launch a tool in *no-questions* mode:
+
+```bash
+npm init hermione-app my-app -- -y
+```
 
 In this mode you won't be asked questions about desired plugins and packet manager.
 
@@ -30,6 +28,16 @@ Default packet manager, used with `--yes` argument: `npm`
 
 Default plugins, installed with `--yes` argument: 
 - [html-reporter](https://github.com/gemini-testing/html-reporter)
+
+### Lang
+
+By default, create-hermione-app sets up project with typescript tests support.
+
+You can opt-out of typescript by adding `--lang js` argument:
+
+```bash
+npm init hermione-app my-app -- --lang js
+```
 
 ## List of proposed plugins
 
