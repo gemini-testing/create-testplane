@@ -10,7 +10,6 @@ export const HERMIONE_HEADLESS_CHROME = "hermione-headless-chrome";
 export const URL_DECORATOR = "url-decorator";
 export const HERMIONE_TEST_FILTER = "hermione-test-filter";
 export const HERMIONE_OAUTH = "hermione-oauth";
-export const HERMIONE_IMAGE_MINIFIER = "hermione-image-minifier";
 export const HERMIONE_PLUGINS_PROFILER = "hermione-plugins-profiler";
 export const HERMIONE_TABS_CLOSER = "hermione-tabs-closer";
 export const HERMIONE_GLOBAL_HOOK = "hermione-global-hook";
