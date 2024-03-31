@@ -3,7 +3,7 @@ module.exports = {
     // other comment
     array: [
         // array comment
-        'some stirng',
+        "some string",
         // another comment
     ]
 };

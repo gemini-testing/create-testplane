@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { promises as fsPromises, readFileSync } from "fs";
 import fsUtils from "./fsUtils";
-import defaultHermioneConfig from "./constants/defaultHermioneConfig";
-import type { HermioneConfig } from "./types";
+import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
+import type { TestplaneConfig } from "./types";
 import { getTemplate } from "./utils/configTemplates";
 
 const readFixtureConfigSync = (configName: string): string =>
@@ -31,19 +31,19 @@ describe("fsUtils", () => {
     const jsTemplate = { __template: getTemplate("js") };
     const tsTemplate = { __template: getTemplate("ts") };
 
-    describe("writeHermioneConfig", () => {
-        const expectConfig = async (config: HermioneConfig, expectedConfigWritten: string): Promise<void> => {
+    describe("writeTestplaneConfig", () => {
+        const expectConfig = async (config: TestplaneConfig, expectedConfigWritten: string): Promise<void> => {
             const ext = _.get(config, ["__template", "language"]);
 
-            await fsUtils.writeHermioneConfig("/", config);
+            await fsUtils.writeTestplaneConfig("/", config);
 
-            expect(fsPromises.writeFile).toBeCalledWith(`/.hermione.conf.${ext}`, expectedConfigWritten);
+            expect(fsPromises.writeFile).toBeCalledWith(`/.testplane.conf.${ext}`, expectedConfigWritten);
         };
 
         it("js config", async () => {
             await expectConfig(
                 {
-                    ...defaultHermioneConfig,
+                    ...defaultTestplaneConfig,
                     ...jsTemplate,
                 },
                 configs["jsConfig"],
@@ -56,7 +56,7 @@ describe("fsUtils", () => {
                 __comment: "some comment",
                 __comment4: "other comment",
                 array: ["__comment: array comment", "some stirng", "__comment: another comment"],
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
             await expectConfig(withCommentsConfig, configs["withComments"]);
         });
@@ -70,7 +70,7 @@ describe("fsUtils", () => {
                 array: ["__expression: Boolean(100 + 500 * 1)"],
                 specials: "__expression: /\n\t\r/g",
                 extraSlash: "__expression: /\\, \\, \\\\/g",
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
             await expectConfig(withExpressionsConfig, configs["withExpressions"]);
         });
@@ -83,7 +83,7 @@ describe("fsUtils", () => {
                     path: "path",
                     fs: "fs",
                 },
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
             await expectConfig(withModulesConfig, configs["withModules"]);
         });
@@ -96,7 +96,7 @@ describe("fsUtils", () => {
                     numbersSum: "100 + 500",
                     somePath: 'path.resolve(os.homedir(), ".some-folder")',
                 },
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
             await expectConfig(withVariablesConfig, configs["withVariables"]);
         });
@@ -109,14 +109,14 @@ describe("fsUtils", () => {
                     path: "path",
                     fs: "fs",
                 },
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
             await expectConfig(withTypescriptConfig, configs["withTypescript"]);
         });
 
         it("with everything", async () => {
             const withEverythingConfig = {
-                ...defaultHermioneConfig,
+                ...defaultTestplaneConfig,
                 ...tsTemplate,
                 __modules: {
                     os: "os",
@@ -125,9 +125,9 @@ describe("fsUtils", () => {
                 __variables: {
                     isCi: "Boolean(process.env.CI)",
                 },
-            } as unknown as HermioneConfig;
+            } as unknown as TestplaneConfig;
 
-            _.set(withEverythingConfig, ["plugins", "hermione-oauth"], {
+            _.set(withEverythingConfig, ["plugins", "@testplane/oauth"], {
                 __comment: "some info",
                 enabled: "__expression: isCi",
                 token: '__expression: path.join(os.homedir(), ".config", "tokens", "token")',

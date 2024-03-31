@@ -1,9 +1,9 @@
 import type { PluginGroup } from "../../types/toolOpts";
 import {
-    HERMIONE_GLOBAL_HOOK,
-    HERMIONE_OAUTH,
-    HERMIONE_TABS_CLOSER,
-    HERMIONE_TEST_FILTER,
+    TESTPLANE_GLOBAL_HOOK,
+    TESTPLANE_OAUTH,
+    TESTPLANE_TABS_CLOSER,
+    TESTPLANE_TEST_FILTER,
     URL_DECORATOR,
 } from "../plugins";
 
@@ -12,7 +12,7 @@ const miscGroup: PluginGroup = {
     plugins: [
         {
             description: "Set authorization header with OAuth token",
-            plugin: HERMIONE_OAUTH,
+            plugin: TESTPLANE_OAUTH,
             default: false,
             configNote: "Specify the OAuth token",
         },
@@ -24,19 +24,19 @@ const miscGroup: PluginGroup = {
         },
         {
             description: "Only run specified tests in provided browsers",
-            plugin: HERMIONE_TEST_FILTER,
+            plugin: TESTPLANE_TEST_FILTER,
             default: false,
-            configNote: `Create hermione-filter.json on the example from "${HERMIONE_TEST_FILTER}" section in hermione config`,
+            configNote: `Create testplane-filter.json on the example from "${TESTPLANE_TEST_FILTER}" section in Testplane config`,
         },
         {
             description: "Add global 'beforeEach' and 'afterEach' functions",
-            plugin: HERMIONE_GLOBAL_HOOK,
+            plugin: TESTPLANE_GLOBAL_HOOK,
             default: false,
             configNote: "Specify beforeEach and afterEach hooks",
         },
         {
             description: "Close opened tabs from previous tests so the browser coudn't degrade",
-            plugin: HERMIONE_TABS_CLOSER,
+            plugin: TESTPLANE_TABS_CLOSER,
             default: false,
             configNote: "Specify the browsers with regex",
         },

@@ -1,9 +1,9 @@
 import { URL_DECORATOR } from "../constants/plugins";
-import type { HermioneConfig } from "../types/hermioneConfig";
+import type { TestplaneConfig } from "../types/testplaneConfig";
 
 export default {
     name: URL_DECORATOR,
-    fn: (config: HermioneConfig): void => {
+    fn: (config: TestplaneConfig): void => {
         config.plugins![URL_DECORATOR] = {
             __comment: "https://github.com/gemini-testing/url-decorator",
             enabled: true,

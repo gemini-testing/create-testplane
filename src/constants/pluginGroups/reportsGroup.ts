@@ -1,5 +1,5 @@
 import type { PluginGroup } from "../../types/toolOpts";
-import { HERMIONE_PLUGINS_PROFILER, HERMIONE_PROFILER, HERMIONE_STORYBOOK, HTML_REPORTER } from "../plugins";
+import { TESTPLANE_PLUGINS_PROFILER, TESTPLANE_PROFILER, TESTPLANE_STORYBOOK, HTML_REPORTER } from "../plugins";
 
 const reportsGroup: PluginGroup = {
     description: "Generate reports about tests' results, plugins, their performance",
@@ -12,17 +12,17 @@ const reportsGroup: PluginGroup = {
         },
         {
             description: "Generate report about executed commands and their performance",
-            plugin: HERMIONE_PROFILER,
+            plugin: TESTPLANE_PROFILER,
             default: false,
         },
         {
             description: "Profile plugins performance",
-            plugin: HERMIONE_PLUGINS_PROFILER,
+            plugin: TESTPLANE_PLUGINS_PROFILER,
             default: false,
         },
         {
-            description: "Add ability to write hermione tests on storybook component and speed up their execution",
-            plugin: HERMIONE_STORYBOOK,
+            description: "Add ability to write Testplane tests on storybook component and speed up their execution",
+            plugin: TESTPLANE_STORYBOOK,
             default: false,
         },
     ],

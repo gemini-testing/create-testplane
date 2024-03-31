@@ -1,10 +1,10 @@
 import _ from "lodash";
 import inquirer from "inquirer";
-import { writeHermioneConfig } from "./fsUtils";
+import { writeTestplaneConfig } from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
 import defaultToolOpts from "./constants/defaultToolOpts";
-import defaultHermioneConfig from "./constants/defaultHermioneConfig";
-import type { HermioneConfig, Language } from "./types/hermioneConfig";
+import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
+import type { TestplaneConfig, Language } from "./types/testplaneConfig";
 import type { Answers, HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
@@ -21,13 +21,13 @@ export class ConfigBuilder {
         return new this(createBaseConfig, opts);
     }
 
-    private _config: HermioneConfig;
+    private _config: TestplaneConfig;
 
     constructor(
         createBaseConfig?: CreateBaseConfigCallback,
         opts: { language: Language } = { language: defaultToolOpts.language },
     ) {
-        this._config = createBaseConfig ? createBaseConfig(defaultHermioneConfig, opts) : defaultHermioneConfig;
+        this._config = createBaseConfig ? createBaseConfig(defaultTestplaneConfig, opts) : defaultTestplaneConfig;
 
         this._config.__template = getTemplate(opts.language);
     }
@@ -77,6 +77,6 @@ export class ConfigBuilder {
     }
 
     async write(dirPath: string): Promise<void> {
-        return writeHermioneConfig(dirPath, this._config);
+        return writeTestplaneConfig(dirPath, this._config);
     }
 }

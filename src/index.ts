@@ -11,20 +11,20 @@ import { ConfigNote, getPluginNames } from "./plugins";
 import baseGeneralPrompts from "./constants/baseGeneralPrompts";
 import { ConfigBuilder } from "./configBuilder";
 import type { DefaultOpts, GeneralPrompt, HandleGeneralPromptsCallback, ToolOpts } from "./types/toolOpts";
-import type { HermioneConfig, Language } from "./types/hermioneConfig";
+import type { TestplaneConfig, Language } from "./types/testplaneConfig";
 import type { PluginsConfig } from "./types/pluginsConfig";
 
 export type CreateBaseConfigOpts = { language: Language };
 
 export type CreateOptsCallback = (defaultOpts: DefaultOpts) => ToolOpts;
 export type CreateBaseConfigCallback = (
-    defaultHermioneConfig: HermioneConfig,
+    defaultTestplaneConfig: TestplaneConfig,
     opts: CreateBaseConfigOpts,
-) => HermioneConfig;
+) => TestplaneConfig;
 export type CreatePluginsConfigCallback = (pluginsConfig: PluginsConfig) => PluginsConfig;
 export type GetExtraPackagesToInstallCallback = () => { names: string[]; notes: ConfigNote[] };
 
-export interface CreateHermioneAppOpts {
+export interface CreateTestplaneAppOpts {
     createBaseConfig?: CreateBaseConfigCallback;
     createOpts: CreateOptsCallback;
     generalPrompts?: GeneralPrompt[];
@@ -45,7 +45,7 @@ process.on("unhandledRejection", (reason, p) => {
 
 export { askQuestion, defineVariable, addModule, asExpression } from "./utils";
 export { baseGeneralPrompts };
-export { defaultHermioneTestsDir } from "./constants/defaultHermioneConfig";
+export { defaultTestplaneTestsDir } from "./constants/defaultTestplaneConfig";
 
 export const run = async ({
     createBaseConfig,
@@ -55,7 +55,7 @@ export const run = async ({
     createPluginsConfig,
     getExtraPackagesToInstall,
     registry = "https://registry.npmjs.org",
-}: CreateHermioneAppOpts): Promise<void> => {
+}: CreateTestplaneAppOpts): Promise<void> => {
     const opts = createOpts(defaultToolOpts);
     const configBuilder = ConfigBuilder.create(createBaseConfig, { language: opts.language });
 

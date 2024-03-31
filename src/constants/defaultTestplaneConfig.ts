@@ -1,8 +1,8 @@
-import type { HermioneConfig } from "../types/hermioneConfig";
+import type { TestplaneConfig } from "../types/testplaneConfig";
 
-export const defaultHermioneTestsDir = "hermione-tests";
+export const defaultTestplaneTestsDir = "testplane-tests";
 
-const defaultHermioneConfig: HermioneConfig = {
+const defaultTestplaneConfig: TestplaneConfig = {
     gridUrl: "http://localhost:4444/wd/hub",
     baseUrl: "http://localhost",
 
@@ -13,7 +13,7 @@ const defaultHermioneConfig: HermioneConfig = {
 
     sets: {
         desktop: {
-            files: [`${defaultHermioneTestsDir}/**/*.hermione.(t|j)s`],
+            files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
             browsers: ["chrome"],
         },
     },
@@ -29,4 +29,4 @@ const defaultHermioneConfig: HermioneConfig = {
     },
 };
 
-export default defaultHermioneConfig;
+export default defaultTestplaneConfig;
