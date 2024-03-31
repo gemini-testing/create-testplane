@@ -1,8 +1,8 @@
 import { ConfigTemplate } from ".";
-import { HERMIONE_JS_CONFIG_NAME } from "../../constants/packageManagement";
+import { TESTPLANE_JS_CONFIG_NAME } from "../../constants/packageManagement";
 
 export const jsTemplate: ConfigTemplate = {
-    fileName: HERMIONE_JS_CONFIG_NAME,
+    fileName: TESTPLANE_JS_CONFIG_NAME,
     language: "js",
     quote: "'",
     getImportModule: (importName, moduleName) => `const ${importName} = require('${moduleName}');`,

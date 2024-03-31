@@ -4,35 +4,35 @@ import { PluginsConfig } from "../types/pluginsConfig";
 import htmlReporter from "./html-reporter";
 import retryLimiter from "./retry-limiter";
 import urlDecorator from "./url-decorator";
-import hermioneOauth from "./hermione-oauth";
-import hermioneProfiler from "./hermione-profiler";
-import hermioneStorybook from "./hermione-storybook";
-import hermioneTestFilter from "./hermione-test-filter";
-import hermioneTabsCloser from "./hermione-tabs-closer";
-import hermioneGlobalHook from "./hermione-global-hook";
-import hermioneTestRepeater from "./hermione-test-repeater";
-import hermioneRetryCommand from "./hermione-retry-command";
-import hermioneSafariCommands from "./hermione-safari-commands";
-import hermioneHeadlessChrome from "./hermione-headless-chrome";
-import hermionePluginsProfiler from "./hermione-plugins-profiler";
-import hermioneRetryProgressive from "./hermione-retry-progressive";
+import testplaneOauth from "./testplane-oauth";
+import testplaneProfiler from "./testplane-profiler";
+import testplaneStorybook from "./testplane-storybook";
+import testplaneTestFilter from "./testplane-test-filter";
+import testplaneTabsCloser from "./testplane-tabs-closer";
+import testplaneGlobalHook from "./testplane-global-hook";
+import testplaneTestRepeater from "./testplane-test-repeater";
+import testplaneRetryCommand from "./testplane-retry-command";
+import testplaneSafariCommands from "./testplane-safari-commands";
+import testplaneHeadlessChrome from "./testplane-headless-chrome";
+import testplanePluginsProfiler from "./testplane-plugins-profiler";
+import testplaneRetryProgressive from "./testplane-retry-progressive";
 
 const pluginsConfig = [
     htmlReporter,
-    hermioneTestRepeater,
-    hermioneRetryCommand,
-    hermionePluginsProfiler,
-    hermioneTabsCloser,
+    testplaneTestRepeater,
+    testplaneRetryCommand,
+    testplanePluginsProfiler,
+    testplaneTabsCloser,
     retryLimiter,
-    hermioneSafariCommands,
-    hermioneRetryProgressive,
-    hermioneStorybook,
-    hermioneProfiler,
-    hermioneHeadlessChrome,
+    testplaneSafariCommands,
+    testplaneRetryProgressive,
+    testplaneStorybook,
+    testplaneProfiler,
+    testplaneHeadlessChrome,
     urlDecorator,
-    hermioneTestFilter,
-    hermioneOauth,
-    hermioneGlobalHook,
+    testplaneTestFilter,
+    testplaneOauth,
+    testplaneGlobalHook,
 ].reduce((config: PluginsConfig, plugin) => _.set(config, plugin.name, plugin.fn), {});
 
 export default pluginsConfig;

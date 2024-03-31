@@ -1,6 +1,6 @@
 export const PACKAGE_JSON = "package.json";
-export const HERMIONE_JS_CONFIG_NAME = ".hermione.conf.js";
-export const HERMIONE_TS_CONFIG_NAME = ".hermione.conf.ts";
+export const TESTPLANE_JS_CONFIG_NAME = ".testplane.conf.js";
+export const TESTPLANE_TS_CONFIG_NAME = ".testplane.conf.ts";
 
 export const DEFAULT_PM = "npm";
 
@@ -24,4 +24,4 @@ export const PMS: Record<PackageManager, { lock: string; init: string; install: 
     },
 };
 
-export const pluginSuffixes = ["/plugin", "/hermione"];
+export const pluginSuffixes = ["/plugin", "/testplane"];

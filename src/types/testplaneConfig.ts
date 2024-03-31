@@ -10,7 +10,7 @@ interface BrowserUserConfig extends Partial<BrowserConfig> {
 
 export type Language = "ts" | "js";
 
-export interface HermioneConfig extends Omit<Partial<Config>, "browsers"> {
+export interface TestplaneConfig extends Omit<Partial<Config>, "browsers"> {
     __language?: Language;
     __template?: ConfigTemplate;
     __modules?: {

@@ -5,8 +5,8 @@ import { exec } from "child_process";
 import fsUtils from "./fsUtils";
 import {
     DEFAULT_PM,
-    HERMIONE_JS_CONFIG_NAME,
-    HERMIONE_TS_CONFIG_NAME,
+    TESTPLANE_JS_CONFIG_NAME,
+    TESTPLANE_TS_CONFIG_NAME,
     PMS,
     PACKAGE_JSON,
 } from "./constants/packageManagement";
@@ -57,18 +57,18 @@ const initNodeProject = (dirPath: string, packageManager: PackageManager): Promi
 export const initApp = async (dirPath: string, noQuestions: boolean): Promise<PackageManager> => {
     await fsUtils.ensureDirectory(dirPath);
 
-    const isHermioneJsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_JS_CONFIG_NAME));
-    const isHermioneTsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_TS_CONFIG_NAME));
-    let hermioneExistingConfigName = null;
+    const isTestplaneJsConfigExist = await fsUtils.exists(path.resolve(dirPath, TESTPLANE_JS_CONFIG_NAME));
+    const isTestplaneTsConfigExist = await fsUtils.exists(path.resolve(dirPath, TESTPLANE_TS_CONFIG_NAME));
+    let testplaneExistingConfigName = null;
 
-    if (isHermioneJsConfigExist) {
-        hermioneExistingConfigName = HERMIONE_JS_CONFIG_NAME;
-    } else if (isHermioneTsConfigExist) {
-        hermioneExistingConfigName = HERMIONE_TS_CONFIG_NAME;
+    if (isTestplaneJsConfigExist) {
+        testplaneExistingConfigName = TESTPLANE_JS_CONFIG_NAME;
+    } else if (isTestplaneTsConfigExist) {
+        testplaneExistingConfigName = TESTPLANE_TS_CONFIG_NAME;
     }
 
-    if (hermioneExistingConfigName) {
-        console.error(`Looks like ${dirPath} already contains ${hermioneExistingConfigName}.`);
+    if (testplaneExistingConfigName) {
+        console.error(`Looks like ${dirPath} already contains ${testplaneExistingConfigName}.`);
         console.error("Please remove old config or choose another directory.");
         process.exit(1);
     }
@@ -95,7 +95,7 @@ export const installPackages = async (
 
     return new Promise<string>((resolve, reject) => {
         exec(
-            `${packageManager} ${PMS[packageManager].install} hermione ${pluginsPackages} --registry "${registry}"`,
+            `${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages} --registry "${registry}"`,
             {
                 cwd: dirPath,
                 env: process.env,
@@ -106,7 +106,7 @@ export const installPackages = async (
                     reject(stderr);
                 } else {
                     spinner.succeed(
-                        `Hermione and plugins have been installed successfully at ${Colors.fillGreen(dirPath)}`,
+                        `Testplane and plugins have been installed successfully at ${Colors.fillGreen(dirPath)}`,
                     );
                     resolve(stdout);
                 }

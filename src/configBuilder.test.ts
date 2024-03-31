@@ -1,11 +1,11 @@
 import _ from "lodash";
 import { when } from "jest-when";
 import inquirer from "inquirer";
-import defaultHermioneConfig from "./constants/defaultHermioneConfig";
+import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
 import { ConfigBuilder } from "./configBuilder";
 import fsUtils from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
-import type { Answers, GeneralPrompt, HermioneConfig } from "./types";
+import type { Answers, GeneralPrompt, TestplaneConfig } from "./types";
 
 jest.mock("inquirer");
 
@@ -17,7 +17,7 @@ describe("configBuilder", () => {
     const expectConfig = (expectedConfig: Record<string, any>): void => {
         configBuilder.write("");
 
-        expect(fsUtils.writeHermioneConfig).toBeCalledWith("", {
+        expect(fsUtils.writeTestplaneConfig).toBeCalledWith("", {
             __template: expect.anything(),
             ...expectedConfig,
         });
@@ -27,12 +27,12 @@ describe("configBuilder", () => {
         it("should use default config, if callback is not specified", () => {
             configBuilder = new ConfigBuilder();
 
-            expectConfig(defaultHermioneConfig);
+            expectConfig(defaultTestplaneConfig);
         });
 
         it("should use returned callback value, if specified", () => {
             const cb = jest.fn();
-            when(cb).calledWith(defaultHermioneConfig, { language: "ts" }).mockReturnValue({ foo: "bar" });
+            when(cb).calledWith(defaultTestplaneConfig, { language: "ts" }).mockReturnValue({ foo: "bar" });
 
             configBuilder = new ConfigBuilder(cb, { language: "ts" });
 
@@ -49,7 +49,7 @@ describe("configBuilder", () => {
             it("prompts are empty", () => {
                 configBuilder.handleGeneralQuestions([], [jest.fn()], { path: "/", noQuestions: false });
 
-                expectConfig(defaultHermioneConfig);
+                expectConfig(defaultTestplaneConfig);
             });
 
             it("handlers are empty", () => {
@@ -58,7 +58,7 @@ describe("configBuilder", () => {
                     noQuestions: false,
                 });
 
-                expectConfig(defaultHermioneConfig);
+                expectConfig(defaultTestplaneConfig);
             });
         });
 
@@ -83,10 +83,10 @@ describe("configBuilder", () => {
             const firstHandler = jest.fn();
             const secondHandler = jest.fn();
 
-            const firstHandlerResult = { ...defaultHermioneConfig, foo: "bar" };
+            const firstHandlerResult = { ...defaultTestplaneConfig, foo: "bar" };
             const secondHandlerResult = { ...firstHandlerResult, bar: "baz" };
 
-            when(firstHandler).calledWith(defaultHermioneConfig, answers).mockResolvedValue(firstHandlerResult);
+            when(firstHandler).calledWith(defaultTestplaneConfig, answers).mockResolvedValue(firstHandlerResult);
             when(secondHandler).calledWith(firstHandlerResult, answers).mockResolvedValue(secondHandlerResult);
 
             when(inquirer.prompt).calledWith(questions).mockResolvedValue(answers);
@@ -105,18 +105,18 @@ describe("configBuilder", () => {
 
         it("should use default pluginsConfig, if not specified", async () => {
             const generalAnswers: Answers = { _path: "/", _language: "ts" };
-            defaultPluginsConfig["html-reporter/hermione"] = jest.fn().mockImplementation((config: HermioneConfig) => {
+            defaultPluginsConfig["html-reporter/testplane"] = jest.fn().mockImplementation((config: TestplaneConfig) => {
                 _.set(config, "htmlReporterIsSet", true);
             });
 
             await configBuilder.configurePlugins({
-                pluginNames: ["html-reporter/hermione"],
+                pluginNames: ["html-reporter/testplane"],
                 generalAnswers,
             });
 
-            expectConfig({ ...defaultHermioneConfig, htmlReporterIsSet: true });
-            expect(defaultPluginsConfig["html-reporter/hermione"]).toBeCalledWith(
-                defaultHermioneConfig,
+            expectConfig({ ...defaultTestplaneConfig, htmlReporterIsSet: true });
+            expect(defaultPluginsConfig["html-reporter/testplane"]).toBeCalledWith(
+                defaultTestplaneConfig,
                 generalAnswers,
             );
         });
@@ -127,18 +127,18 @@ describe("configBuilder", () => {
             when(cb)
                 .calledWith(defaultPluginsConfig)
                 .mockReturnValue({
-                    "html-reporter/hermione": (config: HermioneConfig) => {
+                    "html-reporter/testplane": (config: TestplaneConfig) => {
                         _.set(config, "foo", "bar");
                     },
                 });
 
             await configBuilder.configurePlugins({
-                pluginNames: ["html-reporter/hermione"],
+                pluginNames: ["html-reporter/testplane"],
                 createPluginsConfig: cb,
                 generalAnswers: { _path: "/", _language: "ts" },
             });
 
-            expectConfig({ ...defaultHermioneConfig, foo: "bar" });
+            expectConfig({ ...defaultTestplaneConfig, foo: "bar" });
         });
     });
 });

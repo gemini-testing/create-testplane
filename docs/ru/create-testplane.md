@@ -1,11 +1,11 @@
-# create-hermione-app
+# create-testplane
 
-Используйте `create-hermione-app`, чтобы быстро и удобно настроить [hermione](https://github.com/gemini-testing/hermione) как в новом, так и в уже существующем проекте.
+Используйте `create-testplane`, чтобы быстро и удобно настроить [testplane](https://github.com/gemini-testing/testplane) как в новом, так и в уже существующем проекте.
 
 ## Использование
 
 ```bash
-npm init hermione-app my-app
+npm init testplane my-app
 ```
 
 <img src="../assets/usage.gif"/>
@@ -27,42 +27,42 @@ npm init hermione-app my-app
 
 ### Язык
 
-По умолчанию create-hermione-app настраивает проект с поддержкой typescript тестов.
+По умолчанию create-testplane настраивает проект с поддержкой typescript тестов.
 
 Вы можете отказаться от использования typescript, добавив аргумент `--lang js`:
 
 ```bash
-npm init hermione-app my-app -- --lang js
+npm init testplane-app my-app -- --lang js
 ```
 
 ## Список предлагаемых плагинов
 
-- [Global Hook](https://github.com/gemini-testing/hermione-global-hook) - Чтобы вынести общую логику из своих тестов в специальные обработчики для `beforeEach` и `afterEach` хуков
-- [Plugins Profiler](https://github.com/gemini-testing/hermione-plugins-profiler) - Для профилирования плагинов
-- [Retry Progressive](https://github.com/gemini-testing/hermione-retry-progressive) - Чтобы дополнительно прогонять тесты, если ошибки, с которыми они упали, соответствуют заданному набору шаблонов
-- [Test Filter](https://github.com/gemini-testing/hermione-test-filter) - Чтобы запускать только указанные в `.json` файле тесты в указанных браузерах
+- [Global Hook](https://github.com/gemini-testing/testplane-global-hook) - Чтобы вынести общую логику из своих тестов в специальные обработчики для `beforeEach` и `afterEach` хуков
+- [Plugins Profiler](https://github.com/gemini-testing/testplane-plugins-profiler) - Для профилирования плагинов
+- [Retry Progressive](https://github.com/gemini-testing/testplane-retry-progressive) - Чтобы дополнительно прогонять тесты, если ошибки, с которыми они упали, соответствуют заданному набору шаблонов
+- [Test Filter](https://github.com/gemini-testing/testplane-test-filter) - Чтобы запускать только указанные в `.json` файле тесты в указанных браузерах
 - [Retry Limiter](https://github.com/gemini-testing/retry-limiter) - Чтобы ограничить количество попыток перезапуска и время выполнения тестов
-- [Headless Chrome](https://github.com/gemini-testing/hermione-headless-chrome) - Чтобы добавить и установить браузер chrome в режиме `headless`
-- [Profiler](https://github.com/gemini-testing/hermione-profiler) - Чтобы генерировать отчет о выполненных командах и их производительности
-- [Safari Commands](https://github.com/gemini-testing/hermione-safari-commands) - Чтобы поддержать работу для браузера `safari` на мобильных устройствах
-- [Test Repeater](https://github.com/gemini-testing/hermione-test-repeater) - Чтобы повторять тесты указанное количество раз вне зависимости от результата
+- [Headless Chrome](https://github.com/gemini-testing/testplane-headless-chrome) - Чтобы добавить и установить браузер chrome в режиме `headless`
+- [Profiler](https://github.com/gemini-testing/testplane-profiler) - Чтобы генерировать отчет о выполненных командах и их производительности
+- [Safari Commands](https://github.com/gemini-testing/testplane-safari-commands) - Чтобы поддержать работу для браузера `safari` на мобильных устройствах
+- [Test Repeater](https://github.com/gemini-testing/testplane-test-repeater) - Чтобы повторять тесты указанное количество раз вне зависимости от результата
 - [Url Decorator](https://github.com/gemini-testing/url-decorator) - Чтобы добавить/заменить параметры запроса в `url` команде
-- [Storybook](https://github.com/gemini-testing/hermione-storybook) - Чтобы писать тесты на `storybook` компонентах и ускорить время их выполнения
+- [Storybook](https://github.com/gemini-testing/testplane-storybook) - Чтобы писать тесты на `storybook` компонентах и ускорить время их выполнения
 - [Html Reporter](https://github.com/gemini-testing/html-reporter) - Чтобы генерировать отчеты для отображения прошедших/упавших тестах, разницы между скриншотами, ошибкок, мета информации
-- [Oauth](https://github.com/gemini-testing/hermione-oauth) - Чтобы установить заголовок авторизации с OAuth токеном
-- [Retry Command](https://github.com/gemini-testing/hermione-retry-command) - Чтобы повторить снятие скриншота, если сравнение изображений завершилось с ошибкой
-- [Tabs Closer](https://github.com/gemini-testing/hermione-tabs-closer) - Чтобы закрывать открытые вкладки из прошлых тестов, чтобы браузер не деградировал
+- [Oauth](https://github.com/gemini-testing/testplane-oauth) - Чтобы установить заголовок авторизации с OAuth токеном
+- [Retry Command](https://github.com/gemini-testing/testplane-retry-command) - Чтобы повторить снятие скриншота, если сравнение изображений завершилось с ошибкой
+- [Tabs Closer](https://github.com/gemini-testing/testplane-tabs-closer) - Чтобы закрывать открытые вкладки из прошлых тестов, чтобы браузер не деградировал
 
 ## Кастомизация инструмента
 
-Вы можете создать свой node-js скрипт на основе `create-hermione-app` для разворачивания конфигурации.
+Вы можете создать свой node-js скрипт на основе `create-testplane` для разворачивания конфигурации.
 
-Это может понадобиться, к примеру, если у вас есть внутренние плагины для hermione, распространяемые для проектов внутри компании.
+Это может понадобиться, к примеру, если у вас есть внутренние плагины для testplane, распространяемые для проектов внутри компании.
 
 ```ts
-import createHermioneApp from "create-hermione-app";
+import createTestplane from "create-testplane";
 
-createHermioneApp.run({
+createTestplane.run({
     createOpts,
     createBaseConfig,
     generalPrompts,
@@ -74,7 +74,7 @@ createHermioneApp.run({
 });
 ```
 
-*Примечание: в `hermioneConfig` можно класть только сериализуемые данные*.
+*Примечание: в `testplaneConfig` можно класть только сериализуемые данные*.
 
 ### Параметры
 
@@ -86,7 +86,7 @@ createHermioneApp.run({
 В этом коллбэке вам необходимо указать как минимум значения `path` и `noQuestions`:
 
 ```ts
-import type { DefaultOpts } from "create-hermione-app";
+import type { DefaultOpts } from "create-testplane";
 
 const argvOpts = {
     path: ".",
@@ -99,16 +99,16 @@ const createOpts = (defaultOpts: DefaultOpts) => {
     return opts;
 };
 ```
-Вы также можете изменить `defaultOpts` Сейчас этот объект имеет ключ `pluginGroups`, по которому `create-hermione-app` определяет, как плагины разбиваются на группы.
+Вы также можете изменить `defaultOpts` Сейчас этот объект имеет ключ `pluginGroups`, по которому `create-testplane` определяет, как плагины разбиваются на группы.
 
 #### createBaseConfig
 
 Инструмент создает базовый конфиг гермионы, который затем мутирует. Вы можете изменить этот базовый конфиг:
 
 ```ts
-import type { HermioneConfig, CreateBaseConfigOpts } from "create-hermione-app";
+import type { testplaneConfig, CreateBaseConfigOpts } from "create-testplane";
 
-const createBaseConfig = (baseConfig: HermioneConfig, opts: CreateBaseConfigOpts) => {
+const createBaseConfig = (baseConfig: TestplaneConfig, opts: CreateBaseConfigOpts) => {
     baseConfig.takeScreenshotOnFails = {
         testFail: true,
         assertViewFail: false
@@ -120,10 +120,10 @@ const createBaseConfig = (baseConfig: HermioneConfig, opts: CreateBaseConfigOpts
 
 #### generalPrompts
 
-Вы также можете убрать или добавить общие задаваемые вопросы, обработать пользовательские ответы для изменения `hermioneConfig`
+Вы также можете убрать или добавить общие задаваемые вопросы, обработать пользовательские ответы для изменения `testplaneConfig`
 
 ```ts
-import type { GeneralPrompt, HandleGeneralPromptsCallback, baseGeneralPrompts } from "create-hermione-app";
+import type { GeneralPrompt, HandleGeneralPromptsCallback, baseGeneralPrompts } from "create-testplane";
 
 const promptRetries: GeneralPrompt = {
     type: "number",
@@ -141,18 +141,18 @@ const promptIgnoreFiles: GeneralPrompt = {
 
 const generalPrompts = [...baseGeneralPrompts, promptRetries, promptIgnoreFiles];
 
-const generalPromptsHandler: HandleGeneralPromptsCallback = (hermioneConfig, answers) => {
+const generalPromptsHandler: HandleGeneralPromptsCallback = (testplaneConfig, answers) => {
     answers.retry = answers.retryCount;
 
     if (answers.ignoreFiles) {
-        const sets = Object.values(hermioneConfig.sets || {});
+        const sets = Object.values(testplaneConfig.sets || {});
         for (const testSet of sets) {
             testSet.ignoreFiles = testSet.ignoreFiles || [];
             testSet.ignoreFiles.push(answers.ignoreFiles);
         }
     }
 
-    return hermioneConfig;
+    return testplaneConfig;
 };
 ```
 
@@ -160,14 +160,14 @@ const generalPromptsHandler: HandleGeneralPromptsCallback = (hermioneConfig, ans
 
 #### createPluginsConfig
 
-Вы также можете изменить, как включение плагинов влияет на `.hermione.conf.js`
+Вы также можете изменить, как включение плагинов влияет на `.testplane.conf.js`
 
 ```ts
-import type { CreatePluginsConfigCallback } from "create-hermione-app";
+import type { CreatePluginsConfigCallback } from "create-testplane";
 
 const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
-    pluginsConfig["hermione-retry-progressive"] = (hermioneConfig) => {
-        hermioneConfig.plugins!["hermione-retry-progressive"] = {
+    pluginsConfig["testplane-retry-progressive"] = (testplaneConfig) => {
+        testplaneConfig.plugins!["testplane-retry-progressive"] = {
             enabled: true,
             extraRetry: 7,
             errorPatterns: [
@@ -189,19 +189,19 @@ const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
 Вы также можете изменить реестр, который будет использован для установки пакетов
 
 ```ts
-import createHermioneApp from "create-hermione-app";
+import createTestplane from "create-testplane";
 
-createHermioneApp.run({
+createTestplane.run({
     registry: "https://registry.npmjs.org", // Значение по умолчанию
 });
 ```
 
 #### getExtraPackagesToInstall
 
-Вы также можете указать дополнительные пакеты, которые будут установлены с `hermione` без всяких условий
+Вы также можете указать дополнительные пакеты, которые будут установлены с `testplane` без всяких условий
 
 ```ts
-import type { GetExtraPackagesToInstallCallback } from "create-hermione-app";
+import type { GetExtraPackagesToInstallCallback } from "create-testplane";
 
 const getExtraPackagesToInstall: GetExtraPackagesToInstallCallback = () => ({
     names: ["chai"],
@@ -218,19 +218,19 @@ import type {
     DefaultOpts,
     GeneralPrompt,
     PluginPrompt
-} from "create-hermione-app";
+} from "create-testplane";
 
 const createOpts = (defaultOpts: DefaultOpts) => {
     const customPluginPrompt: PluginPrompt = {
         // Имя плагина. Инструмент попытается загрузить его выбранным пакетным менеджером
-        // Суффиксы "/plugin" и "/hermione" будут удалены при загрузке
+        // Суффиксы "/plugin" и "/testplane" будут удалены при загрузке
         plugin: "my-custom-plugin-name",
         // Описание плагина
         description: "Adds some custom feature",
         // Должен ли плагин быть установлен в режиме «по умолчанию»
         default: false,
         // Если плагин требует дополнительной настройки. Опционально
-        configNote: "Specify something in hermione config"
+        configNote: "Specify something in testplane config"
     };
 
     defaultOpts.pluginGroups.push({
@@ -246,19 +246,19 @@ const createOpts = (defaultOpts: DefaultOpts) => {
 };
 ```
 
-Затем вам необходимо определить, как включение плагина влияет на `.hermione.conf.js`
+Затем вам необходимо определить, как включение плагина влияет на `.testplane.conf.js`
 
 ```ts
-import type { CreatePluginsConfigCallback } from "create-hermione-app";
+import type { CreatePluginsConfigCallback } from "create-testplane";
 
 const createPluginsConfig: CreatePluginsConfigCallback = (pluginsConfig) => {
-    pluginsConfig["my-custom-plugin-name"] = (hermioneConfig) => {
+    pluginsConfig["my-custom-plugin-name"] = (testplaneConfig) => {
         // В большинстве случаев вам понадобится описать настройки по умолчанию вашего плагина
-        hermioneConfig.plugins!["my-custom-plugin-name"] = {
+        testplaneConfig.plugins!["my-custom-plugin-name"] = {
             enabled: true,
         };
         // Но вы также можете сделать с конфигом гермионы что-нибудь еще
-        hermioneConfig.browsers["my-custom-browser"] = {
+        testplaneConfig.browsers["my-custom-browser"] = {
             desiredCapabilities: {
                 browserName: "browserName"
             }

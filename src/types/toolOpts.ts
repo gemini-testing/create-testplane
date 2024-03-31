@@ -1,4 +1,4 @@
-import type { HermioneConfig, Language } from "./hermioneConfig";
+import type { TestplaneConfig, Language } from "./testplaneConfig";
 
 export interface PluginPrompt {
     plugin: string;
@@ -26,9 +26,9 @@ export interface Answers extends Record<string, unknown> {
 }
 
 export type HandleGeneralPromptsCallback = (
-    hermioneConfig: HermioneConfig,
+    testplaneConfig: TestplaneConfig,
     answers: Answers,
-) => Promise<HermioneConfig> | HermioneConfig;
+) => Promise<TestplaneConfig> | TestplaneConfig;
 
 export interface ArgvOpts {
     path: string;
