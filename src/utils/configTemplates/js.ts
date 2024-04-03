@@ -1,8 +1,8 @@
 import { ConfigTemplate } from ".";
-import { TESTPLANE_JS_CONFIG_NAME } from "../../constants/packageManagement";
+import { CONFIG_NAMES } from "../../constants/packageManagement";
 
 export const jsTemplate: ConfigTemplate = {
-    fileName: TESTPLANE_JS_CONFIG_NAME,
+    fileName: CONFIG_NAMES.TESTPLANE_JS,
     language: "js",
     quote: "'",
     getImportModule: (importName, moduleName) => `const ${importName} = require('${moduleName}');`,

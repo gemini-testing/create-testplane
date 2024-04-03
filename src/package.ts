@@ -3,13 +3,7 @@ import path from "path";
 import { exec } from "child_process";
 
 import fsUtils from "./fsUtils";
-import {
-    DEFAULT_PM,
-    TESTPLANE_JS_CONFIG_NAME,
-    TESTPLANE_TS_CONFIG_NAME,
-    PMS,
-    PACKAGE_JSON,
-} from "./constants/packageManagement";
+import { DEFAULT_PM, CONFIG_NAMES, PMS, PACKAGE_JSON } from "./constants/packageManagement";
 import { Colors } from "./utils/colors";
 import { askQuestion, packageNameFromPlugin } from "./utils";
 import type { PackageManager } from "./constants/packageManagement";
@@ -42,6 +36,19 @@ const getPackageManager = async (dirPath: string, noQuestions: boolean): Promise
     });
 };
 
+const findExistingConfig = async (dirPath: string): Promise<typeof CONFIG_NAMES[keyof typeof CONFIG_NAMES] | null> => {
+    const configExistsPromises = Object.values(CONFIG_NAMES).map(async configName => {
+        const configPath = path.resolve(dirPath, configName);
+        const exists = await fsUtils.exists(configPath);
+
+        return exists ? configName : null;
+    });
+
+    const existingConfigs = await Promise.all(configExistsPromises);
+
+    return existingConfigs.find(Boolean) || null;
+};
+
 const initNodeProject = (dirPath: string, packageManager: PackageManager): Promise<string> =>
     new Promise<string>((resolve, reject) => {
         exec(
@@ -57,18 +64,10 @@ const initNodeProject = (dirPath: string, packageManager: PackageManager): Promi
 export const initApp = async (dirPath: string, noQuestions: boolean): Promise<PackageManager> => {
     await fsUtils.ensureDirectory(dirPath);
 
-    const isTestplaneJsConfigExist = await fsUtils.exists(path.resolve(dirPath, TESTPLANE_JS_CONFIG_NAME));
-    const isTestplaneTsConfigExist = await fsUtils.exists(path.resolve(dirPath, TESTPLANE_TS_CONFIG_NAME));
-    let testplaneExistingConfigName = null;
+    const existingConfigName = await findExistingConfig(dirPath);
 
-    if (isTestplaneJsConfigExist) {
-        testplaneExistingConfigName = TESTPLANE_JS_CONFIG_NAME;
-    } else if (isTestplaneTsConfigExist) {
-        testplaneExistingConfigName = TESTPLANE_TS_CONFIG_NAME;
-    }
-
-    if (testplaneExistingConfigName) {
-        console.error(`Looks like ${dirPath} already contains ${testplaneExistingConfigName}.`);
+    if (existingConfigName) {
+        console.error(`Looks like ${dirPath} already contains "${existingConfigName}".`);
         console.error("Please remove old config or choose another directory.");
         process.exit(1);
     }
