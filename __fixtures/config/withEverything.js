@@ -3,8 +3,7 @@ import path from "path";
 
 const isCi = Boolean(process.env.CI);
 
-// @ts-ignore
-export = {
+export default {
     gridUrl: "http://localhost:4444/wd/hub",
     baseUrl: "http://localhost",
     pageLoadTimeout: 0,
