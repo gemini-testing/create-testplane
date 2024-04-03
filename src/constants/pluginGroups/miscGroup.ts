@@ -4,7 +4,7 @@ import {
     TESTPLANE_OAUTH,
     TESTPLANE_TABS_CLOSER,
     TESTPLANE_TEST_FILTER,
-    URL_DECORATOR,
+    TESTPLANE_URL_DECORATOR,
 } from "../plugins";
 
 const miscGroup: PluginGroup = {
@@ -18,7 +18,7 @@ const miscGroup: PluginGroup = {
         },
         {
             description: "Add/replace url query params",
-            plugin: URL_DECORATOR,
+            plugin: TESTPLANE_URL_DECORATOR,
             default: false,
             configNote: "Specify the query params",
         },

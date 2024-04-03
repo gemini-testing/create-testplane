@@ -22,7 +22,7 @@ export default {
                 sets: {
                     desktop: {
                         browsers: [browserId],
-                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.js`],
+                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
                     },
                 },
             },

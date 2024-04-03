@@ -85,7 +85,7 @@ describe("utils", () => {
 
     describe("packageNameFromPlugin", () => {
         describe("should trim suffix", () => {
-            ["/plugin", "/testplane"].forEach(suffix => {
+            ["/plugin", "/testplane", "/hermione"].forEach(suffix => {
                 it(suffix, () => {
                     const somePluginName = "html-reporter" + suffix;
 
@@ -154,7 +154,7 @@ describe("utils", () => {
                 sets: {
                     "touch-phone": {
                         browsers: ["chrome-phone"],
-                        files: ["testplane-tests/**/*.testplane.js"],
+                        files: ["testplane-tests/**/*.testplane.(t|j)s"],
                     },
                 },
             });

@@ -1,11 +1,11 @@
-import { URL_DECORATOR } from "../constants/plugins";
+import { TESTPLANE_URL_DECORATOR } from "../constants/plugins";
 import type { TestplaneConfig } from "../types/testplaneConfig";
 
 export default {
-    name: URL_DECORATOR,
+    name: TESTPLANE_URL_DECORATOR,
     fn: (config: TestplaneConfig): void => {
-        config.plugins![URL_DECORATOR] = {
-            __comment: "https://github.com/gemini-testing/url-decorator",
+        config.plugins![TESTPLANE_URL_DECORATOR] = {
+            __comment: "https://github.com/gemini-testing/testplane-url-decorator",
             enabled: true,
             url: {
                 query: {

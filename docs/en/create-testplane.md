@@ -19,7 +19,7 @@ If you already have a project at given path, the tool will try to guess used pac
 You can add `-y` or `--yes` argument to launch a tool in *no-questions* mode:
 
 ```bash
-npm init testplane-app my-app -- -y
+npm init testplane my-app -- -y
 ```
 
 In this mode you won't be asked questions about desired plugins and packet manager.
@@ -36,7 +36,7 @@ By default, create-testplane sets up project with typescript tests support.
 You can opt-out of typescript by adding `--lang js` argument:
 
 ```bash
-npm init testplane-app my-app -- --lang js
+npm init testplane my-app -- --lang js
 ```
 
 ## List of proposed plugins
@@ -45,12 +45,12 @@ npm init testplane-app my-app -- --lang js
 - [Plugins Profiler](https://github.com/gemini-testing/testplane-plugins-profiler) - To profile plugins performance
 - [Retry Progressive](https://github.com/gemini-testing/testplane-retry-progressive) - To add extra retry if test fails due to infrastructure reasons
 - [Test Filter](https://github.com/gemini-testing/testplane-test-filter) - To run only specified tests in provided browsers
-- [Retry Limiter](https://github.com/gemini-testing/retry-limiter) - To limit retries and duration threshold
+- [Retry Limiter](https://github.com/gemini-testing/testplane-retry-limiter) - To limit retries and duration threshold
 - [Headless Chrome](https://github.com/gemini-testing/testplane-headless-chrome) - To add and install headless chrome browser
 - [Profiler](https://github.com/gemini-testing/testplane-profiler) - To generate report about executed commands and their performance
 - [Safari Commands](https://github.com/gemini-testing/testplane-safari-commands) - To add compatibility for safari mobile
 - [Test Repeater](https://github.com/gemini-testing/testplane-test-repeater) - To repeat tests the specified number of times regardless of the result
-- [Url Decorator](https://github.com/gemini-testing/url-decorator) - To add/replace url query params
+- [Url Decorator](https://github.com/gemini-testing/testplane-url-decorator) - To add/replace url query params
 - [Storybook](https://github.com/gemini-testing/testplane-storybook) - To add ability to write testplane tests on storybook component and speed up their execution
 - [Html Reporter](https://github.com/gemini-testing/html-reporter) - To generate html-reports for showing passed/failed tests, screenshot diffs, error messages, stacktraces, meta-info and so on
 - [Oauth](https://github.com/gemini-testing/testplane-oauth) - To set authorization header with OAuth token

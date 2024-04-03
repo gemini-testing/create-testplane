@@ -1,8 +1,9 @@
-import type { BrowserConfig, Config } from "hermione";
+import type { Config } from "testplane";
 import type { ConfigTemplate } from "../utils/configTemplates";
 
+type BrowserConfig = Config["browsers"][string];
+
 interface BrowserUserConfig extends Partial<BrowserConfig> {
-    automationProtocol?: "webdriver" | "devtools";
     desiredCapabilities: {
         browserName: string;
     };

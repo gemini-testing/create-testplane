@@ -2,8 +2,8 @@ import _ from "lodash";
 import { PluginsConfig } from "../types/pluginsConfig";
 
 import htmlReporter from "./html-reporter";
-import retryLimiter from "./retry-limiter";
-import urlDecorator from "./url-decorator";
+import testplaneRetryLimiter from "./testplane-retry-limiter";
+import testplaneUrlDecorator from "./testplane-url-decorator";
 import testplaneOauth from "./testplane-oauth";
 import testplaneProfiler from "./testplane-profiler";
 import testplaneStorybook from "./testplane-storybook";
@@ -23,13 +23,13 @@ const pluginsConfig = [
     testplaneRetryCommand,
     testplanePluginsProfiler,
     testplaneTabsCloser,
-    retryLimiter,
+    testplaneRetryLimiter,
     testplaneSafariCommands,
     testplaneRetryProgressive,
     testplaneStorybook,
     testplaneProfiler,
     testplaneHeadlessChrome,
-    urlDecorator,
+    testplaneUrlDecorator,
     testplaneTestFilter,
     testplaneOauth,
     testplaneGlobalHook,

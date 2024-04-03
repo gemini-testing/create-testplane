@@ -32,7 +32,7 @@ npm init testplane my-app
 Вы можете отказаться от использования typescript, добавив аргумент `--lang js`:
 
 ```bash
-npm init testplane-app my-app -- --lang js
+npm init testplane my-app -- --lang js
 ```
 
 ## Список предлагаемых плагинов
@@ -41,12 +41,12 @@ npm init testplane-app my-app -- --lang js
 - [Plugins Profiler](https://github.com/gemini-testing/testplane-plugins-profiler) - Для профилирования плагинов
 - [Retry Progressive](https://github.com/gemini-testing/testplane-retry-progressive) - Чтобы дополнительно прогонять тесты, если ошибки, с которыми они упали, соответствуют заданному набору шаблонов
 - [Test Filter](https://github.com/gemini-testing/testplane-test-filter) - Чтобы запускать только указанные в `.json` файле тесты в указанных браузерах
-- [Retry Limiter](https://github.com/gemini-testing/retry-limiter) - Чтобы ограничить количество попыток перезапуска и время выполнения тестов
+- [Retry Limiter](https://github.com/gemini-testing/testplane-retry-limiter) - Чтобы ограничить количество попыток перезапуска и время выполнения тестов
 - [Headless Chrome](https://github.com/gemini-testing/testplane-headless-chrome) - Чтобы добавить и установить браузер chrome в режиме `headless`
 - [Profiler](https://github.com/gemini-testing/testplane-profiler) - Чтобы генерировать отчет о выполненных командах и их производительности
 - [Safari Commands](https://github.com/gemini-testing/testplane-safari-commands) - Чтобы поддержать работу для браузера `safari` на мобильных устройствах
 - [Test Repeater](https://github.com/gemini-testing/testplane-test-repeater) - Чтобы повторять тесты указанное количество раз вне зависимости от результата
-- [Url Decorator](https://github.com/gemini-testing/url-decorator) - Чтобы добавить/заменить параметры запроса в `url` команде
+- [Url Decorator](https://github.com/gemini-testing/testplane-url-decorator) - Чтобы добавить/заменить параметры запроса в `url` команде
 - [Storybook](https://github.com/gemini-testing/testplane-storybook) - Чтобы писать тесты на `storybook` компонентах и ускорить время их выполнения
 - [Html Reporter](https://github.com/gemini-testing/html-reporter) - Чтобы генерировать отчеты для отображения прошедших/упавших тестах, разницы между скриншотами, ошибкок, мета информации
 - [Oauth](https://github.com/gemini-testing/testplane-oauth) - Чтобы установить заголовок авторизации с OAuth токеном

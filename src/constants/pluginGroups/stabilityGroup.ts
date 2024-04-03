@@ -1,7 +1,7 @@
 import type { PluginGroup } from "../../types/toolOpts";
 import {
     TESTPLANE_RETRY_COMMAND,
-    RETRY_LIMITER,
+    TESTPLANE_RETRY_LIMITER,
     TESTPLANE_RETRY_PROGRESSIVE,
     TESTPLANE_TEST_REPEATER,
 } from "../plugins";
@@ -27,7 +27,7 @@ const unstableGroup: PluginGroup = {
         },
         {
             description: "Limit retries and duration threshold",
-            plugin: RETRY_LIMITER,
+            plugin: TESTPLANE_RETRY_LIMITER,
             default: false,
         },
     ],

@@ -1,6 +1,11 @@
 export const PACKAGE_JSON = "package.json";
-export const TESTPLANE_JS_CONFIG_NAME = ".testplane.conf.js";
-export const TESTPLANE_TS_CONFIG_NAME = ".testplane.conf.ts";
+
+export const CONFIG_NAMES = {
+    TESTPLANE_TS: ".testplane.conf.ts",
+    TESTPLANE_JS: ".testplane.conf.js",
+    HERMIONE_TS: ".hermione.conf.ts", // drop after testplane@2
+    HERMIONE_JS: ".hermione.conf.js", // drop after testplane@2
+} as const;
 
 export const DEFAULT_PM = "npm";
 
@@ -24,4 +29,4 @@ export const PMS: Record<PackageManager, { lock: string; init: string; install: 
     },
 };
 
-export const pluginSuffixes = ["/plugin", "/testplane"];
+export const pluginSuffixes = ["/plugin", "/testplane", "/hermione"]; // drop hermione suffix after testplane@2

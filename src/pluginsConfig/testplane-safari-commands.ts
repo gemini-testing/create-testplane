@@ -45,7 +45,7 @@ export default {
                 sets: {
                     "touch-phone": {
                         browsers: [browserId],
-                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.js`],
+                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
                     },
                 },
                 browsers: {
