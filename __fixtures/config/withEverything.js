@@ -31,7 +31,7 @@ export = {
         }
     },
     plugins: {
-        "hermione-oauth": {
+        "@testplane/oauth": {
             // some info
             enabled: isCi,
             token: path.join(os.homedir(), ".config", "tokens", "token")

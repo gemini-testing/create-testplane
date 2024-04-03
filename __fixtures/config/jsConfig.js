@@ -1,6 +1,6 @@
 module.exports = {
-    gridUrl: "http://localhost:4444/wd/hub",
-    baseUrl: "http://localhost",
+    gridUrl: 'http://localhost:4444/wd/hub',
+    baseUrl: 'http://localhost',
     pageLoadTimeout: 0,
     httpTimeout: 60000,
     testTimeout: 90000,
@@ -8,19 +8,19 @@ module.exports = {
     sets: {
         desktop: {
             files: [
-                "testplane-tests/**/*.testplane.(t|j)s"
+                'testplane-tests/**/*.testplane.(t|j)s'
             ],
             browsers: [
-                "chrome"
+                'chrome'
             ]
         }
     },
     browsers: {
         chrome: {
-            automationProtocol: "devtools",
+            automationProtocol: 'devtools',
             headless: true,
             desiredCapabilities: {
-                browserName: "chrome"
+                browserName: 'chrome'
             }
         }
     }
