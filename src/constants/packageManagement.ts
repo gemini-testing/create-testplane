@@ -24,4 +24,4 @@ export const PMS: Record<PackageManager, { lock: string; init: string; install: 
     },
 };
 
-export const pluginSuffixes = ["/plugin", "/testplane"];
+export const pluginSuffixes = ["/plugin", "/testplane", "/hermione"]; // drop hermione suffix after testplane@1
