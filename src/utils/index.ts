@@ -140,7 +140,11 @@ export const defineVariable = (config: TestplaneConfig, { name, value, isExpr }:
     return _.set(config, ["__variables", name], isExpr ? value : asString(value, quote));
 };
 
-export const addModule = (config: TestplaneConfig, variableName: string, moduleName = variableName): TestplaneConfig => {
+export const addModule = (
+    config: TestplaneConfig,
+    variableName: string,
+    moduleName = variableName,
+): TestplaneConfig => {
     return _.set(config, ["__modules", variableName], moduleName);
 };
 

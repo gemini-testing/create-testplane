@@ -55,7 +55,7 @@ describe("fsUtils", () => {
                 ...jsTemplate,
                 __comment: "some comment",
                 __comment4: "other comment",
-                array: ["__comment: array comment", "some stirng", "__comment: another comment"],
+                array: ["__comment: array comment", "some string", "__comment: another comment"],
             } as unknown as TestplaneConfig;
 
             await expectConfig(withCommentsConfig, configs["withComments"]);

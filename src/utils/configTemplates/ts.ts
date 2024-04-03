@@ -1,12 +1,12 @@
 import { ConfigTemplate } from ".";
-import { TESTPLANE_TS_CONFIG_NAME } from "../../constants/packageManagement";
+import { CONFIG_NAMES } from "../../constants/packageManagement";
 
 export const tsTemplate: ConfigTemplate = {
-    fileName: TESTPLANE_TS_CONFIG_NAME,
+    fileName: CONFIG_NAMES.TESTPLANE_TS,
     language: "ts",
     quote: '"',
     getImportModule: (importName, moduleName) => `import ${importName} from "${moduleName}";`,
-    getExportConfig: config => `// @ts-ignore\nexport = ${config};\n`,
+    getExportConfig: config => `export default ${config};\n`,
 };
 
 export default tsTemplate;
