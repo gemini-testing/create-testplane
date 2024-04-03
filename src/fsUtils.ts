@@ -1,8 +1,8 @@
 import _ from "lodash";
 import fs from "fs";
 import path from "path";
-import { defaultHermioneTestsDir } from "./constants/defaultHermioneConfig";
-import type { HermioneConfig } from "./types/hermioneConfig";
+import { defaultTestplaneTestsDir } from "./constants/defaultTestplaneConfig";
+import type { TestplaneConfig } from "./types/testplaneConfig";
 
 const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
 
@@ -31,14 +31,14 @@ export const ensureDirectory = async (path: string): Promise<string | void> => {
     }
 };
 
-export const writeHermioneConfig = async (dirPath: string, hermioneConfig: HermioneConfig): Promise<void> => {
-    const modules = hermioneConfig.__modules || {};
-    const variables = hermioneConfig.__variables || {};
-    const template = hermioneConfig.__template!;
+export const writeTestplaneConfig = async (dirPath: string, testplaneConfig: TestplaneConfig): Promise<void> => {
+    const modules = testplaneConfig.__modules || {};
+    const variables = testplaneConfig.__variables || {};
+    const template = testplaneConfig.__template!;
 
-    const omittedConfig = _.omit(hermioneConfig, ["__modules", "__variables", "__language", "__template"]);
+    const omittedConfig = _.omit(testplaneConfig, ["__modules", "__variables", "__language", "__template"]);
 
-    const toIndentedJson = (config: HermioneConfig): string => JSON.stringify(config, null, 4);
+    const toIndentedJson = (config: TestplaneConfig): string => JSON.stringify(config, null, 4);
 
     const withComments = (configStr: string): string => {
         // obj's records like "__comment": "Comment text" are turned into "// Comment text"
@@ -101,7 +101,7 @@ export const writeHermioneConfig = async (dirPath: string, hermioneConfig: Hermi
 };
 
 export const writeTest = async (dirPath: string, testName: string, testContent: string): Promise<void> => {
-    const testDirPath = path.resolve(dirPath, defaultHermioneTestsDir);
+    const testDirPath = path.resolve(dirPath, defaultTestplaneTestsDir);
     const testPath = path.resolve(testDirPath, testName);
 
     try {
@@ -123,4 +123,4 @@ export const writeJson = async (filePath: string, obj: Record<string, unknown>):
     return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4));
 };
 
-export default { exists, ensureDirectory, writeHermioneConfig, writeTest, writeJson };
+export default { exists, ensureDirectory, writeTestplaneConfig, writeTest, writeJson };

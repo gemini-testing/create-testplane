@@ -14,7 +14,7 @@ const argv = yargs(hideBin(process.argv))
         alias: "l",
         type: "string",
         default: "ts",
-        description: "Language, which will be used to write hermione tests",
+        description: "Language, which will be used to write Testplane tests",
         choices: ["ts", "js"],
     })
     .option("yes", {
