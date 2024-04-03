@@ -105,9 +105,11 @@ describe("configBuilder", () => {
 
         it("should use default pluginsConfig, if not specified", async () => {
             const generalAnswers: Answers = { _path: "/", _language: "ts" };
-            defaultPluginsConfig["html-reporter/testplane"] = jest.fn().mockImplementation((config: TestplaneConfig) => {
-                _.set(config, "htmlReporterIsSet", true);
-            });
+            defaultPluginsConfig["html-reporter/testplane"] = jest
+                .fn()
+                .mockImplementation((config: TestplaneConfig) => {
+                    _.set(config, "htmlReporterIsSet", true);
+                });
 
             await configBuilder.configurePlugins({
                 pluginNames: ["html-reporter/testplane"],
