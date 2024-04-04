@@ -1,4 +1,4 @@
-export const HTML_REPORTER = "html-reporter";
+export const HTML_REPORTER = "html-reporter/testplane";
 export const TESTPLANE_TEST_REPEATER = "@testplane/test-repeater";
 export const TESTPLANE_RETRY_COMMAND = "@testplane/retry-command";
 export const TESTPLANE_REASSERT_VIEW = "@testplane/reassert-view";

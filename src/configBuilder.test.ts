@@ -105,17 +105,22 @@ describe("configBuilder", () => {
 
         it("should use default pluginsConfig, if not specified", async () => {
             const generalAnswers: Answers = { _path: "/", _language: "ts" };
-            defaultPluginsConfig["html-reporter"] = jest.fn().mockImplementation((config: TestplaneConfig) => {
-                _.set(config, "htmlReporterIsSet", true);
-            });
+            defaultPluginsConfig["html-reporter/testplane"] = jest
+                .fn()
+                .mockImplementation((config: TestplaneConfig) => {
+                    _.set(config, "htmlReporterIsSet", true);
+                });
 
             await configBuilder.configurePlugins({
-                pluginNames: ["html-reporter"],
+                pluginNames: ["html-reporter/testplane"],
                 generalAnswers,
             });
 
             expectConfig({ ...defaultTestplaneConfig, htmlReporterIsSet: true });
-            expect(defaultPluginsConfig["html-reporter"]).toBeCalledWith(defaultTestplaneConfig, generalAnswers);
+            expect(defaultPluginsConfig["html-reporter/testplane"]).toBeCalledWith(
+                defaultTestplaneConfig,
+                generalAnswers,
+            );
         });
 
         it("should use overwrited pluginsConfig, if specified", async () => {
@@ -124,13 +129,13 @@ describe("configBuilder", () => {
             when(cb)
                 .calledWith(defaultPluginsConfig)
                 .mockReturnValue({
-                    "html-reporter": (config: TestplaneConfig) => {
+                    "html-reporter/testplane": (config: TestplaneConfig) => {
                         _.set(config, "foo", "bar");
                     },
                 });
 
             await configBuilder.configurePlugins({
-                pluginNames: ["html-reporter"],
+                pluginNames: ["html-reporter/testplane"],
                 createPluginsConfig: cb,
                 generalAnswers: { _path: "/", _language: "ts" },
             });
