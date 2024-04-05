@@ -12,7 +12,6 @@ import hermioneTabsCloser from "./hermione-tabs-closer";
 import hermioneGlobalHook from "./hermione-global-hook";
 import hermioneTestRepeater from "./hermione-test-repeater";
 import hermioneRetryCommand from "./hermione-retry-command";
-import hermioneReassertView from "./hermione-reassert-view";
 import hermioneSafariCommands from "./hermione-safari-commands";
 import hermioneHeadlessChrome from "./hermione-headless-chrome";
 import hermionePluginsProfiler from "./hermione-plugins-profiler";
@@ -22,7 +21,6 @@ const pluginsConfig = [
     htmlReporter,
     hermioneTestRepeater,
     hermioneRetryCommand,
-    hermioneReassertView,
     hermionePluginsProfiler,
     hermioneTabsCloser,
     retryLimiter,

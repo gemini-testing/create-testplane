@@ -1,7 +1,6 @@
 export const HTML_REPORTER = "html-reporter/hermione";
 export const HERMIONE_TEST_REPEATER = "hermione-test-repeater";
 export const HERMIONE_RETRY_COMMAND = "hermione-retry-command";
-export const HERMIONE_REASSERT_VIEW = "hermione-reassert-view";
 export const HERMIONE_SAFARI_COMMANDS = "hermione-safari-commands";
 export const HERMIONE_RETRY_PROGRESSIVE = "hermione-retry-progressive";
 export const HERMIONE_STORYBOOK = "hermione-storybook/plugin";
