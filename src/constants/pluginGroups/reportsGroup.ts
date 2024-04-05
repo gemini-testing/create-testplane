@@ -21,7 +21,7 @@ const reportsGroup: PluginGroup = {
             default: false,
         },
         {
-            description: "Add ability to write hermione tests on storybook component and speed up their execution",
+            description: "Add ability to autogenerate screenshot hermione tests on storybook components in runtime",
             plugin: HERMIONE_STORYBOOK,
             default: false,
         },
