@@ -1,20 +1,9 @@
 import type { PluginGroup } from "../../types/toolOpts";
-import {
-    HERMIONE_REASSERT_VIEW,
-    HERMIONE_RETRY_COMMAND,
-    RETRY_LIMITER,
-    HERMIONE_RETRY_PROGRESSIVE,
-    HERMIONE_TEST_REPEATER,
-} from "../plugins";
+import { HERMIONE_RETRY_COMMAND, RETRY_LIMITER, HERMIONE_RETRY_PROGRESSIVE, HERMIONE_TEST_REPEATER } from "../plugins";
 
 const unstableGroup: PluginGroup = {
     description: "Increase stability of unstable tests",
     plugins: [
-        {
-            description: "Make screenshot comparison by assertView less strict",
-            plugin: HERMIONE_REASSERT_VIEW,
-            default: false,
-        },
         {
             description: "Retry assertView on comparison fail",
             plugin: HERMIONE_RETRY_COMMAND,
