@@ -1,7 +1,7 @@
 import inquirer, { type PromptModule } from "inquirer";
 import * as utils from "./index";
 import fsUtils from "../fsUtils";
-import type { HermioneConfig, Language } from "../types/hermioneConfig";
+import type { TestplaneConfig, Language } from "../types/testplaneConfig";
 
 jest.mock("inquirer");
 
@@ -85,7 +85,7 @@ describe("utils", () => {
 
     describe("packageNameFromPlugin", () => {
         describe("should trim suffix", () => {
-            ["/plugin", "/hermione"].forEach(suffix => {
+            ["/plugin", "/testplane", "/hermione"].forEach(suffix => {
                 it(suffix, () => {
                     const somePluginName = "html-reporter" + suffix;
 
@@ -112,7 +112,7 @@ describe("utils", () => {
 
     describe("baseGeneralPromptsHandler", () => {
         it("should set baseUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+            const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
                 _path: "/",
                 _language: "ts",
                 baseUrl: "foo",
@@ -122,7 +122,7 @@ describe("utils", () => {
         });
 
         it("should set gridUrl", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+            const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
                 _path: "/",
                 _language: "ts",
                 gridUrl: "foo",
@@ -134,7 +134,7 @@ describe("utils", () => {
         it("should add addChromePhone", async () => {
             inquirer.prompt = jest.fn().mockResolvedValue({ key: "phone-67.1" }) as unknown as PromptModule;
 
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+            const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
                 _path: "/",
                 _language: "ts",
                 addChromePhone: true,
@@ -154,14 +154,14 @@ describe("utils", () => {
                 sets: {
                     "touch-phone": {
                         browsers: ["chrome-phone"],
-                        files: ["hermione-tests/**/*.hermione.js"],
+                        files: ["testplane-tests/**/*.testplane.(t|j)s"],
                     },
                 },
             });
         });
 
         it("should do nothing if no answers given", async () => {
-            const result = await utils.baseGeneralPromptsHandler({} as HermioneConfig, {
+            const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
                 _path: "/",
                 _language: "ts",
             });
@@ -174,19 +174,19 @@ describe("utils", () => {
         it("with js", async () => {
             await utils.writeTestExample("/foo", "js");
 
-            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.js", expect.anything());
+            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.testplane.js", expect.anything());
         });
 
         it("with ts", async () => {
             await utils.writeTestExample("/foo", "ts");
 
-            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.hermione.ts", expect.anything());
+            expect(fsUtils.writeTest).toBeCalledWith("/foo", "example.testplane.ts", expect.anything());
         });
     });
 
     describe("defineVariable", () => {
         it("should set string variable", () => {
-            const config = {} as HermioneConfig;
+            const config = {} as TestplaneConfig;
 
             utils.defineVariable(config, { name: "foo", value: "ba'r" });
 
@@ -194,7 +194,7 @@ describe("utils", () => {
         });
 
         it("should set expr variable", () => {
-            const config = {} as HermioneConfig;
+            const config = {} as TestplaneConfig;
 
             utils.defineVariable(config, { name: "foo", value: "bar", isExpr: true });
 
@@ -203,7 +203,7 @@ describe("utils", () => {
     });
 
     it("addModule", () => {
-        const config = {} as HermioneConfig;
+        const config = {} as TestplaneConfig;
 
         utils.addModule(config, "foo", "bar");
 

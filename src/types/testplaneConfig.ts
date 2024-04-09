@@ -1,8 +1,9 @@
-import type { BrowserConfig, Config } from "hermione";
+import type { Config } from "testplane";
 import type { ConfigTemplate } from "../utils/configTemplates";
 
+type BrowserConfig = Config["browsers"][string];
+
 interface BrowserUserConfig extends Partial<BrowserConfig> {
-    automationProtocol?: "webdriver" | "devtools";
     desiredCapabilities: {
         browserName: string;
     };
@@ -10,7 +11,7 @@ interface BrowserUserConfig extends Partial<BrowserConfig> {
 
 export type Language = "ts" | "js";
 
-export interface HermioneConfig extends Omit<Partial<Config>, "browsers"> {
+export interface TestplaneConfig extends Omit<Partial<Config>, "browsers"> {
     __language?: Language;
     __template?: ConfigTemplate;
     __modules?: {

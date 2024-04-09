@@ -5,11 +5,11 @@ import path from "path";
 import { Colors } from "./colors";
 import { pluginSuffixes } from "../constants/packageManagement";
 import fsUtils from "../fsUtils";
-import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
+import { defaultTestplaneTestsDir } from "../constants/defaultTestplaneConfig";
 import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
-import type { HermioneConfig, Language } from "../types";
+import type { TestplaneConfig, Language } from "../types";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -41,13 +41,13 @@ export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T
     return answers[question.name];
 };
 
-export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (hermioneConfig, answers) => {
+export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (testplaneConfig, answers) => {
     if (_.isString(answers.baseUrl)) {
-        hermioneConfig.baseUrl = answers.baseUrl;
+        testplaneConfig.baseUrl = answers.baseUrl;
     }
 
     if (_.isString(answers.gridUrl)) {
-        hermioneConfig.gridUrl = answers.gridUrl;
+        testplaneConfig.gridUrl = answers.gridUrl;
     }
 
     if (answers.addChromePhone) {
@@ -57,12 +57,12 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (he
             message: "chrome-phone: Enter android chrome-phone version (ex: phone-67.1):",
         });
         _.mergeWith(
-            hermioneConfig,
+            testplaneConfig,
             {
                 sets: {
                     "touch-phone": {
                         browsers: [browserId],
-                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
+                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
                     },
                 },
                 browsers: {
@@ -80,18 +80,18 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (he
         );
     }
 
-    return hermioneConfig;
+    return testplaneConfig;
 };
 
 export const printSuccessMessage = (configNotes: ConfigNote[]): void => {
     const successMessage = `
 Inside that directory, you can run:
 
-    ${Colors.fillTeal("npx hermione")}
-      Runs hermione tests
+    ${Colors.fillTeal("npx testplane")}
+      Runs testplane tests
 
-    ${Colors.fillTeal("npx hermione gui")}
-      Launches hermione's gui
+    ${Colors.fillTeal("npx testplane gui")}
+      Launches testplane's gui
     `;
 
     console.info(successMessage);
@@ -112,14 +112,14 @@ export const writeTestExample = async (dirPath: string, ext: Language): Promise<
     const testExample = `
 describe("test", () => {
     it("example", async ({browser}) => {
-        await browser.url("https://github.com/gemini-testing/hermione");
+        await browser.url("https://github.com/gemini-testing/testplane");
 
         await expect(browser.$(".f4.my-3")).toHaveText("Browser test runner based on mocha and wdio");
     });
 });
 `;
 
-    await fsUtils.writeTest(dirPath, `example.hermione.${ext}`, testExample);
+    await fsUtils.writeTest(dirPath, `example.testplane.${ext}`, testExample);
 };
 
 const asString = (str: string, quote: string): string => {
@@ -134,13 +134,17 @@ type VariableOpts = {
     isExpr?: boolean;
 };
 
-export const defineVariable = (config: HermioneConfig, { name, value, isExpr }: VariableOpts): HermioneConfig => {
+export const defineVariable = (config: TestplaneConfig, { name, value, isExpr }: VariableOpts): TestplaneConfig => {
     const quote = _.get(config, ["__template", "quote"], "'");
 
     return _.set(config, ["__variables", name], isExpr ? value : asString(value, quote));
 };
 
-export const addModule = (config: HermioneConfig, variableName: string, moduleName = variableName): HermioneConfig => {
+export const addModule = (
+    config: TestplaneConfig,
+    variableName: string,
+    moduleName = variableName,
+): TestplaneConfig => {
     return _.set(config, ["__modules", variableName], moduleName);
 };
 
@@ -149,8 +153,8 @@ export const asExpression = (value: string): string => `__expression: ${value}`;
 export const extendWithTypescript = async (packageNamesToInstall: string[], appPath: string): Promise<void> => {
     packageNamesToInstall.push("ts-node");
 
-    const hermioneTsConfigPath = path.join(appPath, defaultHermioneTestsDir, "tsconfig.json");
-    const defaultHermioneTsConfig = _.set({}, ["compilerOptions", "types"], ["hermione"]);
+    const testplaneTsConfigPath = path.join(appPath, defaultTestplaneTestsDir, "tsconfig.json");
+    const defaultTestplaneTsConfig = _.set({}, ["compilerOptions", "types"], ["testplane"]);
 
-    await fsUtils.writeJson(hermioneTsConfigPath, defaultHermioneTsConfig);
+    await fsUtils.writeJson(testplaneTsConfigPath, defaultTestplaneTsConfig);
 };

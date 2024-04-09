@@ -8,7 +8,7 @@ module.exports = {
     sets: {
         desktop: {
             files: [
-                'hermione-tests/**/*.hermione.(t|j)s'
+                'testplane-tests/**/*.testplane.(t|j)s'
             ],
             browsers: [
                 'chrome'

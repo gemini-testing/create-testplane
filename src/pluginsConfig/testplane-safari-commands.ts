@@ -1,8 +1,8 @@
 import inquirer, { DistinctQuestion } from "inquirer";
 import _ from "lodash";
-import { HERMIONE_SAFARI_COMMANDS } from "../constants/plugins";
-import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
-import type { HermioneConfig } from "../types/hermioneConfig";
+import { TESTPLANE_SAFARI_COMMANDS } from "../constants/plugins";
+import { defaultTestplaneTestsDir } from "../constants/defaultTestplaneConfig";
+import type { TestplaneConfig } from "../types/testplaneConfig";
 
 type SafariCommand =
     | "url"
@@ -21,8 +21,8 @@ interface SafariBrowsers {
 }
 
 export default {
-    name: HERMIONE_SAFARI_COMMANDS,
-    fn: async (config: HermioneConfig): Promise<void> => {
+    name: TESTPLANE_SAFARI_COMMANDS,
+    fn: async (config: TestplaneConfig): Promise<void> => {
         const browserId = "safari";
 
         type CreateInputPrompt = (name: string, message: string) => DistinctQuestion<Record<string, string>>;
@@ -30,7 +30,7 @@ export default {
         const createInputPrompt: CreateInputPrompt = (name, message) => ({
             type: "input",
             name,
-            message: "hermione-safari-commands: " + message,
+            message: "testplane-safari-commands: " + message,
         });
 
         const { deviceName, platformVersion, version } = await inquirer.prompt([
@@ -45,7 +45,7 @@ export default {
                 sets: {
                     "touch-phone": {
                         browsers: [browserId],
-                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
+                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
                     },
                 },
                 browsers: {
@@ -62,8 +62,8 @@ export default {
                     },
                 },
                 plugins: {
-                    [HERMIONE_SAFARI_COMMANDS]: {
-                        __comment: "https://github.com/gemini-testing/hermione-safari-commands",
+                    [TESTPLANE_SAFARI_COMMANDS]: {
+                        __comment: "https://github.com/gemini-testing/testplane-safari-commands",
                         enabled: true,
                         browsers: Object.keys(config.browsers)
                             .filter(browser => browser.includes("safari"))

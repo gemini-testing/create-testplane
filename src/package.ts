@@ -3,13 +3,7 @@ import path from "path";
 import { exec } from "child_process";
 
 import fsUtils from "./fsUtils";
-import {
-    DEFAULT_PM,
-    HERMIONE_JS_CONFIG_NAME,
-    HERMIONE_TS_CONFIG_NAME,
-    PMS,
-    PACKAGE_JSON,
-} from "./constants/packageManagement";
+import { DEFAULT_PM, CONFIG_NAMES, PMS, PACKAGE_JSON } from "./constants/packageManagement";
 import { Colors } from "./utils/colors";
 import { askQuestion, packageNameFromPlugin } from "./utils";
 import type { PackageManager } from "./constants/packageManagement";
@@ -42,6 +36,19 @@ const getPackageManager = async (dirPath: string, noQuestions: boolean): Promise
     });
 };
 
+const findExistingConfig = async (dirPath: string): Promise<typeof CONFIG_NAMES[keyof typeof CONFIG_NAMES] | null> => {
+    const configExistsPromises = Object.values(CONFIG_NAMES).map(async configName => {
+        const configPath = path.resolve(dirPath, configName);
+        const exists = await fsUtils.exists(configPath);
+
+        return exists ? configName : null;
+    });
+
+    const existingConfigs = await Promise.all(configExistsPromises);
+
+    return existingConfigs.find(Boolean) || null;
+};
+
 const initNodeProject = (dirPath: string, packageManager: PackageManager): Promise<string> =>
     new Promise<string>((resolve, reject) => {
         exec(
@@ -57,18 +64,10 @@ const initNodeProject = (dirPath: string, packageManager: PackageManager): Promi
 export const initApp = async (dirPath: string, noQuestions: boolean): Promise<PackageManager> => {
     await fsUtils.ensureDirectory(dirPath);
 
-    const isHermioneJsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_JS_CONFIG_NAME));
-    const isHermioneTsConfigExist = await fsUtils.exists(path.resolve(dirPath, HERMIONE_TS_CONFIG_NAME));
-    let hermioneExistingConfigName = null;
+    const existingConfigName = await findExistingConfig(dirPath);
 
-    if (isHermioneJsConfigExist) {
-        hermioneExistingConfigName = HERMIONE_JS_CONFIG_NAME;
-    } else if (isHermioneTsConfigExist) {
-        hermioneExistingConfigName = HERMIONE_TS_CONFIG_NAME;
-    }
-
-    if (hermioneExistingConfigName) {
-        console.error(`Looks like ${dirPath} already contains ${hermioneExistingConfigName}.`);
+    if (existingConfigName) {
+        console.error(`Looks like ${dirPath} already contains "${existingConfigName}".`);
         console.error("Please remove old config or choose another directory.");
         process.exit(1);
     }
@@ -95,7 +94,7 @@ export const installPackages = async (
 
     return new Promise<string>((resolve, reject) => {
         exec(
-            `${packageManager} ${PMS[packageManager].install} hermione ${pluginsPackages} --registry "${registry}"`,
+            `${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages} --registry "${registry}"`,
             {
                 cwd: dirPath,
                 env: process.env,
@@ -106,7 +105,7 @@ export const installPackages = async (
                     reject(stderr);
                 } else {
                     spinner.succeed(
-                        `Hermione and plugins have been installed successfully at ${Colors.fillGreen(dirPath)}`,
+                        `Testplane and plugins have been installed successfully at ${Colors.fillGreen(dirPath)}`,
                     );
                     resolve(stdout);
                 }

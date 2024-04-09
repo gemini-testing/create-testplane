@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { HERMIONE_HEADLESS_CHROME } from "../constants/plugins";
-import { defaultHermioneTestsDir } from "../constants/defaultHermioneConfig";
-import type { HermioneConfig } from "../types/hermioneConfig";
+import { TESTPLANE_HEADLESS_CHROME } from "../constants/plugins";
+import { defaultTestplaneTestsDir } from "../constants/defaultTestplaneConfig";
+import type { TestplaneConfig } from "../types/testplaneConfig";
 
 export default {
-    name: HERMIONE_HEADLESS_CHROME,
-    fn: (config: HermioneConfig): void => {
+    name: TESTPLANE_HEADLESS_CHROME,
+    fn: (config: TestplaneConfig): void => {
         const browserId = "chrome-headless";
 
         _.mergeWith(
@@ -22,15 +22,15 @@ export default {
                 sets: {
                     desktop: {
                         browsers: [browserId],
-                        files: [`${defaultHermioneTestsDir}/**/*.hermione.js`],
+                        files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
                     },
                 },
             },
             (objValue, srcValue) => (_.isArray(objValue) ? _.uniq(objValue.concat(srcValue)) : undefined),
         );
 
-        config.plugins![HERMIONE_HEADLESS_CHROME] = {
-            __comment: "https://github.com/gemini-testing/hermione-headless-chrome",
+        config.plugins![TESTPLANE_HEADLESS_CHROME] = {
+            __comment: "https://github.com/gemini-testing/testplane-headless-chrome",
             enabled: true,
             browserId,
             version: "98",
