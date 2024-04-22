@@ -35,7 +35,7 @@ export class ConfigBuilder {
     async handleGeneralQuestions(
         promts: GeneralPrompt[],
         handlers: HandleGeneralPromptsCallback[],
-        { path, noQuestions }: { path: string; noQuestions: boolean },
+        { path, extraQuestions }: { path: string; extraQuestions: boolean },
     ): Promise<Answers> {
         const answers: Answers = {
             _path: path,
@@ -54,7 +54,7 @@ export class ConfigBuilder {
             return acc;
         }, {});
 
-        const promptsToAsk = noQuestions ? promts.filter(prompt => _.isUndefined(prompt.default)) : promts;
+        const promptsToAsk = extraQuestions ? promts : promts.filter(prompt => _.isUndefined(prompt.default));
         const inquirerAnswers = await inquirer.prompt(promptsToAsk);
 
         Object.assign(answers, defaults, inquirerAnswers, answers);

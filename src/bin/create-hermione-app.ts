@@ -17,11 +17,11 @@ const argv = yargs(hideBin(process.argv))
         description: "Language, which will be used to write hermione tests",
         choices: ["ts", "js"],
     })
-    .option("yes", {
-        alias: "y",
+    .option("verbose", {
+        alias: "v",
         type: "boolean",
         default: false,
-        description: "Auto configuration with 0 questions",
+        description: "Advanced configuration with extra questions",
     })
     .parse();
 
