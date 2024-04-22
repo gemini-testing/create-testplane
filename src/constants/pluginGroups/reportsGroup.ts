@@ -21,7 +21,7 @@ const reportsGroup: PluginGroup = {
             default: false,
         },
         {
-            description: "Add ability to autogenerate screenshot hermione tests on storybook components in runtime",
+            description: "Add ability to autogenerate screenshot testplane tests on storybook components in runtime",
             plugin: TESTPLANE_STORYBOOK,
             default: false,
         },

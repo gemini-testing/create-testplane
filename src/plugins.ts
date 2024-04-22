@@ -63,5 +63,5 @@ const askPluginNames = async (opts: ToolOpts): Promise<{ pluginNames: string[]; 
 };
 
 export const getPluginNames = async (opts: ToolOpts): Promise<{ pluginNames: string[]; configNotes: ConfigNote[] }> => {
-    return opts.noQuestions ? getDefaultPluginNames(opts) : await askPluginNames(opts);
+    return opts.extraQuestions ? await askPluginNames(opts) : getDefaultPluginNames(opts);
 };

@@ -8,7 +8,7 @@ import { Colors } from "./utils/colors";
 import { askQuestion, packageNameFromPlugin } from "./utils";
 import type { PackageManager } from "./constants/packageManagement";
 
-const getPackageManager = async (dirPath: string, noQuestions: boolean): Promise<PackageManager> => {
+const getPackageManager = async (dirPath: string, extraQuestions: boolean): Promise<PackageManager> => {
     let packageManager: PackageManager | undefined;
     const packageManagers = Object.keys(PMS) as PackageManager[];
     await Promise.all(
@@ -24,7 +24,7 @@ const getPackageManager = async (dirPath: string, noQuestions: boolean): Promise
         return packageManager;
     }
 
-    if (noQuestions) {
+    if (!extraQuestions) {
         return DEFAULT_PM;
     }
 
@@ -61,7 +61,7 @@ const initNodeProject = (dirPath: string, packageManager: PackageManager): Promi
         );
     });
 
-export const initApp = async (dirPath: string, noQuestions: boolean): Promise<PackageManager> => {
+export const initApp = async (dirPath: string, extraQuestions: boolean): Promise<PackageManager> => {
     await fsUtils.ensureDirectory(dirPath);
 
     const existingConfigName = await findExistingConfig(dirPath);
@@ -72,7 +72,7 @@ export const initApp = async (dirPath: string, noQuestions: boolean): Promise<Pa
         process.exit(1);
     }
 
-    const packageManager = await getPackageManager(dirPath, noQuestions);
+    const packageManager = await getPackageManager(dirPath, extraQuestions);
 
     const isPackageJsonExist = await fsUtils.exists(path.resolve(dirPath, PACKAGE_JSON));
     if (!isPackageJsonExist) {
