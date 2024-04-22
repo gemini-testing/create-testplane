@@ -20,7 +20,7 @@ export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     return {
         path: path.resolve(process.cwd(), argv["_"][0]),
         language: argv.lang === "js" ? "js" : "ts",
-        noQuestions: Boolean(argv.yes),
+        extraQuestions: Boolean(argv.verbose),
     };
 };
 

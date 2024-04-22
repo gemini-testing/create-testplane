@@ -33,7 +33,7 @@ export type HandleGeneralPromptsCallback = (
 export interface ArgvOpts {
     path: string;
     language: Language;
-    noQuestions: boolean;
+    extraQuestions: boolean;
 }
 
 export interface DefaultOpts {
