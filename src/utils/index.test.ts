@@ -49,17 +49,17 @@ describe("utils", () => {
             expect(result.path).toBe("/cwd/some folder");
         });
 
-        describe("should return noQuestions", () => {
+        describe("should return extraQuestions", () => {
             [true, false, undefined].forEach(state => {
-                it(`if "yes" is "${state}"`, () => {
+                it(`if "verbose" is "${state}"`, () => {
                     const result = utils.optsFromArgv({
                         _: ["some folder"],
                         $0: "",
                         lang: "ts",
-                        yes: state,
+                        verbose: state,
                     });
 
-                    expect(result.noQuestions).toBe(Boolean(state));
+                    expect(result.extraQuestions).toBe(Boolean(state));
                 });
             });
         });

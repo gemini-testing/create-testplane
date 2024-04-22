@@ -47,7 +47,7 @@ describe("configBuilder", () => {
 
         describe("should do nothing if", () => {
             it("prompts are empty", () => {
-                configBuilder.handleGeneralQuestions([], [jest.fn()], { path: "/", noQuestions: false });
+                configBuilder.handleGeneralQuestions([], [jest.fn()], { path: "/", extraQuestions: true });
 
                 expectConfig(defaultHermioneConfig);
             });
@@ -55,14 +55,14 @@ describe("configBuilder", () => {
             it("handlers are empty", () => {
                 configBuilder.handleGeneralQuestions([{ message: "foo", type: "input", name: "bar" }], [], {
                     path: "/",
-                    noQuestions: false,
+                    extraQuestions: true,
                 });
 
                 expectConfig(defaultHermioneConfig);
             });
         });
 
-        it("should not ask extra questions in 'noQuestions' mode", () => {
+        it("should not ask extra questions if 'extraQuestions' is not set", () => {
             configBuilder.handleGeneralQuestions(
                 [
                     { message: "first silent question", type: "input", name: "1", default: "42" },
@@ -70,7 +70,7 @@ describe("configBuilder", () => {
                     { message: "second silent question", type: "input", name: "3", default: "42" },
                 ],
                 [jest.fn()],
-                { path: "/", noQuestions: true },
+                { path: "/", extraQuestions: false },
             );
 
             expect(inquirer.prompt).toBeCalledWith([{ message: "loud question", type: "input", name: "2" }]);
@@ -93,7 +93,7 @@ describe("configBuilder", () => {
 
             configBuilder.handleGeneralQuestions(questions, [firstHandler, secondHandler], {
                 path: "/",
-                noQuestions: false,
+                extraQuestions: true,
             });
         });
     });

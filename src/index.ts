@@ -59,7 +59,7 @@ export const run = async ({
     const opts = createOpts(defaultToolOpts);
     const configBuilder = ConfigBuilder.create(createBaseConfig, { language: opts.language });
 
-    const packageManager = await initApp(opts.path, opts.noQuestions);
+    const packageManager = await initApp(opts.path, opts.extraQuestions);
 
     const generalPromptsHandlers = generalPromptsHandler
         ? [baseGeneralPromptsHandler, generalPromptsHandler]

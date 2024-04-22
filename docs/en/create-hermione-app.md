@@ -14,19 +14,21 @@ Without specifying the path, project will be created in the current directory.
 
 If you already have a project at given path, the tool will try to guess used package manager.
 
-### No questions mode
+### Extra questions mode
 
-You can add `-y` or `--yes` argument to launch a tool in *no-questions* mode:
+By default, project will be created with zero questions.
+
+You can add `-v` or `--verbose` argument to launch a tool in *extra-questions* mode, to pick custom package manager or pick extra plugins:
 
 ```bash
-npm init hermione-app my-app -- -y
+npm init hermione-app my-app -- -v
 ```
 
 In this mode you won't be asked questions about desired plugins and packet manager.
 
-Default packet manager, used with `--yes` argument: `npm`
+Default packet manager, used without `--verbose` argument: `npm`
 
-Default plugins, installed with `--yes` argument: 
+Default plugins, installed without `--verbose` argument: 
 - [html-reporter](https://github.com/gemini-testing/html-reporter)
 
 ### Lang
@@ -86,14 +88,14 @@ createHermioneApp.run({
 
 **Required parameter**
 
-Default tool's CLI handles given path and `--yes` argument. In this callback you need to at least specify `path` and `noQuestions` values:
+Default tool's CLI handles given path and `--verbose` argument. In this callback you need to at least specify `path` and `extraQuestions` values:
 
 ```ts
 import type { DefaultOpts } from "create-hermione-app";
 
 const argvOpts = {
     path: ".",
-    noQuestions: true
+    extraQuestions: false
 };
 
 const createOpts = (defaultOpts: DefaultOpts) => {
@@ -160,7 +162,7 @@ const generalPromptsHandler: HandleGeneralPromptsCallback = (hermioneConfig, ans
 };
 ```
 
-If `GeneralPrompt` does not have `default` value, the question will be asked even with `noQuestions: true`
+If `GeneralPrompt` does not have `default` value, the question will be asked with `extraQuestions: false`
 
 #### createPluginsConfig
 
@@ -245,7 +247,7 @@ const createOpts = (defaultOpts: DefaultOpts) => {
     return {
         ...defaultOpts,
         path: ".",
-        noQuestions: false
+        extraQuestions: false
     };
 };
 ```
