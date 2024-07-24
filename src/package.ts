@@ -93,7 +93,10 @@ export const installPackages = async (
     const pluginsPackages = pluginsToInstall.map(packageNameFromPlugin).join(" ");
     return new Promise<string>((resolve, reject) => {
         exec(
-            PMS[packageManager].withRegistry(`${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages}`, registry),
+            PMS[packageManager].withRegistry(
+                `${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages}`,
+                registry,
+            ),
             {
                 cwd: dirPath,
                 env: process.env,

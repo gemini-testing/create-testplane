@@ -11,7 +11,10 @@ export const DEFAULT_PM = "npm";
 
 export type PackageManager = "npm" | "yarn" | "pnpm";
 
-export const PMS: Record<PackageManager, { lock: string; init: string; install: string, withRegistry: (command: string, registry: string) => string }> = {
+export const PMS: Record<
+    PackageManager,
+    { lock: string; init: string; install: string; withRegistry: (command: string, registry: string) => string }
+> = {
     npm: {
         lock: "package-lock.json",
         init: "init -y",
@@ -22,7 +25,8 @@ export const PMS: Record<PackageManager, { lock: string; init: string; install: 
         lock: "yarn.lock",
         init: "init -y",
         install: "add -D",
-        withRegistry: (command, registry) => `export YARN_REGISTRY=${registry} && export YARN_NPM_REGISTRY_SERVER=${registry} && ${command}`,
+        withRegistry: (command, registry) =>
+            `export YARN_REGISTRY=${registry} && export YARN_NPM_REGISTRY_SERVER=${registry} && ${command}`,
     },
     pnpm: {
         lock: "pnpm-lock.yml",
