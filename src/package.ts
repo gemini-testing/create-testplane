@@ -91,10 +91,9 @@ export const installPackages = async (
     const spinner = ora("Installing packages (this may take a while)").start();
 
     const pluginsPackages = pluginsToInstall.map(packageNameFromPlugin).join(" ");
-
     return new Promise<string>((resolve, reject) => {
         exec(
-            `${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages} --registry "${registry}"`,
+            PMS[packageManager].withRegistry(`${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages}`, registry),
             {
                 cwd: dirPath,
                 env: process.env,
