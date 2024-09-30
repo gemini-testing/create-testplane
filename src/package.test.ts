@@ -12,7 +12,14 @@ describe("package", () => {
     });
 
     describe("initApp", () => {
-        [".testplane.conf.ts", ".testplane.conf.js", ".hermione.conf.ts", ".hermione.conf.js"].forEach(configName => {
+        [
+            ".testplane.conf.ts",
+            ".testplane.conf.js",
+            ".hermione.conf.ts",
+            ".hermione.conf.js",
+            "testplane.config.ts",
+            "testplane.config.cjs",
+        ].forEach(configName => {
             it(`should throw an error, if ${configName} exists`, async () => {
                 const dirPath = "/dir/path";
                 jest.mocked(fsUtils.exists).mockImplementation(file =>
