@@ -37,7 +37,7 @@ describe("fsUtils", () => {
 
             await fsUtils.writeTestplaneConfig("/", config);
 
-            expect(fsPromises.writeFile).toBeCalledWith(`/.testplane.conf.${ext}`, expectedConfigWritten);
+            expect(fsPromises.writeFile).toBeCalledWith(`/testplane.config.${ext}`, expectedConfigWritten);
         };
 
         it("js config", async () => {

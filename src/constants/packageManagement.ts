@@ -1,10 +1,14 @@
 export const PACKAGE_JSON = "package.json";
 
 export const CONFIG_NAMES = {
+    TESTPLANE_NEW_TS: "testplane.config.ts",
+    TESTPLANE_NEW_CTS: "testplane.config.cts",
+    TESTPLANE_NEW_JS: "testplane.config.js",
+    TESTPLANE_NEW_CJS: "testplane.config.cjs",
     TESTPLANE_TS: ".testplane.conf.ts",
     TESTPLANE_JS: ".testplane.conf.js",
-    HERMIONE_TS: ".hermione.conf.ts", // drop after testplane@2
-    HERMIONE_JS: ".hermione.conf.js", // drop after testplane@2
+    HERMIONE_TS: ".hermione.conf.ts", // drop after testplane@9
+    HERMIONE_JS: ".hermione.conf.js", // drop after testplane@9
 } as const;
 
 export const DEFAULT_PM = "npm";
