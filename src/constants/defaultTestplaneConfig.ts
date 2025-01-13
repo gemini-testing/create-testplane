@@ -3,7 +3,7 @@ import type { TestplaneConfig } from "../types/testplaneConfig";
 export const defaultTestplaneTestsDir = "testplane-tests";
 
 const defaultTestplaneConfig: TestplaneConfig = {
-    gridUrl: "http://localhost:4444/wd/hub",
+    gridUrl: "local",
     baseUrl: "http://localhost",
 
     pageLoadTimeout: 0,
@@ -14,16 +14,21 @@ const defaultTestplaneConfig: TestplaneConfig = {
     sets: {
         desktop: {
             files: [`${defaultTestplaneTestsDir}/**/*.testplane.(t|j)s`],
-            browsers: ["chrome"],
+            browsers: ["chrome", "firefox"],
         },
     },
 
     browsers: {
         chrome: {
-            automationProtocol: "devtools",
             headless: true,
             desiredCapabilities: {
                 browserName: "chrome",
+            },
+        },
+        firefox: {
+            headless: true,
+            desiredCapabilities: {
+                browserName: "firefox",
             },
         },
     },

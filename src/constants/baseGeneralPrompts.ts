@@ -11,7 +11,7 @@ const baseGeneralPrompts: GeneralPrompt[] = [
         type: "input",
         name: "gridUrl",
         message: "GridUrl",
-        default: "http://localhost:4444/wd/hub",
+        default: "local",
     },
     {
         type: "confirm",
