@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import ora from "ora";
 import path from "path";
 import { exec } from "child_process";
@@ -91,6 +92,11 @@ export const installPackages = async (
     const spinner = ora("Installing packages (this may take a while)").start();
 
     const pluginsPackages = pluginsToInstall.map(packageNameFromPlugin).join(" ");
+
+    if (packageManager === "yarn") {
+        await fs.writeFile(path.join(dirPath, "yarn.lock"), "");
+    }
+
     return new Promise<string>((resolve, reject) => {
         exec(
             PMS[packageManager].withRegistry(
@@ -104,7 +110,7 @@ export const installPackages = async (
             (error, stdout, stderr) => {
                 if (error) {
                     spinner.fail("An error occured during installation");
-                    reject(stderr);
+                    reject(`${stdout}\n${stderr}`);
                 } else {
                     spinner.succeed(
                         `Testplane and plugins have been installed successfully at ${Colors.fillGreen(dirPath)}`,
