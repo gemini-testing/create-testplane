@@ -61,6 +61,10 @@ const initNodeProject = (dirPath: string, packageManager: PackageManager): Promi
         );
     });
 
+interface MinimalPackageJson {
+    scripts?: { [key: string]: string };
+}
+
 export const initApp = async (dirPath: string, extraQuestions: boolean): Promise<PackageManager> => {
     await fsUtils.ensureDirectory(dirPath);
 
@@ -77,6 +81,18 @@ export const initApp = async (dirPath: string, extraQuestions: boolean): Promise
     const isPackageJsonExist = await fsUtils.exists(path.resolve(dirPath, PACKAGE_JSON));
     if (!isPackageJsonExist) {
         await initNodeProject(dirPath, packageManager);
+    }
+
+    const packageJson: MinimalPackageJson = await fsUtils.readJson(path.resolve(dirPath, PACKAGE_JSON));
+
+    if (packageJson && (!packageJson?.scripts?.test || !isPackageJsonExist)) {
+        packageJson.scripts = {
+            ...(packageJson?.scripts || {}),
+            test: "testplane",
+            "test:gui": "testplane gui",
+        };
+
+        await fsUtils.writeJson(path.resolve(dirPath, PACKAGE_JSON), packageJson as Record<string, string>);
     }
 
     return packageManager;

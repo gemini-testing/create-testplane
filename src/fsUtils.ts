@@ -123,4 +123,10 @@ export const writeJson = async (filePath: string, obj: Record<string, unknown>):
     return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4));
 };
 
-export default { exists, ensureDirectory, writeTestplaneConfig, writeTest, writeJson };
+export const readJson = async (filePath: string): Promise<Record<string, unknown>> => {
+    return new Promise(resolve => {
+        fs.readFile(filePath, "utf8", (_, data: string) => resolve(JSON.parse(data)));
+    });
+};
+
+export default { exists, ensureDirectory, writeTestplaneConfig, writeTest, writeJson, readJson };
