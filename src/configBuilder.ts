@@ -1,14 +1,14 @@
 import _ from "lodash";
-import inquirer from "inquirer";
 import { writeTestplaneConfig } from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
 import defaultToolOpts from "./constants/defaultToolOpts";
 import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
+import { getTemplate } from "./utils/configTemplates";
+import { inquirerPrompt } from "./utils";
 import type { TestplaneConfig, Language } from "./types/testplaneConfig";
 import type { Answers, HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
 import type { GeneralPrompt } from "./types/toolOpts";
-import { getTemplate } from "./utils/configTemplates";
 
 type ConfigurePluginsOpts = {
     pluginNames: string[];
@@ -52,10 +52,17 @@ export class ConfigBuilder {
             }
 
             return acc;
-        }, {});
+        }, {} as Answers);
 
         const promptsToAsk = extraQuestions ? promts : promts.filter(prompt => _.isUndefined(prompt.default));
-        const inquirerAnswers = await inquirer.prompt(promptsToAsk);
+
+        const inquirerAnswers = {} as Answers;
+
+        for (const prompt of promptsToAsk) {
+            const result = await inquirerPrompt(prompt);
+
+            inquirerAnswers[prompt.name] = result;
+        }
 
         Object.assign(answers, defaults, inquirerAnswers, answers);
 

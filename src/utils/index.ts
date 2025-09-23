@@ -1,7 +1,7 @@
-import inquirer, { DistinctQuestion } from "inquirer";
 import _ from "lodash";
 import path from "path";
 
+import { inquirerPrompt } from "./inquirer";
 import { Colors } from "./colors";
 import { pluginSuffixes } from "../constants/packageManagement";
 import fsUtils from "../fsUtils";
@@ -10,6 +10,8 @@ import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
 import type { TestplaneConfig, Language } from "../types";
+
+export { inquirerPrompt } from "./inquirer";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -34,13 +36,6 @@ export const packageNameFromPlugin = (plugin: string): string => {
     return plugin;
 };
 
-export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T>>): Promise<T> => {
-    question.name = "key";
-    const answers = await inquirer.prompt(question);
-
-    return answers[question.name];
-};
-
 export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (testplaneConfig, answers) => {
     if (_.isString(answers.baseUrl)) {
         testplaneConfig.baseUrl = answers.baseUrl;
@@ -52,7 +47,7 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (te
 
     if (answers.addChromePhone) {
         const browserId = "chrome-phone";
-        const version = await askQuestion({
+        const version = await inquirerPrompt<string>({
             type: "input",
             message: "chrome-phone: Enter android chrome-phone version (ex: phone-67.1):",
         });

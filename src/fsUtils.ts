@@ -120,7 +120,7 @@ export const writeTest = async (dirPath: string, testName: string, testContent: 
 export const writeJson = async (filePath: string, obj: Record<string, unknown>): Promise<void> => {
     await ensureDirectory(path.dirname(filePath));
 
-    return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4));
+    return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4) + "\n");
 };
 
 export const readJson = async (filePath: string): Promise<Record<string, unknown>> => {

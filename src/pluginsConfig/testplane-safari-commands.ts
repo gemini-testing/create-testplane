@@ -1,8 +1,9 @@
-import inquirer, { DistinctQuestion } from "inquirer";
 import _ from "lodash";
 import { TESTPLANE_SAFARI_COMMANDS } from "../constants/plugins";
 import { defaultTestplaneTestsDir } from "../constants/defaultTestplaneConfig";
 import type { TestplaneConfig } from "../types/testplaneConfig";
+import { inquirerPrompt } from "../utils";
+import type { InquirerPrompts } from "../utils/inquirer";
 
 type SafariCommand =
     | "url"
@@ -25,19 +26,16 @@ export default {
     fn: async (config: TestplaneConfig): Promise<void> => {
         const browserId = "safari";
 
-        type CreateInputPrompt = (name: string, message: string) => DistinctQuestion<Record<string, string>>;
+        type CreateInputPrompt = (message: string) => InquirerPrompts["input"];
 
-        const createInputPrompt: CreateInputPrompt = (name, message) => ({
+        const createInputPrompt: CreateInputPrompt = message => ({
             type: "input",
-            name,
             message: "testplane-safari-commands: " + message,
         });
 
-        const { deviceName, platformVersion, version } = await inquirer.prompt([
-            createInputPrompt("deviceName", "Enter device name (ex: iPhone 11):"),
-            createInputPrompt("platformVersion", "Enter iOS version (ex: 13.3):"),
-            createInputPrompt("version", "Enter safari version (ex: 13.0):"),
-        ]);
+        const deviceName = await inquirerPrompt(createInputPrompt("Enter device name (ex: iPhone 11):"));
+        const platformVersion = await inquirerPrompt(createInputPrompt("Enter iOS version (ex: 13.3):"));
+        const version = await inquirerPrompt(createInputPrompt("Enter safari version (ex: 13.0):"));
 
         _.mergeWith(
             config,

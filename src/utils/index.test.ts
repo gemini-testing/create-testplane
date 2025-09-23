@@ -1,9 +1,9 @@
-import inquirer, { type PromptModule } from "inquirer";
+import { inquirerPrompt } from "./inquirer";
 import * as utils from "./index";
 import fsUtils from "../fsUtils";
 import type { TestplaneConfig, Language } from "../types/testplaneConfig";
 
-jest.mock("inquirer");
+jest.mock("./inquirer");
 
 jest.mock("../fsUtils");
 jest.mock("./colors", () => ({
@@ -99,17 +99,6 @@ describe("utils", () => {
         });
     });
 
-    describe("askQuestion", () => {
-        it("should ask question", async () => {
-            inquirer.prompt = jest.fn().mockResolvedValue({ key: 42 }) as unknown as PromptModule;
-
-            const result = await utils.askQuestion({ type: "list", choices: ["1"], default: "1" });
-
-            expect(inquirer.prompt).toBeCalledWith({ name: "key", type: "list", choices: ["1"], default: "1" });
-            expect(result).toBe(42);
-        });
-    });
-
     describe("baseGeneralPromptsHandler", () => {
         it("should set baseUrl", async () => {
             const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
@@ -132,7 +121,7 @@ describe("utils", () => {
         });
 
         it("should add addChromePhone", async () => {
-            inquirer.prompt = jest.fn().mockResolvedValue({ key: "phone-67.1" }) as unknown as PromptModule;
+            jest.mocked(inquirerPrompt).mockResolvedValue("phone-67.1");
 
             const result = await utils.baseGeneralPromptsHandler({} as TestplaneConfig, {
                 _path: "/",
