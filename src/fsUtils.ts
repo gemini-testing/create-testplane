@@ -2,6 +2,7 @@ import _ from "lodash";
 import fs from "fs";
 import path from "path";
 import { defaultTestplaneTestsDir } from "./constants/defaultTestplaneConfig";
+import { TESTPLANE_CONFIG_URL } from "./constants";
 import type { TestplaneConfig } from "./types/testplaneConfig";
 
 const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
@@ -123,7 +124,8 @@ export const writeTestplaneConfig = async (dirPath: string, testplaneConfig: Tes
         .map(variable => `const ${variable} = ${variables[variable]};`)
         .join("\n");
 
-    const configBody = template.getExportConfig(getObjectRepr(omittedConfig));
+    const rawConfigBody = template.getExportConfig(getObjectRepr(omittedConfig));
+    const configBody = `// Read more about configuring Testplane at ${TESTPLANE_CONFIG_URL}\n${rawConfigBody}`;
 
     const configContents = [configImports, configVariables, configBody].filter(Boolean).join("\n\n");
     const configFileName = template.fileName;
