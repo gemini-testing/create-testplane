@@ -6,7 +6,7 @@ export const tsTemplate: ConfigTemplate = {
     language: "ts",
     quote: '"',
     getImportModule: (importName, moduleName) => `import ${importName} from "${moduleName}";`,
-    getExportConfig: config => `export default ${config};\n`,
+    getExportConfig: config => `export default ${config} satisfies import("testplane").ConfigInput;\n`,
 };
 
 export default tsTemplate;

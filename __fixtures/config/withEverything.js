@@ -42,4 +42,4 @@ export default {
             token: path.join(os.homedir(), ".config", "tokens", "token")
         }
     }
-};
+} satisfies import("testplane").ConfigInput;
