@@ -146,7 +146,7 @@ export const addModule = (
 export const asExpression = (value: string): string => `__expression: ${value}`;
 
 export const extendWithTypescript = async (packageNamesToInstall: string[], appPath: string): Promise<void> => {
-    packageNamesToInstall.push("ts-node");
+    packageNamesToInstall.push("typescript");
 
     const testplaneTsConfigPath = path.join(appPath, defaultTestplaneTestsDir, "tsconfig.json");
     const defaultTestplaneTsConfig = _.set({}, ["compilerOptions", "types"], ["testplane"]);
