@@ -36,7 +36,7 @@ describe("configBuilder", () => {
 
             configBuilder = new ConfigBuilder(cb, { language: "ts" });
 
-            expectConfig({ foo: "bar" });
+            expectConfig({ foo: "bar", __language: "ts" });
         });
     });
 

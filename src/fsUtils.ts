@@ -81,7 +81,41 @@ export const writeTestplaneConfig = async (dirPath: string, testplaneConfig: Tes
 
     const getObjectRepr = _.flow([toIndentedJson, withComments, withReplacedQuotes, withExpressions]);
 
+    /**
+     * Order:
+     * - External imports
+     * - Local imports
+     * - External type imports
+     * - Local type imports
+     */
+    const importsComparator = (a: string, b: string): number => {
+        if (!modules[a]) {
+            return 1;
+        }
+
+        if (!modules[b]) {
+            return -1;
+        }
+
+        const isAType = a.startsWith("type ");
+        const isBType = b.startsWith("type ");
+
+        if (isAType !== isBType) {
+            return isAType ? 1 : -1;
+        }
+
+        const isALocal = modules[a].startsWith(".");
+        const isBLocal = modules[b].startsWith(".");
+
+        if (isALocal !== isBLocal) {
+            return isALocal ? 1 : -1;
+        }
+
+        return modules[a].localeCompare(modules[b]);
+    };
+
     const configImports = Object.keys(modules)
+        .sort(importsComparator)
         .map(importName => template.getImportModule(importName, modules[importName]))
         .join("\n");
 
