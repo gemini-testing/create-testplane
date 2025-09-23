@@ -4,7 +4,7 @@ import defaultPluginsConfig from "./pluginsConfig";
 import defaultToolOpts from "./constants/defaultToolOpts";
 import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
 import { getTemplate } from "./utils/configTemplates";
-import { inquirerPrompt } from "./utils";
+import { connectTestingLibraryToTestplaneConfig, inquirerPrompt } from "./utils";
 import type { TestplaneConfig, Language } from "./types/testplaneConfig";
 import type { Answers, HandleGeneralPromptsCallback } from "./types/toolOpts";
 import type { CreateBaseConfigCallback, CreatePluginsConfigCallback } from ".";
@@ -29,7 +29,12 @@ export class ConfigBuilder {
     ) {
         this._config = createBaseConfig ? createBaseConfig(defaultTestplaneConfig, opts) : defaultTestplaneConfig;
 
+        this._config.__language = opts.language;
         this._config.__template = getTemplate(opts.language);
+    }
+
+    connectTestingLibrary(): void {
+        connectTestingLibraryToTestplaneConfig(this._config);
     }
 
     async handleGeneralQuestions(

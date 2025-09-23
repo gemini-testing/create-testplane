@@ -65,6 +65,8 @@ export const run = async ({
         ? [baseGeneralPromptsHandler, generalPromptsHandler]
         : [baseGeneralPromptsHandler];
 
+    configBuilder.connectTestingLibrary();
+
     const generalAnswers = await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
     const { pluginNames, configNotes } = await getPluginNames(opts);
