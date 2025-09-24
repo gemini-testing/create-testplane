@@ -2,6 +2,7 @@ import _ from "lodash";
 import fs from "fs";
 import path from "path";
 import { defaultTestplaneTestsDir } from "./constants/defaultTestplaneConfig";
+import { TESTPLANE_CONFIG_URL } from "./constants";
 import type { TestplaneConfig } from "./types/testplaneConfig";
 
 const createDirectory = (path: string): Promise<string | undefined> => fs.promises.mkdir(path, { recursive: true });
@@ -81,7 +82,41 @@ export const writeTestplaneConfig = async (dirPath: string, testplaneConfig: Tes
 
     const getObjectRepr = _.flow([toIndentedJson, withComments, withReplacedQuotes, withExpressions]);
 
+    /**
+     * Order:
+     * - External imports
+     * - Local imports
+     * - External type imports
+     * - Local type imports
+     */
+    const importsComparator = (a: string, b: string): number => {
+        if (!modules[a]) {
+            return 1;
+        }
+
+        if (!modules[b]) {
+            return -1;
+        }
+
+        const isAType = a.startsWith("type ");
+        const isBType = b.startsWith("type ");
+
+        if (isAType !== isBType) {
+            return isAType ? 1 : -1;
+        }
+
+        const isALocal = modules[a].startsWith(".");
+        const isBLocal = modules[b].startsWith(".");
+
+        if (isALocal !== isBLocal) {
+            return isALocal ? 1 : -1;
+        }
+
+        return modules[a].localeCompare(modules[b]);
+    };
+
     const configImports = Object.keys(modules)
+        .sort(importsComparator)
         .map(importName => template.getImportModule(importName, modules[importName]))
         .join("\n");
 
@@ -89,7 +124,8 @@ export const writeTestplaneConfig = async (dirPath: string, testplaneConfig: Tes
         .map(variable => `const ${variable} = ${variables[variable]};`)
         .join("\n");
 
-    const configBody = template.getExportConfig(getObjectRepr(omittedConfig));
+    const rawConfigBody = template.getExportConfig(getObjectRepr(omittedConfig));
+    const configBody = `// Read more about configuring Testplane at ${TESTPLANE_CONFIG_URL}\n${rawConfigBody}`;
 
     const configContents = [configImports, configVariables, configBody].filter(Boolean).join("\n\n");
     const configFileName = template.fileName;
@@ -120,7 +156,7 @@ export const writeTest = async (dirPath: string, testName: string, testContent: 
 export const writeJson = async (filePath: string, obj: Record<string, unknown>): Promise<void> => {
     await ensureDirectory(path.dirname(filePath));
 
-    return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4));
+    return fs.promises.writeFile(filePath, JSON.stringify(obj, null, 4) + "\n");
 };
 
 export const readJson = async (filePath: string): Promise<Record<string, unknown>> => {

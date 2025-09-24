@@ -1,13 +1,13 @@
 import _ from "lodash";
 import { when } from "jest-when";
-import inquirer from "inquirer";
+import { inquirerPrompt } from "./utils/inquirer";
 import defaultTestplaneConfig from "./constants/defaultTestplaneConfig";
 import { ConfigBuilder } from "./configBuilder";
 import fsUtils from "./fsUtils";
 import defaultPluginsConfig from "./pluginsConfig";
 import type { Answers, GeneralPrompt, TestplaneConfig } from "./types";
 
-jest.mock("inquirer");
+jest.mock("./utils/inquirer");
 
 jest.mock("./fsUtils");
 
@@ -36,7 +36,7 @@ describe("configBuilder", () => {
 
             configBuilder = new ConfigBuilder(cb, { language: "ts" });
 
-            expectConfig({ foo: "bar" });
+            expectConfig({ foo: "bar", __language: "ts" });
         });
     });
 
@@ -73,7 +73,8 @@ describe("configBuilder", () => {
                 { path: "/", extraQuestions: false },
             );
 
-            expect(inquirer.prompt).toBeCalledWith([{ message: "loud question", type: "input", name: "2" }]);
+            expect(inquirerPrompt).toBeCalledWith({ message: "loud question", type: "input", name: "2" });
+            expect(inquirerPrompt).toBeCalledTimes(1);
         });
 
         it("should mutate config with handlers", () => {
@@ -89,7 +90,9 @@ describe("configBuilder", () => {
             when(firstHandler).calledWith(defaultTestplaneConfig, answers).mockResolvedValue(firstHandlerResult);
             when(secondHandler).calledWith(firstHandlerResult, answers).mockResolvedValue(secondHandlerResult);
 
-            when(inquirer.prompt).calledWith(questions).mockResolvedValue(answers);
+            jest.mocked(inquirerPrompt).mockImplementation((prompt: unknown) => {
+                return Promise.resolve(answers[(prompt as { name: string }).name as keyof typeof answers]);
+            });
 
             configBuilder.handleGeneralQuestions(questions, [firstHandler, secondHandler], {
                 path: "/",

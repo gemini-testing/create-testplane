@@ -1,3 +1,4 @@
+import type { InquirerPrompt } from "../utils/inquirer";
 import type { TestplaneConfig, Language } from "./testplaneConfig";
 
 export interface PluginPrompt {
@@ -12,13 +13,7 @@ export interface PluginGroup {
     plugins: PluginPrompt[];
 }
 
-export interface GeneralPrompt {
-    type: "input" | "number" | "confirm" | "list" | "rawlist" | "expand" | "checkbox" | "password" | "editor";
-    name: string;
-    message: string;
-    default?: any | any[];
-    choices?: any[];
-}
+export type GeneralPrompt = InquirerPrompt & { name: string; default?: unknown | unknown[] };
 
 export interface Answers extends Record<string, unknown> {
     _path: string;

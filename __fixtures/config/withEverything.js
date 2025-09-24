@@ -3,6 +3,7 @@ import path from "path";
 
 const isCi = Boolean(process.env.CI);
 
+// Read more about configuring Testplane at https://testplane.io/docs/v8/config/main/
 export default {
     gridUrl: "local",
     baseUrl: "http://localhost",
@@ -42,4 +43,4 @@ export default {
             token: path.join(os.homedir(), ".config", "tokens", "token")
         }
     }
-};
+} satisfies import("testplane").ConfigInput;

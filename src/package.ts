@@ -1,11 +1,11 @@
-import ora from "ora";
+import { loadEsm } from "load-esm";
 import path from "path";
 import { exec } from "child_process";
 
 import fsUtils from "./fsUtils";
 import { DEFAULT_PM, CONFIG_NAMES, PMS, PACKAGE_JSON } from "./constants/packageManagement";
 import { Colors } from "./utils/colors";
-import { askQuestion, packageNameFromPlugin } from "./utils";
+import { inquirerPrompt, packageNameFromPlugin } from "./utils";
 import type { PackageManager } from "./constants/packageManagement";
 
 const getPackageManager = async (dirPath: string, extraQuestions: boolean): Promise<PackageManager> => {
@@ -28,8 +28,8 @@ const getPackageManager = async (dirPath: string, extraQuestions: boolean): Prom
         return DEFAULT_PM;
     }
 
-    return askQuestion<PackageManager>({
-        type: "list",
+    return inquirerPrompt({
+        type: "select",
         message: "Choose preferred package manager:",
         choices: Object.keys(PMS),
         default: DEFAULT_PM,
@@ -104,13 +104,14 @@ export const installPackages = async (
     pluginsToInstall: string[],
     registry: string,
 ): Promise<string> => {
+    const { default: ora } = await loadEsm<typeof import("ora")>("ora");
     const spinner = ora("Installing packages (this may take a while)").start();
 
     const pluginsPackages = pluginsToInstall.map(packageNameFromPlugin).join(" ");
     return new Promise<string>((resolve, reject) => {
         exec(
             PMS[packageManager].withRegistry(
-                `${packageManager} ${PMS[packageManager].install} testplane ${pluginsPackages}`,
+                `${packageManager} ${PMS[packageManager].install} testplane @testplane/testing-library @swc/core ${pluginsPackages}`,
                 registry,
             ),
             {

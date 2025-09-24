@@ -1,9 +1,9 @@
 import defaultToolOpts from "./constants/defaultToolOpts";
 import { initApp, installPackages } from "./package";
 import {
-    askQuestion,
     baseGeneralPromptsHandler,
     extendWithTypescript,
+    inquirerPrompt,
     printSuccessMessage,
     writeTestExample,
 } from "./utils";
@@ -43,7 +43,7 @@ process.on("unhandledRejection", (reason, p) => {
     console.error("Unhandled Rejection:\n  Promise: ", p, "\n  Reason: ", reason);
 });
 
-export { askQuestion, defineVariable, addModule, asExpression } from "./utils";
+export { inquirerPrompt, defineVariable, addModule, asExpression } from "./utils";
 export { baseGeneralPrompts };
 export { defaultTestplaneTestsDir } from "./constants/defaultTestplaneConfig";
 
@@ -64,6 +64,8 @@ export const run = async ({
     const generalPromptsHandlers = generalPromptsHandler
         ? [baseGeneralPromptsHandler, generalPromptsHandler]
         : [baseGeneralPromptsHandler];
+
+    configBuilder.connectTestingLibrary();
 
     const generalAnswers = await configBuilder.handleGeneralQuestions(generalPrompts, generalPromptsHandlers, opts);
 
@@ -87,5 +89,5 @@ export const run = async ({
     printSuccessMessage(configNotes.concat(extraPackages.notes));
 };
 
-export default { run, askQuestion, baseGeneralPrompts };
+export default { run, inquirerPrompt, baseGeneralPrompts };
 export * from "./types";

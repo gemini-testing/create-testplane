@@ -1,7 +1,7 @@
-import inquirer, { DistinctQuestion } from "inquirer";
 import _ from "lodash";
 import path from "path";
 
+import { inquirerPrompt } from "./inquirer";
 import { Colors } from "./colors";
 import { pluginSuffixes } from "../constants/packageManagement";
 import fsUtils from "../fsUtils";
@@ -10,6 +10,8 @@ import type { ConfigNote } from "../plugins";
 import type { ToolArgv } from "../types/toolArgv";
 import type { ArgvOpts, HandleGeneralPromptsCallback } from "../types/toolOpts";
 import type { TestplaneConfig, Language } from "../types";
+
+export { inquirerPrompt } from "./inquirer";
 
 export const optsFromArgv = (argv: ToolArgv): ArgvOpts => {
     if (!argv["_"].length) {
@@ -34,13 +36,6 @@ export const packageNameFromPlugin = (plugin: string): string => {
     return plugin;
 };
 
-export const askQuestion = async <T>(question: DistinctQuestion<Record<string, T>>): Promise<T> => {
-    question.name = "key";
-    const answers = await inquirer.prompt(question);
-
-    return answers[question.name];
-};
-
 export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (testplaneConfig, answers) => {
     if (_.isString(answers.baseUrl)) {
         testplaneConfig.baseUrl = answers.baseUrl;
@@ -52,7 +47,7 @@ export const baseGeneralPromptsHandler: HandleGeneralPromptsCallback = async (te
 
     if (answers.addChromePhone) {
         const browserId = "chrome-phone";
-        const version = await askQuestion({
+        const version = await inquirerPrompt<string>({
             type: "input",
             message: "chrome-phone: Enter android chrome-phone version (ex: phone-67.1):",
         });
@@ -110,11 +105,28 @@ Inside that directory, you can run:
 
 export const writeTestExample = async (dirPath: string, ext: Language): Promise<void> => {
     const testExample = `
-describe("test", () => {
-    it("example", async ({browser}) => {
-        await browser.url("https://github.com/gemini-testing/testplane");
+describe("test examples", () => {
+    it("docs search test", async ({browser}) => {
+        await browser.openAndWait("https://testplane.io/");
 
-        await expect(browser.$(".f4.my-3")).toHaveText("Testplane (ex-hermione) browser test runner based on mocha and wdio");
+        // Find by tag name
+        const navBar = await browser.$("nav");
+
+        // Find by aria-label
+        await navBar.$("aria/Search").click();
+
+        // Find by placeholder
+        const fileSearchInput = await browser.findByPlaceholderText("Search docs");
+        await fileSearchInput.waitForDisplayed();
+        await fileSearchInput.setValue("config");
+
+        // Find by id
+        const fileSearchResults = await browser.$("#docsearch-list");
+
+        // Find by role
+        const fileSearchResultsItems = await fileSearchResults.findAllByRole("option");
+
+        await expect(fileSearchResultsItems.length).toBeGreaterThan(1);
     });
 });
 `;
@@ -150,11 +162,31 @@ export const addModule = (
 
 export const asExpression = (value: string): string => `__expression: ${value}`;
 
+export const connectTestingLibraryToTestplaneConfig = (config: TestplaneConfig): void => {
+    addModule(config, "{ setupBrowser }", "@testplane/testing-library");
+
+    if (config.__language === "js") {
+        const prepareBrowserJsFunction = asExpression("browser => { setupBrowser(browser) }");
+
+        _.set(config, "prepareBrowser", prepareBrowserJsFunction);
+    } else if (config.__language === "ts") {
+        addModule(config, "type { WdioBrowser }", "testplane");
+
+        const prepareBrowserTsFunction = asExpression("(browser: WdioBrowser) => { setupBrowser(browser) }");
+
+        _.set(config, "prepareBrowser", prepareBrowserTsFunction);
+    }
+};
+
 export const extendWithTypescript = async (packageNamesToInstall: string[], appPath: string): Promise<void> => {
-    packageNamesToInstall.push("ts-node");
+    packageNamesToInstall.push("typescript");
 
     const testplaneTsConfigPath = path.join(appPath, defaultTestplaneTestsDir, "tsconfig.json");
-    const defaultTestplaneTsConfig = _.set({}, ["compilerOptions", "types"], ["testplane"]);
+    const defaultTestplaneTsConfig = _.set(
+        {},
+        ["compilerOptions", "types"],
+        ["testplane", "@testplane/testing-library"],
+    );
 
     await fsUtils.writeJson(testplaneTsConfigPath, defaultTestplaneTsConfig);
 };
