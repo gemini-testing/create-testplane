@@ -111,7 +111,7 @@ export const installPackages = async (
     return new Promise<string>((resolve, reject) => {
         exec(
             PMS[packageManager].withRegistry(
-                `${packageManager} ${PMS[packageManager].install} testplane @testplane/testing-library ${pluginsPackages}`,
+                `${packageManager} ${PMS[packageManager].install} testplane @testplane/testing-library @swc/core ${pluginsPackages}`,
                 registry,
             ),
             {
