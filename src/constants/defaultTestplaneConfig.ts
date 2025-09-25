@@ -6,8 +6,8 @@ const defaultTestplaneConfig: TestplaneConfig = {
     gridUrl: "local",
     baseUrl: "http://localhost",
 
-    pageLoadTimeout: 0,
-    httpTimeout: 60000,
+    pageLoadTimeout: 20000,
+    httpTimeout: 20000,
     testTimeout: 90000,
     resetCursor: false,
 
