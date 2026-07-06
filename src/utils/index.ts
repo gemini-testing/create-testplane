@@ -185,7 +185,7 @@ export const extendWithTypescript = async (packageNamesToInstall: string[], appP
     const defaultTestplaneTsConfig = _.set(
         {},
         ["compilerOptions", "types"],
-        ["testplane", "@testplane/testing-library"],
+        ["@testplane/globals", "@testplane/testing-library"],
     );
 
     await fsUtils.writeJson(testplaneTsConfigPath, defaultTestplaneTsConfig);
