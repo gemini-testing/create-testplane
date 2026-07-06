@@ -120,8 +120,8 @@ describe("test examples", () => {
         await fileSearchInput.waitForDisplayed();
         await fileSearchInput.setValue("config");
 
-        // Find by id
-        const fileSearchResults = await browser.$("#docsearch-list");
+        // Find by selector
+        const fileSearchResults = await browser.$("ul[aria-labelledby='docsearch-label']");
 
         // Find by role
         const fileSearchResultsItems = await fileSearchResults.findAllByRole("option");
